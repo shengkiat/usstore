@@ -1,7 +1,8 @@
-package sg.edu.nus.iss.uss.dao;
+package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.util.List;
 
+import sg.edu.nus.iss.uss.dao.IDataAccess;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class StoreKeeperFileDataAccess extends FileDataAccess implements IDataAccess<StoreKeeper> {
@@ -24,5 +25,9 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements IDataAc
 	public void update(StoreKeeper e) {
 		throw new RuntimeException("not implemented yet");
 	}
-
+	
+	@Override
+	protected void initialLoad() {
+		throw new RuntimeException("not implemented yet");
+	}
 }
