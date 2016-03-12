@@ -1,16 +1,16 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 abstract class FileDataAccess {
@@ -32,9 +32,10 @@ abstract class FileDataAccess {
 		initialLoad();
 	}
 	
+	//TODO should throw custom exception?
 	protected void write(String line) {
-		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(directory + "\\" + fileName), "utf-8"))) {
+
+		try (Writer writer = Files.newBufferedWriter(getPathForFile(), getCharsetForFile())) {
 			writer.write(line);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -43,6 +44,30 @@ abstract class FileDataAccess {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//TODO should throw custom exception?
+	protected List<String> read(){
+		List<String> result = new ArrayList<>();
+
+		try (BufferedReader reader = Files.newBufferedReader(getPathForFile(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	private Path getPathForFile() {
+		return Paths.get(directory + "/" + fileName);
+	}
+	
+	private Charset getCharsetForFile() {
+		return Charset.forName("utf-8");
 	}
 	
 	protected abstract void initialLoad();
