@@ -15,6 +15,7 @@ import java.util.Objects;
 
 abstract class FileDataAccess {
 	
+	
 	private final String fileName;
 	private final String directory;
 	
@@ -33,10 +34,14 @@ abstract class FileDataAccess {
 	}
 	
 	//TODO should throw custom exception?
-	protected void write(String line) {
+	protected void write(String[] arr) {
 
 		try (Writer writer = Files.newBufferedWriter(getPathForFile(), getCharsetForFile())) {
-			writer.write(line);
+			for(String content: arr) {
+				writer.write(content);
+				writer.write(getContentDelimiter());
+			}
+			writer.write("\n");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -68,6 +73,10 @@ abstract class FileDataAccess {
 	
 	private Charset getCharsetForFile() {
 		return Charset.forName("utf-8");
+	}
+	
+	protected String getContentDelimiter() {
+		return ",";
 	}
 	
 	protected abstract void initialLoad();

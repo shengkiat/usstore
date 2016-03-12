@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
@@ -89,46 +88,51 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCreateAndGetAllWhenThereIsData() {
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
 	              new FileOutputStream(TEST_DATA_DIR + "\\" + TEST_FILE_NAME), "utf-8"))) {
-			writer.write("1,CLO/1,F42563743156,2,2013-09-28");
-			writer.write("1,MUG/1,F42563743156,3,2012-09-28");
-			writer.write("2,STA/1,PUBLIC,1,2013-09-29");
-			writer.write("3,STA/2,R64565FG4,2,2013-09-30");
-			
-			testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-			
-			List<Transaction> records = testDataAccess.getAll();
-			assertEquals(4, records.size());
-			
-			Date currentDate = new Date();
-			List<Transaction> transactions = new ArrayList<>();
-			
-			Transaction transactionOne = new Transaction("CLO/1", "F42563743156", 2, currentDate);
-			transactions.add(transactionOne);
-			
-			Transaction transactionTwo = new Transaction("MUG/1", "F42563743156", 3, currentDate);
-			transactions.add(transactionTwo);
-			
-			for(Transaction transaction : transactions) {
-				assertEquals(0, transaction.getTransactionID());
-			}
-			
-			testDataAccess.create(transactions);
-			
-			records = testDataAccess.getAll();
-			assertEquals(6, records.size());
-			
-			for(Transaction transaction : records) {
-				assertEquals(5, transaction.getTransactionID());
-			}
+			writer.write("1,CLO/1,F42563743156,2,2013-09-28\n");
+			writer.write("1,MUG/1,F42563743156,3,2012-09-28\n");
+			writer.write("2,STA/1,PUBLIC,1,2013-09-29\n");
+			writer.write("3,STA/2,R64565FG4,2,2013-09-30\n");
 		} 
 		
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		
+		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		
+		List<Transaction> records = testDataAccess.getAll();
+		assertEquals(4, records.size());
+		
+		Date currentDate = new Date();
+		List<Transaction> transactions = new ArrayList<>();
+		
+		Transaction transactionOne = new Transaction("CLO/1", "F42563743156", 2, currentDate);
+		transactions.add(transactionOne);
+		
+		Transaction transactionTwo = new Transaction("MUG/1", "F42563743156", 3, currentDate);
+		transactions.add(transactionTwo);
+		
+		for(Transaction transaction : transactions) {
+			assertEquals(0, transaction.getTransactionID());
+		}
+		
+		testDataAccess.create(transactions);
+		
+		records = testDataAccess.getAll();
+		assertEquals(6, records.size());
+		
+		int highestTransactionId = 0;
+		
+		for(Transaction transaction : records) {
+			if (transaction.getTransactionID() > highestTransactionId) {
+				highestTransactionId = transaction.getTransactionID();
+			}
+		}
+		
+		assertEquals(4, highestTransactionId);
 	}
 	
 	
