@@ -5,9 +5,15 @@ import java.util.List;
 import sg.edu.nus.iss.uss.model.Transaction;
 
 public class TransactionFileDataAccess extends FileDataAccess implements IDataAccess<Transaction> {
+	
+	private static final String FILE_NAME = "Transactions.dat";
 
 	public TransactionFileDataAccess() {
-		super("Transactions.dat");
+		super(FILE_NAME);
+	}
+	
+	TransactionFileDataAccess(String fileName, String directory) {
+		super(fileName, directory);
 	}
 
 	@Override
