@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.uss.dao;
 
+import java.util.Objects;
+
 abstract class FileDataAccess {
 	
 	private final String fileName;
@@ -10,6 +12,9 @@ abstract class FileDataAccess {
 	}
 	
 	public FileDataAccess(String fileName, String directory) {
+		Objects.requireNonNull(fileName, "fileName cannot be null");
+		Objects.requireNonNull(directory, "directory cannot be null");
+		
 		this.fileName = fileName;
 		this.directory = directory;
 	}
