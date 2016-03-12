@@ -11,7 +11,7 @@ abstract class FileDataAccess {
 		this(fileName, "data");
 	}
 	
-	public FileDataAccess(String fileName, String directory) {
+	protected FileDataAccess(String fileName, String directory) {
 		Objects.requireNonNull(fileName, "fileName cannot be null");
 		Objects.requireNonNull(directory, "directory cannot be null");
 		
