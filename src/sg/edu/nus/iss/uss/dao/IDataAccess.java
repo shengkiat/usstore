@@ -1,5 +1,5 @@
 package sg.edu.nus.iss.uss.dao;
 
-public interface IDataAccess {
+public interface IDataAccess<E> {
 
 }
