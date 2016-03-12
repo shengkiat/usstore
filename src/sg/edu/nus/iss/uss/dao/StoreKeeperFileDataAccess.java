@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class StoreKeeperFileDataAccess extends FileDataAccess implements IDataAccess<StoreKeeper> {
 
+	public StoreKeeperFileDataAccess() {
+		super("Storekeepers.dat");
+	}
+
 	@Override
 	public List<StoreKeeper> getAll() {
 		throw new RuntimeException("not implemented yet");

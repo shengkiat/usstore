@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.Vendor;
 
 public class VendorFileDataAccess extends FileDataAccess implements IDataAccess<Vendor> {
 
+	public VendorFileDataAccess() {
+		super("Vendors%.dat");
+	}
+
 	@Override
 	public List<Vendor> getAll() {
 		throw new RuntimeException("not implemented yet");

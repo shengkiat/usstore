@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.Discount;
 
 public class DiscountFileDataAccess extends FileDataAccess implements IDataAccess<Discount> {
 
+	public DiscountFileDataAccess() {
+		super("Discounts.dat");
+	}
+
 	@Override
 	public List<Discount> getAll() {
 		throw new RuntimeException("not implemented yet");

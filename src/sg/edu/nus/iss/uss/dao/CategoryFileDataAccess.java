@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.Category;
 
 public class CategoryFileDataAccess extends FileDataAccess implements IDataAccess<Category> {
 
+	public CategoryFileDataAccess() {
+		super("Category.dat");
+	}
+
 	@Override
 	public List<Category> getAll() {
 		throw new RuntimeException("not implemented yet");

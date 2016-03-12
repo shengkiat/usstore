@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.Member;
 
 public class MemberFileDataAccess extends FileDataAccess implements IDataAccess<Member> {
 
+	public MemberFileDataAccess() {
+		super("Members.dat");
+	}
+
 	@Override
 	public List<Member> getAll() {
 		throw new RuntimeException("not implemented yet");

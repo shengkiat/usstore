@@ -6,6 +6,10 @@ import sg.edu.nus.iss.uss.model.Product;
 
 public class ProductFileDataAccess extends FileDataAccess implements IDataAccess<Product> {
 
+	public ProductFileDataAccess() {
+		super("Products.dat");
+	}
+
 	@Override
 	public List<Product> getAll() {
 		throw new RuntimeException("not implemented yet");
