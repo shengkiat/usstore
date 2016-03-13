@@ -37,7 +37,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testWriteShouldWriteCorrectlyIntoTheFileForOneLine() {
+	public void testWriteShouldWriteCorrectlyIntoTheFileWithOneLine() {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[2];
@@ -63,7 +63,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testWriteShouldWriteCorrectlyIntoTheFileForTwoLines() {
+	public void testWriteShouldWriteCorrectlyIntoTheFileWithTwoLines() {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arrOne = new String[2];
