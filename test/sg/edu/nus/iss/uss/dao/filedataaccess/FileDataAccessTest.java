@@ -23,28 +23,28 @@ public class FileDataAccessTest {
 	private FileDataAccess testDataAccess;
 	
 	@Test(expected=NullPointerException.class)
-	public void testWriteShouldThrowExceptionForNullParameter() {
+	public void testWriteNewLineShouldThrowExceptionForNullParameter() {
 		testDataAccess = new FileDataAccessImpl();
-		testDataAccess.write(null);
+		testDataAccess.writeNewLine(null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testWriteShouldThrowExceptionForNullContent() {
+	public void testWriteNewLineShouldThrowExceptionForNullContent() {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[1];
-		testDataAccess.write(arr);
+		testDataAccess.writeNewLine(arr);
 	}
 	
 	@Test
-	public void testWriteShouldWriteCorrectlyIntoTheFileWithOneLine() {
+	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithOneLine() {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[2];
 		arr[0] = "tester";
 		arr[1] = "p12345678";
 		
-		testDataAccess.write(arr);
+		testDataAccess.writeNewLine(arr);
 		
 		String expectedFileContent = "tester,p12345678";
 		
@@ -63,20 +63,20 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testWriteShouldWriteCorrectlyIntoTheFileWithTwoLines() {
+	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithTwoLines() {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arrOne = new String[2];
 		arrOne[0] = "tester";
 		arrOne[1] = "p12345678";
 		
-		testDataAccess.write(arrOne);
+		testDataAccess.writeNewLine(arrOne);
 		
 		String[] arrTwo = new String[2];
 		arrTwo[0] = "tester2";
 		arrTwo[1] = "this is for testing";
 		
-		testDataAccess.write(arrTwo);
+		testDataAccess.writeNewLine(arrTwo);
 		
 		String expectedFileContentOne = "tester,p12345678";
 		String expectedFileContentTwo = "tester2,this is for testing";

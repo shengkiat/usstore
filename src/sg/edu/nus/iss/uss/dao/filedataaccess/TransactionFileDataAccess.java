@@ -28,7 +28,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		records = new ArrayList<>();
 		currentTransactionId = 0;
 		
-		List<String> stringContent = read();
+		List<String> stringContent = readAll();
 		for(String content : stringContent) {
 			String[] arr = content.split(getContentDelimiter());
 			int transactionId = Integer.parseInt(arr[0]);
@@ -63,7 +63,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 			arr[3] = "" + transaction.getQuantityPurchased();
 			arr[4] = UssCommonUtil.convertDateToString(transaction.getDate());
 
-			write(arr);
+			writeNewLine(arr);
 			
 			transaction.setTransactionID(currentTransactionId);
 			records.add(transaction);

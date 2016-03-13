@@ -36,7 +36,7 @@ abstract class FileDataAccess {
 	}
 	
 	//TODO should throw custom exception?
-	protected void write(String[] arr) {
+	protected void writeNewLine(String[] arr) {
 		
 		Objects.requireNonNull(arr, "arr cannot be null");
 		validateInput(arr);
@@ -69,7 +69,7 @@ abstract class FileDataAccess {
 	}
 	
 	//TODO should throw custom exception?
-	protected List<String> read(){
+	protected List<String> readAll(){
 		List<String> result = new ArrayList<>();
 
 		try (BufferedReader reader = Files.newBufferedReader(getPathForFile(), getCharsetForFile())) {

@@ -18,7 +18,7 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 	@Override
 	public List<StoreKeeper> getAll() {
 
-		List<String> lines = this.read();
+		List<String> lines = this.readAll();
 
 		for (String line : lines) {
 
