@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.uss.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
 import sg.edu.nus.iss.uss.model.Transaction;
@@ -19,7 +21,14 @@ public class TransactionService extends UssCommonService {
 	}
 	
 	public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate){
-		return null;
+		Objects.requireNonNull(startDate, "startDate cannot be null");
+		Objects.requireNonNull(endDate, "endDate cannot be null");
+		
+		List<Transaction> result = new ArrayList<>();
+		List<Transaction> transactions = transactionDataAccess.getAll();
+		
+		
+		return result;
 	}
 
 }
