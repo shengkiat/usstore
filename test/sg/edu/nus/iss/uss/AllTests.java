@@ -5,12 +5,14 @@ import org.junit.runners.Suite;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.FileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
+import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
 import sg.edu.nus.iss.uss.service.AuthorisedServiceTest;
 import sg.edu.nus.iss.uss.service.TransactionServiceTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	FileDataAccessTest.class,
+	VendorFileDataAccessTest.class,
 	TransactionFileDataAccessTest.class,
 	TransactionServiceTest.class,
 	AuthorisedServiceTest.class

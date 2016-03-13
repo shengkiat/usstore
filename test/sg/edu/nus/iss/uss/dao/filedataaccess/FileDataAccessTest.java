@@ -1,9 +1,14 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Test;
@@ -17,17 +22,79 @@ public class FileDataAccessTest {
 	
 	private FileDataAccess testDataAccess;
 	
-	@Test
-	public void testCreateShouldExistAfterExecute() {
-		Path path = getTestPath();
-		assertFalse(Files.exists(path));
-		
+	@Test(expected=NullPointerException.class)
+	public void testWriteShouldThrowExceptionForNullParameter() {
 		testDataAccess = new FileDataAccessImpl();
-		testDataAccess.create();
-		
-		assertTrue(Files.exists(path));
+		testDataAccess.write(null);
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testWriteShouldThrowExceptionForNullContent() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arr = new String[1];
+		testDataAccess.write(arr);
+	}
+	
+	@Test
+	public void testWriteShouldWriteCorrectlyIntoTheFileForOneLine() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arr = new String[2];
+		arr[0] = "tester";
+		arr[1] = "p12345678";
+		
+		testDataAccess.write(arr);
+		
+		String expectedFileContent = "tester,p12345678";
+		
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(1, result.size());
+		assertEquals(expectedFileContent, result.get(0));
+	}
+	
+	@Test
+	public void testWriteShouldWriteCorrectlyIntoTheFileForTwoLines() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		
+		testDataAccess.write(arrOne);
+		
+		String[] arrTwo = new String[2];
+		arrTwo[0] = "tester2";
+		arrTwo[1] = "this is for testing";
+		
+		testDataAccess.write(arrTwo);
+		
+		String expectedFileContentOne = "tester,p12345678";
+		String expectedFileContentTwo = "tester2,this is for testing";
+		
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(2, result.size());
+		assertEquals(expectedFileContentOne, result.get(0));
+		assertEquals(expectedFileContentTwo, result.get(1));
+	}
 	
 	@After
 	public void tearDown() throws IOException {
@@ -40,7 +107,11 @@ public class FileDataAccessTest {
 	}
 	
 	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR + "/" + TEST_FILE_NAME);
+		return Paths.get(TEST_DATA_DIR + File.separator + TEST_FILE_NAME);
+	}
+	
+	private Charset getCharsetForFile() {
+		return Charset.forName("utf-8");
 	}
 	
 	private class FileDataAccessImpl extends FileDataAccess {
@@ -51,6 +122,7 @@ public class FileDataAccessTest {
 
 		@Override
 		protected void initialLoad() {
+			//do nothing
 		}
 		
 	}

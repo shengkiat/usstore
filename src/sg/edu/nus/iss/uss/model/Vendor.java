@@ -4,7 +4,7 @@ public class Vendor {
 	private String name;
 	private String description;
 	private int preference;
-	
+	private Category category;
 	
 	public String getName() {
 		return name;
@@ -24,7 +24,12 @@ public class Vendor {
 	public void setPreference(int preference) {
 		this.preference = preference;
 	}
-	
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 	@Override
 	public String toString() {//Nancy’s Gifts,Best of the best gifts from Nancy’s
 		//TODO toString
