@@ -12,6 +12,12 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	
 	private static final String FILE_NAME = "Transactions.dat";
 	
+	private static final int FIELD_TRANSACTION_ID = 0;
+	private static final int FIELD_PRODUCT_ID = 1;
+	private static final int FIELD_BUYER_ID = 2;
+	private static final int FIELD_QUANTITY_PURCHASE = 3;
+	private static final int FIELD_DATE = 4;
+	
 	private List<Transaction> records;
 	private int currentTransactionId;
 
@@ -30,11 +36,11 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		
 		List<String[]> stringContent = readAll();
 		for(String[] arr : stringContent) {
-			int transactionId = Integer.parseInt(arr[0]);
-			String productID = arr[1];
-			String memberID = arr[2];
-			int quantityPurchased = Integer.parseInt(arr[3]);
-			Date date = UssCommonUtil.convertStringToDate(arr[4]);
+			int transactionId = Integer.parseInt(arr[FIELD_TRANSACTION_ID]);
+			String productID = arr[FIELD_PRODUCT_ID];
+			String memberID = arr[FIELD_BUYER_ID];
+			int quantityPurchased = Integer.parseInt(arr[FIELD_QUANTITY_PURCHASE]);
+			Date date = UssCommonUtil.convertStringToDate(arr[FIELD_DATE]);
 			Transaction transaction = new Transaction(productID, memberID, quantityPurchased, date);
 			transaction.setTransactionID(transactionId);
 			
@@ -56,11 +62,11 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		currentTransactionId++;
 		for(Transaction transaction : transactions) {
 			String[] arr = new String[5];
-			arr[0] = "" + currentTransactionId;
-			arr[1] = transaction.getProductID();
-			arr[2] = transaction.getMemberID();
-			arr[3] = "" + transaction.getQuantityPurchased();
-			arr[4] = UssCommonUtil.convertDateToString(transaction.getDate());
+			arr[FIELD_TRANSACTION_ID] = "" + currentTransactionId;
+			arr[FIELD_PRODUCT_ID] = transaction.getProductID();
+			arr[FIELD_BUYER_ID] = transaction.getMemberID();
+			arr[FIELD_QUANTITY_PURCHASE] = "" + transaction.getQuantityPurchased();
+			arr[FIELD_DATE] = UssCommonUtil.convertDateToString(transaction.getDate());
 
 			writeNewLine(arr);
 			
