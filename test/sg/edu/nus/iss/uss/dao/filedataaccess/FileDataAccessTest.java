@@ -96,6 +96,58 @@ public class FileDataAccessTest {
 		assertEquals(expectedFileContentTwo, result.get(1));
 	}
 	
+	@Test(expected=NullPointerException.class)
+	public void testOverwriteLineShouldThrowExceptionForNullParameter() {
+		testDataAccess = new FileDataAccessImpl();
+		testDataAccess.overwriteLine(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testOverwriteLineShouldThrowExceptionForNullContent() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arr = new String[1];
+		testDataAccess.overwriteLine(arr);
+	}
+	
+	@Test
+	public void testOverwriteLineShouldWriteCorrectlyIntoTheFileWithOneLine() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] arrTwo = new String[2];
+		arrTwo[0] = "tester2";
+		arrTwo[1] = "this is for testing";
+		testDataAccess.writeNewLine(arrTwo);
+		
+		String[] modifiedArr = new String[2];
+		modifiedArr[0] = "tester";
+		modifiedArr[1] = "12345678";
+		
+		String expectedFileContentOne = "tester,12345678";
+		String expectedFileContentTwo = "tester2,this is for testing";
+		
+		testDataAccess.overwriteLine(modifiedArr);
+		
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(2, result.size());
+		assertEquals(expectedFileContentOne, result.get(0));
+		assertEquals(expectedFileContentTwo, result.get(1));
+	}
+	
 	@After
 	public void tearDown() throws IOException {
 		testDataAccess = null;
@@ -123,6 +175,11 @@ public class FileDataAccessTest {
 		@Override
 		protected void initialLoad() {
 			//do nothing
+		}
+
+		@Override
+		protected String getPrimaryKey(String[] arr) {
+			return arr[0];
 		}
 		
 	}

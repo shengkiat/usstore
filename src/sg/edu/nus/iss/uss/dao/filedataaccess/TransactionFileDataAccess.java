@@ -69,5 +69,9 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 			records.add(transaction);
 		}
 	}
-
+	
+	@Override
+	protected String getPrimaryKey(String[] arr) {
+		throw new RuntimeException("not implemented yet");
+	}
 }

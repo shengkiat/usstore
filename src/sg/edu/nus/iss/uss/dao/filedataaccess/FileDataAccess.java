@@ -37,17 +37,10 @@ abstract class FileDataAccess {
 	
 	//TODO should throw custom exception?
 	protected void writeNewLine(String[] arr) {
-		
-		Objects.requireNonNull(arr, "arr cannot be null");
 		validateInput(arr);
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), true))) {
-			StringBuilder builder = new StringBuilder();
-			for(String content: arr) {
-				builder.append(getContentDelimiter());
-				builder.append(content);
-			}
-			writer.write(builder.toString().replaceFirst(getContentDelimiter(), ""));
+			writer.write(generateWriteContent(arr));
 			writer.newLine();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -58,7 +51,33 @@ abstract class FileDataAccess {
 		}
 	}
 	
+	protected void overwriteLine(String[] arr) {
+		
+		validateInput(arr);
+		
+		List<String> existingContents = readAll();
+
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
+			
+			for(String existingContent : existingContents) {
+				String toWriteContent = getPrimaryKey(arr).equals(getPrimaryKey(existingContent)) 
+										? generateWriteContent(arr) : existingContent;
+				writer.write(toWriteContent);
+				writer.newLine();
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void validateInput(String[] arr) {
+		Objects.requireNonNull(arr, "arr cannot be null");
+		
 		for(String content: arr) {
 			if (content != null && !content.equals("")) {
 				return;
@@ -66,6 +85,16 @@ abstract class FileDataAccess {
 		}
 		
 		throw new IllegalArgumentException("All arr content cannot be null or empty");
+	}
+	
+	private String generateWriteContent(String[] arr) {
+		StringBuilder builder = new StringBuilder();
+		for(String content: arr) {
+			builder.append(getContentDelimiter());
+			builder.append(content);
+		}
+		
+		return builder.toString().replaceFirst(getContentDelimiter(), "");
 	}
 	
 	//TODO should throw custom exception?
@@ -104,6 +133,12 @@ abstract class FileDataAccess {
 		return fileName;
 	}
 	
+	protected String getPrimaryKey(String content) {
+		return getPrimaryKey(content.split(getContentDelimiter()));
+	}
+	
 	protected abstract void initialLoad();
+	
+	protected abstract String getPrimaryKey(String[] arr);
 
 }

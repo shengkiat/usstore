@@ -44,5 +44,9 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 	protected void initialLoad() {
 		
 	}
-
+	
+	@Override
+	protected String getPrimaryKey(String[] arr) {
+		throw new RuntimeException("not implemented yet");
+	}
 }

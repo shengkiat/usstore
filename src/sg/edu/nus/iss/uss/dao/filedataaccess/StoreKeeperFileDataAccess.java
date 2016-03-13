@@ -75,5 +75,10 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	protected String getPrimaryKey(String[] arr) {
+		throw new RuntimeException("not implemented yet");
+	}
+	
 }
