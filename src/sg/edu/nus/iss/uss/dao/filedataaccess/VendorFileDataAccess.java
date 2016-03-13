@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +24,18 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 
 	@Override
 	public Map<String, List<Vendor>> getAll() {
-		throw new RuntimeException("not implemented yet");
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(getDirectory()), "Vendors*.dat")) {
+			for (Path file : stream) {
+                List<String[]> contents = readAll(file);
+                //TODO
+            }
+	     } 
+		
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

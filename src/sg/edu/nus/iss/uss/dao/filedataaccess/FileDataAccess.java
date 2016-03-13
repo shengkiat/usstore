@@ -115,11 +115,15 @@ abstract class FileDataAccess {
 		return builder.toString().replaceFirst(getContentDelimiter(), "");
 	}
 	
-	//TODO should throw custom exception?
 	protected List<String[]> readAll(){
+		return readAll(getPathForFile());
+	}
+	
+	//TODO should throw custom exception?
+	protected List<String[]> readAll(Path pathForFile){
 		List<String[]> result = new ArrayList<>();
 
-		try (BufferedReader reader = Files.newBufferedReader(getPathForFile(), getCharsetForFile())) {
+		try (BufferedReader reader = Files.newBufferedReader(pathForFile, getCharsetForFile())) {
 		    String line = null;
 		    int lineNo = 1;
 		    while ((line = reader.readLine()) != null) {
