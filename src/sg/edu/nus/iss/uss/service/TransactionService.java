@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class TransactionService extends UssCommonService {
 	
@@ -23,6 +24,10 @@ public class TransactionService extends UssCommonService {
 	public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate){
 		Objects.requireNonNull(startDate, "startDate cannot be null");
 		Objects.requireNonNull(endDate, "endDate cannot be null");
+		
+		if (UssCommonUtil.isDateLeftGreaterThanRight(startDate, endDate)) {
+			throw new IllegalArgumentException("startDate cannot be greater than endDate");
+		}
 		
 		List<Transaction> result = new ArrayList<>();
 		List<Transaction> transactions = transactionDataAccess.getAll();

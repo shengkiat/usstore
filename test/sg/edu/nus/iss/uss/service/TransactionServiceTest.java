@@ -42,6 +42,21 @@ public class TransactionServiceTest {
 		service.retrieveTransactionListByDate(startDate, null);
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() {
+		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+				{
+				@Override
+				public List<Transaction> getAll() {
+					return new ArrayList<>();
+				}
+				});
+		
+		Date startDate = UssCommonUtil.convertStringToDate("2013-01-03");
+		Date endDate = UssCommonUtil.convertStringToDate("2013-01-02");
+		service.retrieveTransactionListByDate(startDate, endDate);
+	}
+	
 	@Test
 	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
