@@ -18,6 +18,8 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	private static final int FIELD_QUANTITY_PURCHASE = 3;
 	private static final int FIELD_DATE = 4;
 	
+	private static final int TOTAL_FIELDS = 5;
+	
 	private List<Transaction> records;
 	private int currentTransactionId;
 
@@ -61,7 +63,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	public void create(List<Transaction> transactions) {
 		currentTransactionId++;
 		for(Transaction transaction : transactions) {
-			String[] arr = new String[5];
+			String[] arr = new String[TOTAL_FIELDS];
 			arr[FIELD_TRANSACTION_ID] = "" + currentTransactionId;
 			arr[FIELD_PRODUCT_ID] = transaction.getProductID();
 			arr[FIELD_BUYER_ID] = transaction.getBuyerID();
@@ -78,5 +80,10 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	@Override
 	protected String getPrimaryKey(String[] arr) {
 		throw new RuntimeException("not implemented yet");
+	}
+
+	@Override
+	protected int getTotalNumberOfFields() {
+		return TOTAL_FIELDS;
 	}
 }

@@ -81,4 +81,8 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 		throw new RuntimeException("not implemented yet");
 	}
 	
+	@Override
+	protected int getTotalNumberOfFields() {
+		return 2;
+	}
 }

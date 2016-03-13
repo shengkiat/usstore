@@ -35,4 +35,9 @@ public class DiscountFileDataAccess extends FileDataAccess implements DiscountDa
 	protected String getPrimaryKey(String[] arr) {
 		throw new RuntimeException("not implemented yet");
 	}
+	
+	@Override
+	protected int getTotalNumberOfFields() {
+		return 0;
+	}
 }

@@ -80,6 +80,10 @@ abstract class FileDataAccess {
 	private void validateInput(String[] arr) {
 		Objects.requireNonNull(arr, "arr cannot be null");
 		
+		if (arr.length != getTotalNumberOfFields()) {
+			throw new IllegalArgumentException("Expected total number of fields: " + getTotalNumberOfFields() + " but: " + arr.length);
+		}
+		
 		for(String content: arr) {
 			if (content != null && !content.equals("")) {
 				return;
@@ -117,8 +121,16 @@ abstract class FileDataAccess {
 
 		try (BufferedReader reader = Files.newBufferedReader(getPathForFile(), getCharsetForFile())) {
 		    String line = null;
+		    int lineNo = 1;
 		    while ((line = reader.readLine()) != null) {
-		    	result.add(line.split(getContentDelimiter()));
+		    	String[] arr = line.split(getContentDelimiter());
+		    	
+		    	//TODO should have validation?
+		    	//if (arr.length != getTotalNumberOfFields()) {
+					//throw new IllegalArgumentException(fileName + ", Line " + lineNo + ", Expected total number of fields: " + getTotalNumberOfFields() + " but: " + arr.length);
+				//}
+		    	result.add(arr);
+		    	lineNo++;
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -148,6 +160,8 @@ abstract class FileDataAccess {
 	}
 	
 	protected abstract void initialLoad();
+	
+	protected abstract int getTotalNumberOfFields();
 	
 	protected abstract String getPrimaryKey(String[] arr);
 

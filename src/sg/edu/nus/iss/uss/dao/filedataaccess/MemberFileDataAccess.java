@@ -35,4 +35,9 @@ public class MemberFileDataAccess extends FileDataAccess implements MemberDataAc
 	protected String getPrimaryKey(String[] arr) {
 		throw new RuntimeException("not implemented yet");
 	}
+	
+	@Override
+	protected int getTotalNumberOfFields() {
+		return 0;
+	}
 }

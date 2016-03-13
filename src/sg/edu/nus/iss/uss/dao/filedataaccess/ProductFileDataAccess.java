@@ -36,5 +36,9 @@ public class ProductFileDataAccess extends FileDataAccess implements ProductData
 		throw new RuntimeException("not implemented yet");
 	}
 	
+	@Override
+	protected int getTotalNumberOfFields() {
+		return 0;
+	}
 	
 }

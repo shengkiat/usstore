@@ -197,6 +197,11 @@ public class FileDataAccessTest {
 		protected String getPrimaryKey(String[] arr) {
 			return arr[0];
 		}
+
+		@Override
+		protected int getTotalNumberOfFields() {
+			return 2;
+		}
 		
 	}
 
