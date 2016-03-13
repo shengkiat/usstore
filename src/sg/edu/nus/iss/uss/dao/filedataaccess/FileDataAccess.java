@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +32,19 @@ abstract class FileDataAccess {
 		this.directory = directory;
 		
 		initialLoad();
+	}
+	
+	protected void create() {
+		Path path = getPathForFile();
+
+        try {
+        	Files.createDirectories(path.getParent());
+            Files.createFile(path);
+        } catch (FileAlreadyExistsException e) {
+            throw new RuntimeException("file already exists: " + e.getMessage());
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//TODO should throw custom exception?
