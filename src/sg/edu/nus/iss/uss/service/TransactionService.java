@@ -32,6 +32,11 @@ public class TransactionService extends UssCommonService {
 		List<Transaction> result = new ArrayList<>();
 		List<Transaction> transactions = transactionDataAccess.getAll();
 		
+		for(Transaction transaction : transactions) {
+			if (UssCommonUtil.isDateWithinRange(startDate, endDate, transaction.getDate())) {
+				result.add(transaction);
+			}
+		}
 		
 		return result;
 	}
