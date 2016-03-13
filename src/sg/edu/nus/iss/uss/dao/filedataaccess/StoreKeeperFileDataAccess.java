@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.IDataAccess;
+import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
-public class StoreKeeperFileDataAccess extends FileDataAccess implements IDataAccess<StoreKeeper> {
+public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKeeperDataAccess {
 
 	private List<StoreKeeper> storeKeppers = new ArrayList<StoreKeeper>();
 
@@ -53,16 +53,6 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements IDataAc
 
 		return storeKeppers;
 
-	}
-
-	@Override
-	public void create(StoreKeeper e) {
-		throw new RuntimeException("not implemented yet");
-	}
-
-	@Override
-	public void update(StoreKeeper e) {
-		throw new RuntimeException("not implemented yet");
 	}
 
 	@Override

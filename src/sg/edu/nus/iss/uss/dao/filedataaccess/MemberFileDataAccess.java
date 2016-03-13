@@ -2,10 +2,10 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.IDataAccess;
+import sg.edu.nus.iss.uss.dao.MemberDataAccess;
 import sg.edu.nus.iss.uss.model.Member;
 
-public class MemberFileDataAccess extends FileDataAccess implements IDataAccess<Member> {
+public class MemberFileDataAccess extends FileDataAccess implements MemberDataAccess {
 
 	public MemberFileDataAccess() {
 		super("Members.dat");

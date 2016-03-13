@@ -2,10 +2,10 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.IDataAccess;
+import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
 import sg.edu.nus.iss.uss.model.Discount;
 
-public class DiscountFileDataAccess extends FileDataAccess implements IDataAccess<Discount> {
+public class DiscountFileDataAccess extends FileDataAccess implements DiscountDataAccess {
 
 	public DiscountFileDataAccess() {
 		super("Discounts.dat");
