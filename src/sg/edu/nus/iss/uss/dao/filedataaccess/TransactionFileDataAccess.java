@@ -38,10 +38,10 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		for(String[] arr : stringContent) {
 			int transactionId = Integer.parseInt(arr[FIELD_TRANSACTION_ID]);
 			String productID = arr[FIELD_PRODUCT_ID];
-			String memberID = arr[FIELD_BUYER_ID];
+			String buyerID = arr[FIELD_BUYER_ID];
 			int quantityPurchased = Integer.parseInt(arr[FIELD_QUANTITY_PURCHASE]);
 			Date date = UssCommonUtil.convertStringToDate(arr[FIELD_DATE]);
-			Transaction transaction = new Transaction(productID, memberID, quantityPurchased, date);
+			Transaction transaction = new Transaction(productID, buyerID, quantityPurchased, date);
 			transaction.setTransactionID(transactionId);
 			
 			if (transactionId > currentTransactionId) {
@@ -64,7 +64,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 			String[] arr = new String[5];
 			arr[FIELD_TRANSACTION_ID] = "" + currentTransactionId;
 			arr[FIELD_PRODUCT_ID] = transaction.getProductID();
-			arr[FIELD_BUYER_ID] = transaction.getMemberID();
+			arr[FIELD_BUYER_ID] = transaction.getBuyerID();
 			arr[FIELD_QUANTITY_PURCHASE] = "" + transaction.getQuantityPurchased();
 			arr[FIELD_DATE] = UssCommonUtil.convertDateToString(transaction.getDate());
 

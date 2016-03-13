@@ -6,13 +6,13 @@ public class Transaction {
 	
 	private int transactionID;
 	private final String productID;
-	private final String memberID;
+	private final String buyerID;
 	private final int quantityPurchased;
 	private final Date date;
 	
 	public Transaction(String productID, String memberID, int quantityPurchased, Date date) {
 		this.productID = productID;
-		this.memberID = memberID;
+		this.buyerID = memberID;
 		this.quantityPurchased = quantityPurchased;
 		this.date = date;
 	}
@@ -26,8 +26,8 @@ public class Transaction {
 	public String getProductID() {
 		return productID;
 	}
-	public String getMemberID() {
-		return memberID;
+	public String getBuyerID() {
+		return buyerID;
 	}
 	public int getQuantityPurchased() {
 		return quantityPurchased;
@@ -43,8 +43,8 @@ public class Transaction {
 		builder.append(transactionID);
 		builder.append(", productID=");
 		builder.append(productID);
-		builder.append(", memberID=");
-		builder.append(memberID);
+		builder.append(", buyerID=");
+		builder.append(buyerID);
 		builder.append(", quantityPurchased=");
 		builder.append(quantityPurchased);
 		builder.append(", date=");
