@@ -24,5 +24,12 @@ public class UssCommonUtil {
 		}
 	}
 	
+    public static boolean isDateLeftGreaterThanRight(java.util.Date dateLeft, java.util.Date dateRight) {
+        return dateLeft.compareTo(dateRight) > 0;
+    }
+    
+    public static boolean isDateWithinRange(java.util.Date startDate, java.util.Date endDate, java.util.Date toComparedDate) {
+        return startDate.compareTo(toComparedDate) <= 0 && toComparedDate.compareTo(endDate) <= 0;
+    }
 	
 }

@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.util;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -31,5 +32,40 @@ public class UssCommonUtilTest {
 
 		assertEquals(cal.getTime(), UssCommonUtil.convertStringToDate("2016-03-13"));
 	}
-
+	
+	@Test
+	public void testIsDateLeftGreaterThanRightShouldReturnTrue() {
+		Date dateLeft = UssCommonUtil.convertStringToDate("2016-03-13");
+		Date dateRight = UssCommonUtil.convertStringToDate("2016-03-12");
+	   
+		assertTrue(UssCommonUtil.isDateLeftGreaterThanRight(dateLeft, dateRight));
+	}
+	
+	@Test
+	public void testIsDateLeftGreaterThanRightShouldReturnFalse() {
+		Date dateRight = UssCommonUtil.convertStringToDate("2016-03-13");
+		Date dateLeft = UssCommonUtil.convertStringToDate("2016-03-12");
+	   
+		assertFalse(UssCommonUtil.isDateLeftGreaterThanRight(dateLeft, dateRight));
+	}
+	
+	@Test
+	public void testIsDateWithinRangeShouldReturnFalse() {
+		Date startDate = UssCommonUtil.convertStringToDate("2016-03-13");
+		Date endDate = UssCommonUtil.convertStringToDate("2016-03-14");
+		
+		Date toCompare = UssCommonUtil.convertStringToDate("2016-03-12");
+	   
+		assertFalse(UssCommonUtil.isDateWithinRange(startDate, endDate, toCompare));
+	}
+	
+	@Test
+	public void testIsDateWithinRangeShouldReturnTrue() {
+		Date startDate = UssCommonUtil.convertStringToDate("2016-03-13");
+		Date endDate = UssCommonUtil.convertStringToDate("2016-03-14");
+		
+		Date toCompare = UssCommonUtil.convertStringToDate("2016-03-13");
+	   
+		assertTrue(UssCommonUtil.isDateWithinRange(startDate, endDate, toCompare));
+	}
 }
