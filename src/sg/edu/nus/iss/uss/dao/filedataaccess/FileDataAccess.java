@@ -1,10 +1,10 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,12 +36,12 @@ abstract class FileDataAccess {
 	//TODO should throw custom exception?
 	protected void write(String[] arr) {
 
-		try (Writer writer = Files.newBufferedWriter(getPathForFile(), getCharsetForFile())) {
+		try (BufferedWriter writer = Files.newBufferedWriter(getPathForFile(), getCharsetForFile())) {
 			for(String content: arr) {
 				writer.write(content);
 				writer.write(getContentDelimiter());
 			}
-			writer.write("\n");
+			writer.newLine();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {

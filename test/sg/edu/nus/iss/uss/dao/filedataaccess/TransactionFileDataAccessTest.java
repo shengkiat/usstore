@@ -6,7 +6,6 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -89,12 +88,16 @@ public class TransactionFileDataAccessTest {
 	
 	@Test
 	public void testCreateAndGetAllWhenThereIsData() {
-		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 	              new FileOutputStream(TEST_DATA_DIR + "\\" + TEST_FILE_NAME), "utf-8"))) {
-			writer.write("1,CLO/1,F42563743156,2,2013-09-28\n");
-			writer.write("1,MUG/1,F42563743156,3,2012-09-28\n");
-			writer.write("2,STA/1,PUBLIC,1,2013-09-29\n");
-			writer.write("3,STA/2,R64565FG4,2,2013-09-30\n");
+			writer.write("1,CLO/1,F42563743156,2,2013-09-28");
+			writer.newLine();
+			writer.write("1,MUG/1,F42563743156,3,2012-09-28");
+			writer.newLine();
+			writer.write("2,STA/1,PUBLIC,1,2013-09-29");
+			writer.newLine();
+			writer.write("3,STA/2,R64565FG4,2,2013-09-30");
+			writer.newLine();
 		} 
 		
 		catch (Exception e) {
