@@ -8,6 +8,7 @@ import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
 import sg.edu.nus.iss.uss.service.AuthorisedServiceTest;
 import sg.edu.nus.iss.uss.service.TransactionServiceTest;
+import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -15,7 +16,8 @@ import sg.edu.nus.iss.uss.service.TransactionServiceTest;
 	VendorFileDataAccessTest.class,
 	TransactionFileDataAccessTest.class,
 	TransactionServiceTest.class,
-	AuthorisedServiceTest.class
+	AuthorisedServiceTest.class,
+	UssCommonUtilTest.class
 })
 public class AllTests {
 

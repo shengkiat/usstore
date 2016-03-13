@@ -6,14 +6,12 @@ import java.util.Date;
 
 public class UssCommonUtil {
 
-	public final static String DATE_FORMAT = "YYYY-MM-dd";
+	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 	
 	public static String convertDateToString(Date date){
-		//TODO convertDateToString
-		
-		return "";
+		return DEFAULT_DATE_FORMATTER.format(date);
 	}
 	
 	public static Date convertStringToDate(String date) {
