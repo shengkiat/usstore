@@ -28,9 +28,8 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		records = new ArrayList<>();
 		currentTransactionId = 0;
 		
-		List<String> stringContent = readAll();
-		for(String content : stringContent) {
-			String[] arr = content.split(getContentDelimiter());
+		List<String[]> stringContent = readAll();
+		for(String[] arr : stringContent) {
 			int transactionId = Integer.parseInt(arr[0]);
 			String productID = arr[1];
 			String memberID = arr[2];

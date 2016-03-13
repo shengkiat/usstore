@@ -110,6 +110,22 @@ public class FileDataAccessTest {
 		testDataAccess.overwriteLine(arr);
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testOverwriteLineShouldThrowExceptionForNoMatchingPrimaryKey() {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] modifiedArr = new String[2];
+		modifiedArr[0] = "tester1";
+		modifiedArr[1] = "12345678";
+		
+		testDataAccess.overwriteLine(modifiedArr);
+	}
+	
 	@Test
 	public void testOverwriteLineShouldWriteCorrectlyIntoTheFileWithOneLine() {
 		testDataAccess = new FileDataAccessImpl();

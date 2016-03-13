@@ -18,11 +18,11 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 	@Override
 	public List<StoreKeeper> getAll() {
 
-		List<String> lines = this.readAll();
+		List<String[]> lines = this.readAll();
 
-		for (String line : lines) {
+		for (String[] line : lines) {
 
-			List<String> storeKeeperInfo = Arrays.asList(line.split(","));
+			List<String> storeKeeperInfo = Arrays.asList(line);
 
 			if (storeKeeperInfo.size() < 2) {
 				// no comma in line

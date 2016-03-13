@@ -55,13 +55,15 @@ abstract class FileDataAccess {
 		
 		validateInput(arr);
 		
-		List<String> existingContents = readAll();
+		List<String[]> existingContents = readAll();
+		
+		validatePrimaryKeyFound(arr, existingContents);
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
 			
-			for(String existingContent : existingContents) {
+			for(String[] existingContent : existingContents) {
 				String toWriteContent = getPrimaryKey(arr).equals(getPrimaryKey(existingContent)) 
-										? generateWriteContent(arr) : existingContent;
+										? generateWriteContent(arr) : generateWriteContent(existingContent);
 				writer.write(toWriteContent);
 				writer.newLine();
 			}
@@ -87,6 +89,18 @@ abstract class FileDataAccess {
 		throw new IllegalArgumentException("All arr content cannot be null or empty");
 	}
 	
+	private void validatePrimaryKeyFound(String[] arr, List<String[]> existingContents) {
+		Objects.requireNonNull(arr, "arr cannot be null");
+		
+		for(String[] existingContent: existingContents) {
+			if (getPrimaryKey(arr).equals(getPrimaryKey(existingContent))) {
+				return;
+			}
+		}
+		
+		throw new IllegalArgumentException("Unable to found existing content to overwrite using " + getPrimaryKey(arr));
+	}
+	
 	private String generateWriteContent(String[] arr) {
 		StringBuilder builder = new StringBuilder();
 		for(String content: arr) {
@@ -98,13 +112,13 @@ abstract class FileDataAccess {
 	}
 	
 	//TODO should throw custom exception?
-	protected List<String> readAll(){
-		List<String> result = new ArrayList<>();
+	protected List<String[]> readAll(){
+		List<String[]> result = new ArrayList<>();
 
 		try (BufferedReader reader = Files.newBufferedReader(getPathForFile(), getCharsetForFile())) {
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {
-		    	result.add(line);
+		    	result.add(line.split(getContentDelimiter()));
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -131,10 +145,6 @@ abstract class FileDataAccess {
 	
 	protected String getFileName() {
 		return fileName;
-	}
-	
-	protected String getPrimaryKey(String content) {
-		return getPrimaryKey(content.split(getContentDelimiter()));
 	}
 	
 	protected abstract void initialLoad();
