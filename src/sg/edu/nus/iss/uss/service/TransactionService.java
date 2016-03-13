@@ -17,8 +17,8 @@ public class TransactionService extends UssCommonService {
 		this.transactionDataAccess = transactionDataAccess;
 	}
 	
-	public Transaction createNewTransaction(){
-		return null;
+	public void createTransactions(List<Transaction> transactions){
+		transactionDataAccess.create(transactions);
 	}
 	
 	public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate){
