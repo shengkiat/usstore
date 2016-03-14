@@ -37,7 +37,7 @@ public class VendorServiceTest {
 		 * 1. invalid vendor file is created
 		 */
 
-		File file = new File("data/VendorsMUG.dat");
+		File file = new File("data" + File.separator + "VendorsMUG.dat");
 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
@@ -58,7 +58,7 @@ public class VendorServiceTest {
 		bw.write("Megatron Gift,Bad Boy Shop");
 		bw.close();
 
-		file = new File("data/VendorsCLO.dat");
+		file = new File("data" + File.separator + "VendorsCLO.dat");
 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
@@ -79,7 +79,7 @@ public class VendorServiceTest {
 		bw.write("Optimus Prime Gift,Bad Boy Shop");
 		bw.close();
 
-		file = new File("data/VendorsShirt.dat");
+		file = new File("data" + File.separator + "VendorsShirt.dat");
 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {

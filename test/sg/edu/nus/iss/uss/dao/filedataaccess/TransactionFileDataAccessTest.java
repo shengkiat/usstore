@@ -21,10 +21,11 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class TransactionFileDataAccessTest {
 	
-	private static final String TEST_DATA_DIR = System.getProperty("user.dir") + "\\test\\sg\\edu\\nus\\iss\\uss\\dao\\filedataaccess";
+	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Transactions.dat";
 	
 	private TransactionDataAccess testDataAccess;

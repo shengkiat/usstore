@@ -13,10 +13,11 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class VendorFileDataAccessTest {
 	
-	private static final String TEST_DATA_DIR = System.getProperty("user.dir") + "\\test\\sg\\edu\\nus\\iss\\uss\\dao\\filedataaccess";
+	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Vendors%s.dat";
 	
 	private VendorFileDataAccess testDataAccess;

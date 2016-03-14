@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
@@ -32,7 +33,7 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 			for (Path file : stream) {
 				List<String[]> contents = readAll(file);
 
-				String categoryCode = file.toString().replace("data/Vendors", "");
+				String categoryCode = file.toString().replace("data" + File.separator + "Vendors", "");
 				categoryCode = categoryCode.replace(".dat", "");
 
 				// Category Code must be 3 letters
@@ -72,7 +73,7 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 
 	@Override
 	public void create(Vendor vendor) {
-		Path path = Paths.get(getDirectory() + "/" + String.format(getFileName(), vendor.getCategory()));
+		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
 
 		try {
 			Files.createDirectories(path.getParent());

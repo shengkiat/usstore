@@ -13,11 +13,13 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.util.TestUtil;
+
 import static org.junit.Assert.*;
 
 public class FileDataAccessTest {
 	
-	private static final String TEST_DATA_DIR = System.getProperty("user.dir") + "\\test\\sg\\edu\\nus\\iss\\uss\\dao\\filedataaccess";
+	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Testing.dat";
 	
 	private FileDataAccess testDataAccess;
