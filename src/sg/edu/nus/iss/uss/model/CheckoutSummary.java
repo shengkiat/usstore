@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 public class CheckoutSummary {
-	private List<PayItem> checkoutItems;
+	private List<Product> checkoutItems;
 	private Date checkoutDate;
 	
-	public List<PayItem> getCheckoutItems() {
+	public List<Product> getCheckoutItems() {
 		return checkoutItems;
 	}
 
-	public void setCheckoutItems(List<PayItem> checkoutItems) {
+	public void setCheckoutItems(List<Product> checkoutItems) {
 		this.checkoutItems = checkoutItems;
 	}
 	
@@ -19,10 +19,15 @@ public class CheckoutSummary {
 		return checkoutDate;
 	}
 
-	public int getTotalPrice(){ 
-		//TODO calculate the total price by checkoutList
+	public double getTotalPrice(){
+
+        double totalPrice = 0.0;
+
+        for(int i = 0; i < checkoutItems.size(); i++ ) {
+            totalPrice = totalPrice + checkoutItems.get(i).getPrice();
+        }
 		
-		return 0;
+		return totalPrice;
 	}
 
 }

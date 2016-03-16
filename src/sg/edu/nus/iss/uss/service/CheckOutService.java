@@ -1,10 +1,12 @@
 package sg.edu.nus.iss.uss.service;
 
-import java.util.ArrayList;
-
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.PayItem;
+import sg.edu.nus.iss.uss.model.Product;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckOutService extends UssCommonService {
 	
@@ -31,13 +33,13 @@ private String memberID = "";//"" means No MemberID
 		Discount discount = null; //TODO
 		
 		//calculate charge price
-		int chargePrice = calculateChargePrice(discount);
+//		int chargePrice = calculateChargePrice(discount);
 		
 		//TODO create PayItem
 		
 		if(null == checkoutSummary){
 			checkoutSummary = new CheckoutSummary();
-			checkoutSummary.setCheckoutItems(new ArrayList<PayItem>());
+			checkoutSummary.setCheckoutItems(new ArrayList<Product>());
 		}
 		
 		//TODO add PayItem into checkout List
@@ -45,7 +47,37 @@ private String memberID = "";//"" means No MemberID
 		
 		return null;
 	}
-	
+
+    public List<Product> addItemIntoCheckOutList(Product product, String memberID){
+
+        //TODO Get product by productID
+
+        //TODO get max discount via memberID
+        Discount discount = null; //TODO
+
+        //calculate charge price
+//        int chargePrice = calculateChargePrice(discount);
+
+        //TODO create PayItem
+
+        if(null == checkoutSummary){
+            checkoutSummary = new CheckoutSummary();
+            checkoutSummary.setCheckoutItems(new ArrayList<Product>());
+        }
+
+        //TODO add PayItem into checkout List
+//		checkoutSummary.getCheckoutList().add(e);
+
+        checkoutSummary.getCheckoutItems().add(product);
+
+        return checkoutSummary.getCheckoutItems();
+    }
+
+    public List<Product> addItemIntoCheckOutList(Product product){
+
+        return this.addItemIntoCheckOutList(product, this.memberID);
+    }
+
 	public PayItem addItemIntoCheckOutList(String productID){
 		
 		return this.addItemIntoCheckOutList(productID, this.memberID);
@@ -58,7 +90,8 @@ private String memberID = "";//"" means No MemberID
 		
 		return "";
 	}
-	
+
+    // change to decimal
 	public int makePayment(String payAmount, int redeemPoint){
 		//TODO
 		
@@ -71,7 +104,7 @@ private String memberID = "";//"" means No MemberID
 		return "";
 	}
 	
-	private int calculateChargePrice(Discount discount){
+	private double calculateChargePrice(Discount discount){
 		//TODO
 		
 		return 0;

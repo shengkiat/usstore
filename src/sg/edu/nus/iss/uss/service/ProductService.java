@@ -1,9 +1,9 @@
 package sg.edu.nus.iss.uss.service;
 
+import sg.edu.nus.iss.uss.model.Product;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import sg.edu.nus.iss.uss.model.Product;
 
 public class ProductService extends UssCommonService {
 	
@@ -44,6 +44,12 @@ public class ProductService extends UssCommonService {
 		
 		return null;
 	}
-	
+
+    // added by Jia Cheng on 15/03/2016
+    public boolean checkIfProductIsBelowThreshold (Product product) {
+        // todo to return true false to check if product inventory has fallen below threshold
+
+        return false;
+    }
 
 }
