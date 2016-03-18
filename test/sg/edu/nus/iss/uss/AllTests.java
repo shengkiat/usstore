@@ -6,7 +6,11 @@ import org.junit.runners.Suite;
 import sg.edu.nus.iss.uss.dao.filedataaccess.FileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
+import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
+import sg.edu.nus.iss.uss.model.DaySpecialDiscountTest;
+import sg.edu.nus.iss.uss.model.MemberOnlyDiscountTest;
 import sg.edu.nus.iss.uss.service.AuthorisedServiceTest;
+import sg.edu.nus.iss.uss.service.CheckOutServiceTest;
 import sg.edu.nus.iss.uss.service.TransactionServiceTest;
 import sg.edu.nus.iss.uss.service.VendorServiceTest;
 import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
@@ -19,7 +23,11 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	TransactionServiceTest.class,
 	AuthorisedServiceTest.class,
 	UssCommonUtilTest.class,
-	VendorServiceTest.class
+	VendorServiceTest.class,
+	CheckOutSummaryTest.class,
+	DaySpecialDiscountTest.class,
+	MemberOnlyDiscountTest.class,
+	CheckOutServiceTest.class
 })
 public class AllTests {
 
