@@ -11,6 +11,7 @@ import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscountTest;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscountTest;
 import sg.edu.nus.iss.uss.service.AuthorisedServiceTest;
+import sg.edu.nus.iss.uss.service.DiscountServiceTest;
 import sg.edu.nus.iss.uss.service.CheckOutServiceTest;
 import sg.edu.nus.iss.uss.service.TransactionServiceTest;
 import sg.edu.nus.iss.uss.service.VendorServiceTest;
@@ -30,6 +31,7 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	DaySpecialDiscountTest.class,
 	MemberOnlyDiscountTest.class,
 	CheckOutServiceTest.class
+	DiscountServiceTest.class
 })
 public class AllTests {
 
