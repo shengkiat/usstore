@@ -30,7 +30,7 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	CheckOutSummaryTest.class,
 	DaySpecialDiscountTest.class,
 	MemberOnlyDiscountTest.class,
-	CheckOutServiceTest.class
+	CheckOutServiceTest.class,
 	DiscountServiceTest.class
 })
 public class AllTests {
