@@ -1,33 +1,97 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
+import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class DiscountFileDataAccess extends FileDataAccess implements DiscountDataAccess {
 
+private static final String FILE_NAME = "Discounts.dat";
+	
+	private static final int FIELD_DISCOUNT_CODE = 0;
+	private static final int FIELD_DISCOUNT_DESCRIPTION = 1;
+	private static final int FIELD_DISCOUNT_START_DATE = 2;
+	private static final int FIELD_DISCOUNT_PERIOD = 3;
+	private static final int FIELD_DISCOUNT_PERCENTAGE = 4;
+	private static final int FIELD_DISCOUNT_APPLICABLE = 5;
+	
+	private static final int TOTAL_FIELDS = 6;
+	
+	private List<Discount> records;
+
 	public DiscountFileDataAccess() {
-		super("Discounts.dat");
+		super(FILE_NAME);
 	}
-
-	@Override
-	public List<Discount> getAll() {
-		throw new RuntimeException("not implemented yet");
-	}
-
-	@Override
-	public void create(Discount e) {
-		throw new RuntimeException("not implemented yet");
-	}
-
-	@Override
-	public void update(Discount e) {
-		throw new RuntimeException("not implemented yet");
+	
+	public DiscountFileDataAccess(String fileName, String directory) {
+		super(fileName, directory);	
 	}
 	
 	@Override
 	protected void initialLoad() {
+		records = new ArrayList<>();
+		
+		List<String[]> stringContent = readAll();
+		for(String[] arr : stringContent) {
+			String discountCode = arr[FIELD_DISCOUNT_CODE];
+			String discountDes = arr[FIELD_DISCOUNT_DESCRIPTION];
+			Date date = UssCommonUtil.convertStringToDate(arr[FIELD_DISCOUNT_START_DATE]);
+			int discountPeriod = Integer.parseInt(arr[FIELD_DISCOUNT_PERIOD]);
+			Double discountPercentage = Double.parseDouble(arr[FIELD_DISCOUNT_PERCENTAGE]);
+			String memberOrAll = arr[FIELD_DISCOUNT_APPLICABLE];
+			Discount discount = null;
+			if(memberOrAll == "M") {
+				discount = new MemberOnlyDiscount(discountCode, discountDes, discountPercentage);
+			}
+			else if(memberOrAll == "A") {
+				discount = new DaySpecialDiscount(discountCode, discountDes, discountPercentage, date, discountPeriod);
+			}
+			records.add(discount);
+		}
+	}
+
+	@Override
+	public List<Discount> getAll() {
+		return records;
+	}
+
+	@Override
+	public void create(List<Discount> discounts) {
+		for(Discount discount : discounts) {
+			String[] arr = new String[TOTAL_FIELDS];
+			if(discount instanceof MemberOnlyDiscount) {
+				MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
+				arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
+				arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
+				arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
+				arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
+				arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
+				arr[FIELD_DISCOUNT_APPLICABLE] = "M";
+				
+			}
+			if(discount instanceof DaySpecialDiscount) {
+				DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
+				arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
+				arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
+				arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
+				arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
+				arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
+				arr[FIELD_DISCOUNT_APPLICABLE] = "A";
+				
+			}
+			writeNewLine(arr);
+			records.add(discount);
+		}
+	}
+
+	@Override
+	public void update(Discount e) {
 		throw new RuntimeException("not implemented yet");
 	}
 	
@@ -38,6 +102,6 @@ public class DiscountFileDataAccess extends FileDataAccess implements DiscountDa
 	
 	@Override
 	protected int getTotalNumberOfFields() {
-		return 0;
+		return TOTAL_FIELDS;
 	}
 }
