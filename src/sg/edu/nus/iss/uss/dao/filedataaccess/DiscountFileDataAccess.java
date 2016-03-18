@@ -27,6 +27,7 @@ private static final String FILE_NAME = "Discounts.dat";
 
 	public DiscountFileDataAccess() {
 		super(FILE_NAME);
+		initialLoad();
 	}
 	
 	public DiscountFileDataAccess(String fileName, String directory) {
@@ -41,15 +42,15 @@ private static final String FILE_NAME = "Discounts.dat";
 		for(String[] arr : stringContent) {
 			String discountCode = arr[FIELD_DISCOUNT_CODE];
 			String discountDes = arr[FIELD_DISCOUNT_DESCRIPTION];
-			Date date = UssCommonUtil.convertStringToDate(arr[FIELD_DISCOUNT_START_DATE]);
-			int discountPeriod = Integer.parseInt(arr[FIELD_DISCOUNT_PERIOD]);
 			Double discountPercentage = Double.parseDouble(arr[FIELD_DISCOUNT_PERCENTAGE]);
 			String memberOrAll = arr[FIELD_DISCOUNT_APPLICABLE];
 			Discount discount = null;
-			if(memberOrAll == "M") {
+			if(memberOrAll.equals("M")) {
 				discount = new MemberOnlyDiscount(discountCode, discountDes, discountPercentage);
 			}
-			else if(memberOrAll == "A") {
+			else if(memberOrAll.equals("A")) {
+				Date date = UssCommonUtil.convertStringToDate(arr[FIELD_DISCOUNT_START_DATE]);
+				int discountPeriod = Integer.parseInt(arr[FIELD_DISCOUNT_PERIOD]);
 				discount = new DaySpecialDiscount(discountCode, discountDes, discountPercentage, date, discountPeriod);
 			}
 			records.add(discount);
@@ -64,28 +65,30 @@ private static final String FILE_NAME = "Discounts.dat";
 	@Override
 	public void create(List<Discount> discounts) {
 		for(Discount discount : discounts) {
-			String[] arr = new String[TOTAL_FIELDS];
-			if(discount instanceof MemberOnlyDiscount) {
-				MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
-				arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
-				arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
-				arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
-				arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
-				arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
-				arr[FIELD_DISCOUNT_APPLICABLE] = "M";
-				
+			if(records.indexOf(discount) == -1) {
+				String[] arr = new String[TOTAL_FIELDS];
+				if(discount instanceof MemberOnlyDiscount) {
+					MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
+					arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
+					arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
+					arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
+					arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
+					arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
+					arr[FIELD_DISCOUNT_APPLICABLE] = "M";
+					
+				}
+				if(discount instanceof DaySpecialDiscount) {
+					DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
+					arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
+					arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
+					arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
+					arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
+					arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
+					arr[FIELD_DISCOUNT_APPLICABLE] = "A";
+				}
+				writeNewLine(arr);
+				records.add(discount);
 			}
-			if(discount instanceof DaySpecialDiscount) {
-				DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
-				arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
-				arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
-				arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
-				arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
-				arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
-				arr[FIELD_DISCOUNT_APPLICABLE] = "A";
-			}
-			writeNewLine(arr);
-			records.add(discount);
 		}
 	}
 
