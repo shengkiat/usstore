@@ -3,6 +3,7 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.FileAlreadyExistsException;
@@ -83,9 +84,9 @@ public class DiscountFileDataAccessTest {
 		firstDiscounts.add(new MemberOnlyDiscount("MEMBER_FIRST", "First purchase by member", 20));
 		firstDiscounts.add(new MemberOnlyDiscount("MEMBER_SUBSEQ", "Subsequent purchase by member", 10));
 		firstDiscounts.add(new DaySpecialDiscount("CENTENARY", "Centenary Celebration in 2014", 15, df.parse("2014-01-01"),365));
+		testDiscountDataAccess.create(firstDiscounts);
 		
 		List<Discount> secondDiscounts = new ArrayList<>();
-		
 		secondDiscounts.add(new DaySpecialDiscount("PRESIDENT_BDAY", "University President's birthday", 20, df.parse("2014-01-01"),365));
 		secondDiscounts.add(new DaySpecialDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7));
 		testDiscountDataAccess.create(secondDiscounts);
@@ -97,10 +98,10 @@ public class DiscountFileDataAccessTest {
 	@Test
 	public void testCreateAndGetAllWhenThereIsData() throws ParseException {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TEST_DATA_DIR + "\\" + TEST_FILE_NAME), "utf-8"))) {
+	              new FileOutputStream(TEST_DATA_DIR + File.separator + TEST_FILE_NAME), "utf-8"))) {
 			writer.write("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M");
 			writer.newLine();
-			writer.write("MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10");
+			writer.write("MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M");
 			writer.newLine();
 			writer.write("CENTENARY,Centenary Celebration in 2014,2014-01-01,365,15,A");
 			writer.newLine();
