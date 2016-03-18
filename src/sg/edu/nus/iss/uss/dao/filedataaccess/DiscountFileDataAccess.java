@@ -30,13 +30,13 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 	
 	public DiscountFileDataAccess(String fileName, String directory) {
-		super(fileName, directory);	
+		super(fileName, directory);
+		initialLoad();
 	}
 	
 	@Override
 	protected void initialLoad() {
-		records = new ArrayList<>();
-		
+		records = new ArrayList<>();		
 		List<String[]> stringContent = readAll();
 		for(String[] arr : stringContent) {
 			String discountCode = arr[FIELD_DISCOUNT_CODE];
@@ -83,7 +83,6 @@ private static final String FILE_NAME = "Discounts.dat";
 				arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
 				arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
 				arr[FIELD_DISCOUNT_APPLICABLE] = "A";
-				
 			}
 			writeNewLine(arr);
 			records.add(discount);
@@ -91,13 +90,37 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 
 	@Override
-	public void update(Discount e) {
-		throw new RuntimeException("not implemented yet");
+	public void update(Discount discount) {
+		for(Discount temp : records) {
+			if(temp.getDiscountCode() == discount.getDiscountCode()) {
+				String[] arr = new String[TOTAL_FIELDS];
+				if(discount instanceof MemberOnlyDiscount) {
+					MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
+					arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
+					arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
+					arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
+					arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
+					arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
+					arr[FIELD_DISCOUNT_APPLICABLE] = "M";
+				}
+				if(discount instanceof DaySpecialDiscount) {
+					DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
+					arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
+					arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
+					arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
+					arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
+					arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
+					arr[FIELD_DISCOUNT_APPLICABLE] = "A";
+				}
+				overwriteLine(arr);
+				records.set(records.indexOf(temp), discount);
+			}
+		}
 	}
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {
-		throw new RuntimeException("not implemented yet");
+		return arr[FIELD_DISCOUNT_CODE];
 	}
 	
 	@Override
