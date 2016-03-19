@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TransactionServiceTest {
 	
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullStartDate() {
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullStartDate() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
@@ -29,7 +29,7 @@ public class TransactionServiceTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() {
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
@@ -43,7 +43,7 @@ public class TransactionServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() {
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
@@ -58,7 +58,7 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() {
+	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
@@ -75,7 +75,7 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testRetrieveTransactionListByDateShouldReturnForMatchingTransaction() {
+	public void testRetrieveTransactionListByDateShouldReturnForMatchingTransaction() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
@@ -121,6 +121,12 @@ public class TransactionServiceTest {
 	
 	private class MockTransactionFileDataAccessWithoutFileAccess extends TransactionFileDataAccess {
 		
+		public MockTransactionFileDataAccessWithoutFileAccess()
+				throws UssException {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+
 		@Override
 		protected void initialLoad() {
 			//do nothing

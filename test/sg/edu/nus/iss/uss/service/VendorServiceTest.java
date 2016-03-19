@@ -16,12 +16,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
 
 public class VendorServiceTest {
 
 	@Test
-	public void testGetVendorByCategoryCode() {
+	public void testGetVendorByCategoryCode() throws UssException {
 
 		VendorService vendorService = new VendorService(
 				new MockVendorFileDataAccess() {
@@ -121,6 +122,11 @@ public class VendorServiceTest {
 	}
 
 	private class MockVendorFileDataAccess extends VendorFileDataAccess {
+
+		public MockVendorFileDataAccess() throws UssException {
+			super();
+			// TODO Auto-generated constructor stub
+		}
 
 		@Override
 		protected void initialLoad() {

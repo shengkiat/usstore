@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.VendorDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.VendorService;
@@ -37,7 +38,7 @@ public class VendorFileDataAccessTest {
 
 	private String testCategoryCode = "MUG";
 
-	public void testCreateShouldExistAfterExecute() {
+	public void testCreateShouldExistAfterExecute() throws UssException {
 		Category category = new Category();
 		category.setCode(testCategoryCode);
 		category.setName("Mug");
@@ -57,7 +58,7 @@ public class VendorFileDataAccessTest {
 	}
 
 	@Test
-	public void testReadActualData() {
+	public void testReadActualData() throws UssException {
 
 		VendorFileDataAccess testDataAccess1 = new VendorFileDataAccess();
 
@@ -71,7 +72,7 @@ public class VendorFileDataAccessTest {
 	}
 
 	@Test
-	public void testReadTestData() {
+	public void testReadTestData() throws UssException {
 
 		testDataAccess = new VendorFileDataAccess("", TEST_DATA_DIR);
 

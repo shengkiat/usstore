@@ -24,11 +24,11 @@ abstract class FileDataAccess {
 	private final String fileName;
 	private final String directory;
 	
-	public FileDataAccess(String fileName) {
+	public FileDataAccess(String fileName) throws UssException {
 		this(fileName, "data");
 	}
 	
-	protected FileDataAccess(String fileName, String directory) {
+	protected FileDataAccess(String fileName, String directory) throws UssException {
 		Objects.requireNonNull(fileName, "fileName cannot be null");
 		Objects.requireNonNull(directory, "directory cannot be null");
 		
@@ -162,7 +162,7 @@ abstract class FileDataAccess {
 		return fileName;
 	}
 	
-	protected abstract void initialLoad();
+	protected abstract void initialLoad() throws UssException;
 	
 	protected abstract int getTotalNumberOfFields();
 	

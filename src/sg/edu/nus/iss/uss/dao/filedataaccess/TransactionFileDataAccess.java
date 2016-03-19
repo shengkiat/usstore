@@ -24,7 +24,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	private List<Transaction> records;
 	private int currentTransactionId;
 
-	public TransactionFileDataAccess() {
+	public TransactionFileDataAccess() throws UssException {
 		super(FILE_NAME);
 		
 		if (records == null) {
@@ -32,7 +32,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 		}
 	}
 	
-	TransactionFileDataAccess(String fileName, String directory) {
+	TransactionFileDataAccess(String fileName, String directory) throws UssException {
 		super(fileName, directory);	
 	}
 	

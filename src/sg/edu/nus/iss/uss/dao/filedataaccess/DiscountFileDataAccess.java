@@ -26,12 +26,12 @@ private static final String FILE_NAME = "Discounts.dat";
 	
 	private List<Discount> records;
 
-	public DiscountFileDataAccess() {
+	public DiscountFileDataAccess() throws UssException {
 		super(FILE_NAME);
 		initialLoad();
 	}
 	
-	public DiscountFileDataAccess(String fileName, String directory) {
+	public DiscountFileDataAccess(String fileName, String directory) throws UssException {
 		super(fileName, directory);
 		initialLoad();
 	}

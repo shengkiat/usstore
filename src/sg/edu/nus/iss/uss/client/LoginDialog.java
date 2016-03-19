@@ -20,7 +20,7 @@ public class LoginDialog extends JDialog {
 	private JButton btnCancel;
 	private boolean succeeded;
 
-	private StoreKeeperDataAccess storeKepperDAO = new StoreKeeperFileDataAccess();
+	private StoreKeeperDataAccess storeKepperDAO = null;
 
 	private AuthorisedService authService = new AuthorisedService(
 			storeKepperDAO);
