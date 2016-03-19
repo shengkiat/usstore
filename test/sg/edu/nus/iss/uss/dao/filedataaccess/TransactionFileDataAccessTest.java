@@ -2,7 +2,10 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -85,6 +88,26 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
+	public void testCreateShouldWriteContentIntoFile() {
+		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		
+		Date currentDate = new Date();
+		List<Transaction> transactions = new ArrayList<>();
+		
+		transactions.add(new Transaction("CLO/1", "F42563743156", 2, currentDate));
+		transactions.add(new Transaction("MUG/1", "F42563743156", 3, currentDate));
+		
+		for(Transaction transaction : transactions) {
+			assertEquals(0, transaction.getTransactionID());
+		}
+		
+		testDataAccess.create(transactions);
+		
+		List<String> records = getLinesFromFile();
+		assertEquals(2, records.size());
+	}
+	
+	@Test
 	public void testCreateAndGetAllWhenThereIsData() throws IOException {
 		
 		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME),  new String[] {
@@ -128,10 +151,24 @@ public class TransactionFileDataAccessTest {
 		assertEquals(4, highestTransactionId);
 	}
 	
+	private List<String> getLinesFromFile() {
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	
 	@Before
 	public void setUp() throws IOException {
-		Path path = Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
+		Path path = getTestPath();
 
         Files.createDirectories(path.getParent());
 
@@ -147,5 +184,13 @@ public class TransactionFileDataAccessTest {
 		testDataAccess = null;
 		
 		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
+	}
+	
+	private Path getTestPath() {
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
+	}
+	
+	private Charset getCharsetForFile() {
+		return Charset.forName("utf-8");
 	}
 }
