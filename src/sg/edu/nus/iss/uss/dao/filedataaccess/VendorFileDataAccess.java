@@ -29,6 +29,27 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 
 	@Override
 	public Map<String, List<Vendor>> getAll() {
+	
+			return vendorMap;
+		
+	}
+
+	@Override
+	public void create(Vendor vendor) {
+		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
+
+		try {
+			Files.createDirectories(path.getParent());
+			Files.createFile(path);
+		} catch (FileAlreadyExistsException e) {
+			throw new RuntimeException("file already exists: " + e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void initialLoad() {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(getDirectory()), "Vendors*.dat")) {
 			for (Path file : stream) {
 				List<String[]> contents = readAll(file);
@@ -60,34 +81,12 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 				}
 
 			}
-
-			return vendorMap;
 		}
 
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	@Override
-	public void create(Vendor vendor) {
-		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
-
-		try {
-			Files.createDirectories(path.getParent());
-			Files.createFile(path);
-		} catch (FileAlreadyExistsException e) {
-			throw new RuntimeException("file already exists: " + e.getMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	protected void initialLoad() {
-
 	}
 
 	@Override
