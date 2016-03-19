@@ -78,7 +78,7 @@ public class MemberServiceTest {
 	
 
 	@Test
-	public void testRetrieveMembersAfterAddOneMember(){
+	public void testRetrieveMembersAfterAddOneMember() throws UssException{
 		List<Member> membersBefore = service.retrieveMemberList();
 		
 		assertEquals(3, membersBefore.size());

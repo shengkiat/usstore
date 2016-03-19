@@ -37,7 +37,7 @@ public class MemberService extends UssCommonService {
 		
 	}
 	
-	public void registerNewMember(String name, String idCardNumber){
+	public void registerNewMember(String name, String idCardNumber) throws UssException{
 		
 		Member member = new Member(name, idCardNumber, INIT_LOYALTY_POINT);
 		

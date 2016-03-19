@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
@@ -64,10 +65,10 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	}
 
 	@Override
-	public void create(List<Transaction> transactions) {
+	public void create(List<Transaction> transactions) throws UssException {
 		currentTransactionId++;
 		for(Transaction transaction : transactions) {
-			String[] arr = new String[TOTAL_FIELDS];
+			String[] arr = new String[getTotalNumberOfFields()];
 			arr[FIELD_TRANSACTION_ID] = "" + currentTransactionId;
 			arr[FIELD_PRODUCT_ID] = transaction.getProductID();
 			arr[FIELD_BUYER_ID] = transaction.getBuyerID();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
@@ -17,7 +18,7 @@ public class TransactionService extends UssCommonService {
 		this.transactionDataAccess = transactionDataAccess;
 	}
 	
-	public void createTransactions(List<Transaction> transactions){
+	public void createTransactions(List<Transaction> transactions) throws UssException{
 		transactionDataAccess.create(transactions);
 	}
 	

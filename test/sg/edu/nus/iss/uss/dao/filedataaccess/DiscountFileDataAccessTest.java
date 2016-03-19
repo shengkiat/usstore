@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -62,7 +63,7 @@ public class DiscountFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateOnceAndGetAll() throws ParseException {
+	public void testCreateOnceAndGetAll() throws ParseException, UssException {
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		List<Discount> discounts = new ArrayList<>();
 		
@@ -77,7 +78,7 @@ public class DiscountFileDataAccessTest {
 		}
 	
 	@Test
-	public void testCreateTwiceAndGetAll() throws ParseException {
+	public void testCreateTwiceAndGetAll() throws ParseException, UssException {
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		List<Discount> firstDiscounts = new ArrayList<>();
 		
@@ -96,7 +97,7 @@ public class DiscountFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() throws ParseException {
+	public void testCreateAndGetAllWhenThereIsData() throws ParseException, UssException {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 	              new FileOutputStream(TEST_DATA_DIR + File.separator + TEST_FILE_NAME), "utf-8"))) {
 			writer.write("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M");

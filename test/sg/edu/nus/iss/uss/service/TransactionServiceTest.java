@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 import static org.junit.Assert.*;
@@ -99,7 +100,7 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testCreateTransactionsShouldBeSave() {
+	public void testCreateTransactionsShouldBeSave() throws UssException {
 		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
 		List<Transaction> transactions = new ArrayList<>();

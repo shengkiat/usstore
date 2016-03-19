@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -27,12 +28,12 @@ public class DiscountService extends UssCommonService {
 		return availableDiscountList;
 	}
 	
-	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		availableDiscountList.add(new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays));
 		discountFileAccess.create(availableDiscountList);
 	}
 	
-	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		int index = -1;
 		for(Discount temp : availableDiscountList) {
 			if(temp.getDiscountCode() == discountCode) {

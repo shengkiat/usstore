@@ -57,7 +57,7 @@ public class MemberFileDataAccessTest {
 //	
 	
 	@Test
-	public void testCreateAndGetAllForOneMember_CompareMemeberDetail() {
+	public void testCreateAndGetAllForOneMember_CompareMemeberDetail() throws UssException {
 		testDataAccess = new MemberFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Member member1 = new Member("Yan Martel", "F42563743156", 150);
@@ -77,7 +77,7 @@ public class MemberFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllForThreeMembers() {
+	public void testCreateAndGetAllForThreeMembers() throws UssException {
 		testDataAccess = new MemberFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Member member1 = new Member("Yan Martel", "F42563743156", 150);
