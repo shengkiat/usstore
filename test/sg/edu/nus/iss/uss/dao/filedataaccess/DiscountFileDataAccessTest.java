@@ -52,14 +52,11 @@ public class DiscountFileDataAccessTest {
 	public void tearDown() throws Exception {
 		testDiscountDataAccess = null;
 		
-		Path path = getTestPath();
-
-        Files.createDirectories(path.getParent());
-        Files.deleteIfExists(path);
+		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 	
 	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR + "/" + TEST_FILE_NAME);
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 	
 	@Test
@@ -96,7 +93,7 @@ public class DiscountFileDataAccessTest {
 	@Test
 	public void testCreateAndGetAllWhenThereIsData() throws ParseException, UssException {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TEST_DATA_DIR + File.separator + TEST_FILE_NAME), "utf-8"))) {
+	              new FileOutputStream(TestUtil.getTestPath(TEST_FILE_NAME)), "utf-8"))) {
 			writer.write("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M");
 			writer.newLine();
 			writer.write("MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M");

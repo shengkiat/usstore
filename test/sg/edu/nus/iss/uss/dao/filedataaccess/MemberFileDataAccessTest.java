@@ -131,7 +131,7 @@ public class MemberFileDataAccessTest {
 	
 	private Path getTestPath() {
 		
-		return Paths.get(TEST_DATA_DIR + "/" + TEST_FILE_NAME);
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 
 }
