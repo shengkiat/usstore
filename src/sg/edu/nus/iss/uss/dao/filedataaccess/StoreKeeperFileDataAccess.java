@@ -7,7 +7,8 @@ import java.util.List;
 import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
-public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKeeperDataAccess {
+public class StoreKeeperFileDataAccess extends FileDataAccess implements
+		StoreKeeperDataAccess {
 
 	private List<StoreKeeper> storeKeppers = new ArrayList<StoreKeeper>();
 
@@ -18,6 +19,12 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 	@Override
 	public List<StoreKeeper> getAll() {
 
+		return storeKeppers;
+
+	}
+
+	@Override
+	protected void initialLoad() {
 		List<String[]> lines = this.readAll();
 
 		for (String[] line : lines) {
@@ -37,12 +44,11 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 			if (storeKeeperInfo.size() > 2) {
 				// password contains comma
 				password = storeKeeperInfo.get(1);
-				
+
 				for (int i = 2; i < storeKeeperInfo.size(); i++) {
 					password += "," + storeKeeperInfo.get(i);
 				}
-			}
-			else{
+			} else {
 				password = storeKeeperInfo.get(1);
 			}
 
@@ -50,21 +56,15 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 
 			this.addStoreKepper(info);
 		}
-
-		return storeKeppers;
-
-	}
-
-	@Override
-	protected void initialLoad() {
-		
 	}
 
 	private void addStoreKepper(StoreKeeper newStoreKepperInfo) {
 		try {
 			for (StoreKeeper storeKepperInfo : storeKeppers) {
-				if (storeKepperInfo.getName().equals(newStoreKepperInfo.getName())) {
-					storeKepperInfo.setPassword(newStoreKepperInfo.getPassword());
+				if (storeKepperInfo.getName().equals(
+						newStoreKepperInfo.getName())) {
+					storeKepperInfo.setPassword(newStoreKepperInfo
+							.getPassword());
 					return;
 				}
 			}
@@ -75,12 +75,12 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements StoreKe
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	protected String getPrimaryKey(String[] arr) {
 		throw new RuntimeException("not implemented yet");
 	}
-	
+
 	@Override
 	protected int getTotalNumberOfFields() {
 		return 2;
