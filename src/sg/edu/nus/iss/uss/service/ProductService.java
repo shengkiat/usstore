@@ -45,11 +45,15 @@ public class ProductService extends UssCommonService {
 		return null;
 	}
 
-    // added by Jia Cheng on 15/03/2016
+
     public boolean checkIfProductIsBelowThreshold (Product product) {
         // todo to return true false to check if product inventory has fallen below threshold
 
         return false;
+    }
+
+    public void deductInventoryFromCheckout(List<Product> productItems) {
+        // todo: after payment, the list of product items bought will deduct the inventory.
     }
 
 }
