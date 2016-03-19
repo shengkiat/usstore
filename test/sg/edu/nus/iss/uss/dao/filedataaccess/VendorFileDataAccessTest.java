@@ -54,9 +54,9 @@ public class VendorFileDataAccessTest {
 	@Test
 	public void testReadActualData() throws UssException {
 
-		VendorFileDataAccess testDataAccess1 = new VendorFileDataAccess();
+		VendorFileDataAccess actualDataAccess = new VendorFileDataAccess();
 
-		IVendorService vendorService = new VendorService(testDataAccess1);
+		IVendorService vendorService = new VendorService(actualDataAccess);
 
 		assertEquals(0, vendorService.getVendorsByCategoryCode("mug").size());
 		assertEquals(4, vendorService.getVendorsByCategoryCode("MUG").size());

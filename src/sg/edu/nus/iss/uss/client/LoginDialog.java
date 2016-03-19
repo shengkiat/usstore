@@ -21,13 +21,12 @@ public class LoginDialog extends JDialog {
 	private JButton btnCancel;
 	private boolean succeeded;
 
-	private StoreKeeperDataAccess storeKepperDAO = null;
+	private IAuthorisedService authService;
 
-	private IAuthorisedService authService = new AuthorisedService(
-			storeKepperDAO);
-
-	public LoginDialog(Frame parent) {
+	public LoginDialog(Frame parent, final IAuthorisedService authService) {
 		super(parent, "Login", true);
+		
+		this.authService = authService;
 		//
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints cs = new GridBagConstraints();
