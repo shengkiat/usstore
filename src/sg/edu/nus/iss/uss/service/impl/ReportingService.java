@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
+import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.service.IReportingService;
 
 public class ReportingService extends UssCommonService implements IReportingService{
@@ -21,10 +23,10 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	}
 	
 	@Override
-	public String printTransactionsReportByDay(Date startDate, Date endDate){
+	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate){
 		//TODO
 		
-		return "";
+		return null;
 	}
 	
 	@Override
