@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +8,10 @@ import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
+import sg.edu.nus.iss.uss.service.IDiscountService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class DiscountService extends UssCommonService {
+public class DiscountService extends UssCommonService implements IDiscountService{
 	private static final String MEMBER_FIRST_DISCOUNT = "MEMBER_FIRST";
 	private static final String MEMBER_SUBSEQ_DISCOUNT = "MEMBER_SUBSEQ";
 	
@@ -23,15 +24,18 @@ public class DiscountService extends UssCommonService {
 		availableDiscountList = discountFileAccess.getAll();
 	}
 	
+	@Override
 	public List<Discount> getAll() {
 		return availableDiscountList;
 	}
 	
+	@Override
 	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
 		availableDiscountList.add(new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays));
 		discountFileAccess.create(availableDiscountList);
 	}
 	
+	@Override
 	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
 		int index = -1;
 		for(Discount temp : availableDiscountList) {
@@ -56,6 +60,7 @@ public class DiscountService extends UssCommonService {
 		discountFileAccess.create(availableDiscountList);
 	}
 	
+	@Override
 	public void RemoveDiscount(String discountCode) {
 		for(Discount temp : availableDiscountList) {
 			if(temp.getDiscountCode() == discountCode) {
@@ -64,6 +69,7 @@ public class DiscountService extends UssCommonService {
 		}
 	}
 	
+	@Override
 	public double getMembersTodaysHighestDiscount(Boolean isMember, Boolean isFirstPurchase) {
 		double memberDiscount = getTodaysDiscount();
 		if(isMember) {
@@ -98,7 +104,8 @@ public class DiscountService extends UssCommonService {
 		}
 		return 0;
 	}
-		
+	
+	@Override
 	public double getTodaysDiscount() {
 		double todaysHighestDiscount = 0.0;
 		Date today = new Date();

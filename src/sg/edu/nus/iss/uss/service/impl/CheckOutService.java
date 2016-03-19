@@ -1,22 +1,25 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.PayItem;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.service.ICheckOutService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckOutService extends UssCommonService {
+public class CheckOutService extends UssCommonService implements ICheckOutService{
 	
 private CheckoutSummary checkoutSummary = null;
 private String memberID = "";//"" means No MemberID
 
+	@Override
 	public CheckoutSummary getCheckoutSummary(){
 		return this.checkoutSummary;
 	}
 	
+	@Override
 	public String determineMemberID(String memberID){
 		//TODO
 		
@@ -25,6 +28,7 @@ private String memberID = "";//"" means No MemberID
 		return memberID;
 	}
 	
+	@Override
 	public PayItem addItemIntoCheckOutList(String productID, String memberID){
 		
 		//TODO Get product by productID
@@ -47,7 +51,8 @@ private String memberID = "";//"" means No MemberID
 		
 		return null;
 	}
-
+	
+	@Override
     public List<Product> addItemIntoCheckOutList(Product product, String memberID){
 
         //TODO Get product by productID
@@ -72,17 +77,21 @@ private String memberID = "";//"" means No MemberID
 
         return checkoutSummary.getCheckoutItems();
     }
-
+	
+	@Override
     public List<Product> addItemIntoCheckOutList(Product product){
 
         return this.addItemIntoCheckOutList(product, this.memberID);
     }
 
+		
+	@Override
 	public PayItem addItemIntoCheckOutList(String productID){
 		
 		return this.addItemIntoCheckOutList(productID, this.memberID);
 	}
 	
+	@Override
 	public String alertIfInventoryLevelBelowThreshold(PayItem payItem){
 		String alert = "";
 		
@@ -90,7 +99,8 @@ private String memberID = "";//"" means No MemberID
 		
 		return "";
 	}
-
+	
+	@Override
     // change to decimal
 	public int makePayment(String payAmount, int redeemPoint){
 		//TODO
@@ -98,6 +108,7 @@ private String memberID = "";//"" means No MemberID
 		return 0;
 	}
 	
+	@Override
 	public String printoutReceipt(CheckoutSummary checkoutSummary){
 		//TODO
 
@@ -114,13 +125,15 @@ private String memberID = "";//"" means No MemberID
 		
 		//TODO
 	}
-
+	
+	@Override
     public int convertDollarToPoint(int dollar){
 		//TODO
 
 		return 0;
 	}
-
+	
+	@Override
 	public int convertPointToDollar(int point){
 		//TODO
 
