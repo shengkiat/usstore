@@ -73,6 +73,28 @@ abstract class FileDataAccess {
 		}
 	}
 	
+	protected void removeLine(String[] arr) throws UssException {
+		validateInput(arr);
+		
+		List<String[]> existingContents = readAll();
+		
+		validatePrimaryKeyFound(arr, existingContents);
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
+			
+			for(String[] existingContent : existingContents) {
+				if (!getPrimaryKey(arr).equals(getPrimaryKey(existingContent))) {
+					writer.write(generateWriteContent(existingContent));
+					writer.newLine();
+				}
+			}
+		} 
+		
+		catch (IOException e) {
+			throw new UssException(ErrorConstants.UssCode.DAO, e);
+		}
+	}
+	
 	private void validateInput(String[] arr) throws UssException {
 		Objects.requireNonNull(arr, "arr cannot be null");
 		

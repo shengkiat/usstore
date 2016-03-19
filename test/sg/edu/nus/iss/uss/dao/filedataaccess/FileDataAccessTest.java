@@ -166,6 +166,36 @@ public class FileDataAccessTest {
 		assertEquals(expectedFileContentTwo, result.get(1));
 	}
 	
+	@Test(expected=NullPointerException.class)
+	public void testRemoveLineShouldThrowExceptionForNullParameter() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		testDataAccess.removeLine(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveLineShouldThrowExceptionForNullContent() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arr = new String[1];
+		testDataAccess.removeLine(arr);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveLineShouldThrowExceptionForNoMatchingPrimaryKey() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] modifiedArr = new String[2];
+		modifiedArr[0] = "tester1";
+		modifiedArr[1] = "12345678";
+		
+		testDataAccess.removeLine(modifiedArr);
+	}
+	
 	@After
 	public void tearDown() throws IOException {
 		testDataAccess = null;
