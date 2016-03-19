@@ -20,11 +20,15 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	
 	private static final int TOTAL_FIELDS = 5;
 	
-	private List<Transaction> records = new ArrayList<>();
+	private List<Transaction> records;
 	private int currentTransactionId;
 
 	public TransactionFileDataAccess() {
 		super(FILE_NAME);
+		
+		if (records == null) {
+			records = new ArrayList<>();
+		}
 	}
 	
 	TransactionFileDataAccess(String fileName, String directory) {
