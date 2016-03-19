@@ -89,7 +89,7 @@ public class TestUtil {
 		
 	}
 	
-	private static void destoryFile(String fileFullPath){
+	public static void destoryFile(String fileFullPath){
 
 		File file = new File(fileFullPath);
 

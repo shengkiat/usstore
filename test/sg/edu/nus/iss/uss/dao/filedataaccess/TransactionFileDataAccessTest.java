@@ -2,11 +2,7 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -135,7 +131,7 @@ public class TransactionFileDataAccessTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		Path path = getTestPath();
+		Path path = Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
 
         Files.createDirectories(path.getParent());
 
@@ -150,13 +146,6 @@ public class TransactionFileDataAccessTest {
 	public void tearDown() throws IOException {
 		testDataAccess = null;
 		
-		Path path = getTestPath();
-
-        Files.createDirectories(path.getParent());
-        Files.deleteIfExists(path);
-	}
-	
-	private Path getTestPath() {
-		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
+		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 }
