@@ -1,75 +1,58 @@
 package sg.edu.nus.iss.uss.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
-import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.model.Vendor;
-import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class VendorServiceTest {
-
-	private VendorService vendorService;
-
-	@Before
-	public void setUp() throws Exception {
-		this.createTestFile();
-	}
 
 	@Test
 	public void testGetVendorByCategoryCode() {
 
-		
-		
-		VendorService vendorService = new VendorService(new MockVendorFileDataAccess()
-		{
-		//@Override
-//		public List<Vendor> getAll() {
-//
-//			return null;
-//			
-//		}
-		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		VendorService vendorService = new VendorService(
+				new MockVendorFileDataAccess() {
+					@Override
+					public Map<String, List<Vendor>> getAll() {
 
-		assertNotNull(vendorService.getVendorsByCategoryCode("MUG"));
-		assertNotNull(vendorService.getVendorsByCategoryCode("CLO"));
+						Map<String, List<Vendor>> vendorMap = new HashMap<String, List<Vendor>>();
 
-		assertNull(vendorService.getVendorsByCategoryCode("Shirt"));
+						Vendor vendormug1 = new Vendor();
+						vendormug1.setName("Nancy");
+						vendormug1
+								.setDescription("Nancy's Gift,Best of the best");
+
+						vendorMap.put("MUG", new ArrayList<Vendor>());
+						vendorMap.get("MUG").add(vendormug1);
+
+						return vendorMap;
+
+					}
+				});
+
+		assertEquals(1, vendorService.getVendorsByCategoryCode("MUG").size());
+		assertNotEquals(2, vendorService.getVendorsByCategoryCode("MUG").size());
+
+		assertEquals(0, vendorService.getVendorsByCategoryCode("CLO").size());
 
 	}
 
 	private void createTestFile() throws IOException {
 		/*
-		 * Create a test Vendors*.dat file 
-		 * 1. invalid vendor file is created
+		 * Create a test Vendors*.dat file 1. invalid vendor file is created
 		 */
 
 		File file = new File("data" + File.separator + "VendorsMUG.dat");
@@ -138,11 +121,11 @@ public class VendorServiceTest {
 	}
 
 	private class MockVendorFileDataAccess extends VendorFileDataAccess {
-		
+
 		@Override
 		protected void initialLoad() {
-			//do nothing
+			// do nothing
 		}
 	}
-	
+
 }

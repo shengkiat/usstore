@@ -17,7 +17,7 @@ import sg.edu.nus.iss.uss.model.Vendor;
 
 public class VendorFileDataAccess extends FileDataAccess implements VendorDataAccess {
 
-	private Map<String, List<Vendor>> vendorMap = new HashMap<String, List<Vendor>>();
+	private Map<String, List<Vendor>> vendorMap;
 
 	public VendorFileDataAccess() {
 		super("Vendors%s.dat");
@@ -50,11 +50,14 @@ public class VendorFileDataAccess extends FileDataAccess implements VendorDataAc
 
 	@Override
 	protected void initialLoad() {
+		
+		this.vendorMap = new HashMap<String, List<Vendor>>();
+		
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(getDirectory()), "Vendors*.dat")) {
 			for (Path file : stream) {
 				List<String[]> contents = readAll(file);
 
-				String categoryCode = file.toString().replace("data" + File.separator + "Vendors", "");
+				String categoryCode = file.toString().replace(getDirectory() + File.separator + "Vendors", "");
 				categoryCode = categoryCode.replace(".dat", "");
 
 				// Category Code must be 3 letters

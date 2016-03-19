@@ -1,14 +1,20 @@
 package sg.edu.nus.iss.uss.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
+import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class AuthorisedServiceTest {
 
@@ -17,32 +23,39 @@ public class AuthorisedServiceTest {
 	@Before
 	public void setUp() throws Exception {
 
-		this.createTestFile();
-
 	}
 
 	@Test
 	public void testValidStoreKeepers() {
-//		authService = new AuthorisedService();
-//
-//		assertTrue(authService.isAuthorised("andy", "123"));
-//		assertTrue(authService.isAuthorised("jacky", "123"));
-//		assertTrue(authService.isAuthorised("michael", "12,3"));
-//
-//		assertFalse(authService.isAuthorised("MEGatron", ""));
+		AuthorisedService authService = new AuthorisedService(
+				new MockStoreKeeperFileDataAccess() {
+					@Override
+					public List<StoreKeeper> getAll() {
+
+						List<StoreKeeper> storeKeepers = new ArrayList<StoreKeeper>();
+
+						StoreKeeper user = new StoreKeeper("andy", "123");
+
+						storeKeepers.add(user);
+
+						return storeKeepers;
+
+					}
+				});
+
+		assertTrue(authService.isAuthorised("andy", "123"));
+		assertTrue(authService.isAuthorised("Andy", "123"));
+		assertFalse(authService.isAuthorised("andy", "1234"));
 
 	}
 
 	private void createTestFile() throws IOException {
 		/*
-		 * Create a test Storekeepers.dat file This file will contain 
-		 * 1.duplicate store keeper's name with different password 
-		 * 2. invalid input (no comma) 
-		 * 3. invalid input (no user name) 
-		 * 4. invalid input (user name with no password) 
-		 * 5. valid input (password with comma)
+		 * Create a test Storekeepers.dat file This file will contain
+		 * 1.duplicate store keeper's name with different password 2. invalid
+		 * input (no comma) 3. invalid input (no user name) 4. invalid input
+		 * (user name with no password) 5. valid input (password with comma)
 		 */
-		
 
 		File file = new File("data/Storekeepers.dat");
 
@@ -75,4 +88,12 @@ public class AuthorisedServiceTest {
 		bw.close();
 	}
 
+	private class MockStoreKeeperFileDataAccess extends
+			StoreKeeperFileDataAccess {
+
+		@Override
+		protected void initialLoad() {
+			// do nothing
+		}
+	}
 }
