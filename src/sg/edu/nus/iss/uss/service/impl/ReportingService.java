@@ -3,11 +3,15 @@ package sg.edu.nus.iss.uss.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
+import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class ReportingService extends UssCommonService implements IReportingService {
 	
@@ -35,9 +39,21 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	
 	@Override
 	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate){
+		Objects.requireNonNull(startDate, "startDate cannot be null");
+		Objects.requireNonNull(endDate, "endDate cannot be null");
+		
+		if (UssCommonUtil.isDateLeftGreaterThanRight(startDate, endDate)) {
+			throw new IllegalArgumentException("startDate cannot be greater than endDate");
+		}
+		
 		List<ReportTransaction> result = new ArrayList<>();
 		
+		List<Transaction> transactions = transactionService.retrieveTransactionListByDate(startDate, endDate);
 		
+		for(Transaction transaction : transactions) {
+			Product product = productService.getProductByProductID(transaction.getProductID());	
+			result.add(new ReportTransaction(transaction, product));
+		}
 		
 		return result;
 	}
