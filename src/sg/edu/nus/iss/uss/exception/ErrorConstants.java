@@ -37,6 +37,7 @@ public class ErrorConstants {
 	 */
 	public static final String MEMBER_NOT_EXISTS = "Member does not exist!";
 	public static final String NOT_ENOUGH_POINTS = "Not enough points!";
+	public static final String CATEGORY_EXISTS = "Category Exists!";
 	
 	
 	/**

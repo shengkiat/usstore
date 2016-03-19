@@ -2,7 +2,9 @@ package sg.edu.nus.iss.uss.service;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.ProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
@@ -181,8 +183,8 @@ public class CheckOutServiceTest {
 //    }
 
     public class MockProductService extends ProductService {
-        public MockProductService() {
-
+        public MockProductService(ProductDataAccess PrdDataAccess) {
+        	super(PrdDataAccess);
         }
 
         public boolean checkIfProductIsBelowThreshold (Product product) {

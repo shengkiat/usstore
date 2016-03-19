@@ -74,12 +74,17 @@ public class Product {
 	@Override
 	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
 		//TODO toString
+		String sQtyAvail = "" + this.quantityAvailable;
+		String sPrice = "" + this.price;
+		String sBarCodeNo = "" + this.barCodeNumber;
+		String sReOrderqty = "" + this.reorderQuantity;
+		String sOrderqty = "" + this.orderQuantity;
 		
-		return "";
+		return 	productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty;  
+	     
 	}
 	
 	public boolean isBelowThreshold(){
-		
-		return false; //TODO
+	    return (this.quantityAvailable >= this.reorderQuantity);	    
 	}
 }
