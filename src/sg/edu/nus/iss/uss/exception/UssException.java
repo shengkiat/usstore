@@ -5,9 +5,14 @@ import sg.edu.nus.iss.uss.exception.ErrorConstants.UssCode;
 public class UssException extends Exception {
 
 	private static final long serialVersionUID = -3360812732250813553L;
+	
+	public UssException(UssCode code, Exception e) {
+		super(e);
+		this.code = code;
+	}
 
-	public UssException(UssCode code, String messeage) {
-		super(messeage);
+	public UssException(UssCode code, String message) {
+		super(message);
 		this.code = code;
 	}
 

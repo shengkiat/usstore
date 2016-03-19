@@ -3,6 +3,7 @@ package sg.edu.nus.iss.uss.exception;
 public class ErrorConstants {
 	
 	public enum UssCode {
+		  DAO(100),
 		  AUTHORIZATION(101),
 		  CATEGORY(102),
 		  CHECKOUT(103),
@@ -42,6 +43,9 @@ public class ErrorConstants {
 	 ************************** OTHER ****************************************
 	 */
 	
-	
+	/**
+	 ************************** DAO ****************************************
+	 */
+	public static final String EMPTY_CONTENT = "All arr content cannot be null or empty";
 
 }

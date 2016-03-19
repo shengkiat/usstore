@@ -13,8 +13,8 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.TestUtil;
-
 import static org.junit.Assert.*;
 
 public class FileDataAccessTest {
@@ -25,13 +25,13 @@ public class FileDataAccessTest {
 	private FileDataAccess testDataAccess;
 	
 	@Test(expected=NullPointerException.class)
-	public void testWriteNewLineShouldThrowExceptionForNullParameter() {
+	public void testWriteNewLineShouldThrowExceptionForNullParameter() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		testDataAccess.writeNewLine(null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testWriteNewLineShouldThrowExceptionForNullContent() {
+	public void testWriteNewLineShouldThrowExceptionForNullContent() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[1];
@@ -39,7 +39,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithOneLine() {
+	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithOneLine() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[2];
@@ -65,7 +65,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithTwoLines() {
+	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileWithTwoLines() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arrOne = new String[2];
@@ -99,13 +99,13 @@ public class FileDataAccessTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testOverwriteLineShouldThrowExceptionForNullParameter() {
+	public void testOverwriteLineShouldThrowExceptionForNullParameter() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		testDataAccess.overwriteLine(null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testOverwriteLineShouldThrowExceptionForNullContent() {
+	public void testOverwriteLineShouldThrowExceptionForNullContent() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arr = new String[1];
@@ -113,7 +113,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testOverwriteLineShouldThrowExceptionForNoMatchingPrimaryKey() {
+	public void testOverwriteLineShouldThrowExceptionForNoMatchingPrimaryKey() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arrOne = new String[2];
@@ -129,7 +129,7 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	public void testOverwriteLineShouldWriteCorrectlyIntoTheFileWithOneLine() {
+	public void testOverwriteLineShouldWriteCorrectlyIntoTheFileWithOneLine() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
 		
 		String[] arrOne = new String[2];
@@ -186,7 +186,7 @@ public class FileDataAccessTest {
 	
 	private class FileDataAccessImpl extends FileDataAccess {
 
-		protected FileDataAccessImpl() {
+		protected FileDataAccessImpl() throws UssException {
 			super(TEST_FILE_NAME, TEST_DATA_DIR);
 		}
 

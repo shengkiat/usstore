@@ -13,17 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 import sg.edu.nus.iss.uss.dao.VendorDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
 
 public class VendorFileDataAccess extends FileDataAccess implements VendorDataAccess {
 
 	private Map<String, List<Vendor>> vendorMap;
 
-	public VendorFileDataAccess() {
+	public VendorFileDataAccess() throws UssException {
 		super("Vendors%s.dat");
 	}
 
-	VendorFileDataAccess(String fileName, String directory) {
+	VendorFileDataAccess(String fileName, String directory) throws UssException {
 		super(fileName, directory);
 	}
 

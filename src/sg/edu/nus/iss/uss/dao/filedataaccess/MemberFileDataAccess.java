@@ -18,11 +18,11 @@ public class MemberFileDataAccess extends FileDataAccess implements MemberDataAc
 	
 	private List<Member> records;
 
-	public MemberFileDataAccess() {
+	public MemberFileDataAccess() throws UssException {
 		super("Members.dat");
 	}
 	
-	public MemberFileDataAccess(String fileName, String directory) {
+	public MemberFileDataAccess(String fileName, String directory) throws UssException {
 		super(fileName, directory);	
 	}
 	
@@ -86,14 +86,14 @@ public class MemberFileDataAccess extends FileDataAccess implements MemberDataAc
 	}
 	
 	@Override
-	public void createMembers(List<Member> members){
+	public void createMembers(List<Member> members) throws UssException{
 		for(Member m : members){
 			create(m);
 		}
 	}
 
 	@Override
-	public void create(Member member) {
+	public void create(Member member) throws UssException {
 		String[] arr = memberToStrArray(member);
 
 		writeNewLine(arr);

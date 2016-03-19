@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
@@ -31,7 +32,7 @@ public class TransactionFileDataAccessTest {
 	private TransactionDataAccess testDataAccess;
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() {
+	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Date currentDate = new Date();
@@ -55,7 +56,7 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsNoDataForTwoTransaction() {
+	public void testCreateAndGetAllWhenThereIsNoDataForTwoTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Date currentDate = new Date();
@@ -88,7 +89,7 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateShouldWriteContentIntoFile() {
+	public void testCreateShouldWriteContentIntoFile() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Date currentDate = new Date();
@@ -108,7 +109,7 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() throws IOException {
+	public void testCreateAndGetAllWhenThereIsData() throws IOException, UssException {
 		
 		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME),  new String[] {
 			"1,CLO/1,F42563743156,2,2013-09-28",
