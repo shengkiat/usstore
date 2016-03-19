@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
@@ -29,7 +29,7 @@ public class TransactionFileDataAccessTest {
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Transactions.dat";
 	
-	private TransactionDataAccess testDataAccess;
+	private ITransactionDataAccess testDataAccess;
 	
 	@Test
 	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() throws UssException {

@@ -1,14 +1,14 @@
 package sg.edu.nus.iss.uss.service.impl;
 
-import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
 
 public class AuthorisedService extends UssCommonService implements IAuthorisedService{
 
-	private StoreKeeperDataAccess storeKepperDAO;
+	private IStoreKeeperDataAccess storeKepperDAO;
 
-	public AuthorisedService(StoreKeeperDataAccess storeKepperDAO) {
+	public AuthorisedService(IStoreKeeperDataAccess storeKepperDAO) {
 
 		this.storeKepperDAO = storeKepperDAO;
 	}

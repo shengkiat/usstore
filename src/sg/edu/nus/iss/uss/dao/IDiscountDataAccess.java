@@ -5,7 +5,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Discount;
 
-public interface DiscountDataAccess {
+public interface IDiscountDataAccess {
 	
 	public List<Discount> getAll();
 	public void create(Discount discount) throws UssException;

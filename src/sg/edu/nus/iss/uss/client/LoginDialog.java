@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;

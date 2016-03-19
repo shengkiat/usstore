@@ -5,7 +5,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 
-public interface ProductDataAccess {
+public interface IProductDataAccess {
 	
 	public List<Product> getAll();
 	public void create(Product product) throws UssException;

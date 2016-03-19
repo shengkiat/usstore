@@ -5,17 +5,17 @@ import java.util.List;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.ICategoryService;
-import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
+import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 
 public class CategoryService extends UssCommonService implements ICategoryService{
 	VendorService VendorSvc;
-	CategoryDataAccess CatDataAccess;
+	ICategoryDataAccess CatDataAccess;
 	
 	List<Category> CategoryList;
 		
-	public CategoryService(VendorService VendorSvc,CategoryDataAccess CatDataAccess){
+	public CategoryService(VendorService VendorSvc,ICategoryDataAccess CatDataAccess){
 		this.VendorSvc = VendorSvc;
 		this.CatDataAccess = CatDataAccess;
 	}

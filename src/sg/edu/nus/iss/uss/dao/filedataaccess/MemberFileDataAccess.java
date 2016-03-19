@@ -3,12 +3,12 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.util.LinkedList;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.MemberDataAccess;
+import sg.edu.nus.iss.uss.dao.IMemberDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 
-public class MemberFileDataAccess extends FileDataAccess implements MemberDataAccess {
+public class MemberFileDataAccess extends FileDataAccess implements IMemberDataAccess {
 	
 	private static final int FIELD_NAME = 0;
 	private static final int FIELD_MEMBER_ID = 1;

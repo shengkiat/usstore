@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class DiscountFileDataAccess extends FileDataAccess implements DiscountDataAccess {
+public class DiscountFileDataAccess extends FileDataAccess implements IDiscountDataAccess {
 
 private static final String FILE_NAME = "Discounts.dat";
 	

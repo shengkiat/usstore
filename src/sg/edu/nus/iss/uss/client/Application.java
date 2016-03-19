@@ -23,7 +23,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 
-import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
@@ -45,7 +45,7 @@ public class Application {
 	
 	private JPanel rightMemberPanel ;
 	
-	private StoreKeeperDataAccess storeKeeperDAO;
+	private IStoreKeeperDataAccess storeKeeperDAO;
 	private IAuthorisedService authService;
 
 	

@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.ITransactionService;
@@ -13,9 +13,9 @@ import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class TransactionService extends UssCommonService implements ITransactionService{
 	
-	private TransactionDataAccess transactionDataAccess;
+	private ITransactionDataAccess transactionDataAccess;
 	
-	public TransactionService(TransactionDataAccess transactionDataAccess) {
+	public TransactionService(ITransactionDataAccess transactionDataAccess) {
 		this.transactionDataAccess = transactionDataAccess;
 	}
 	

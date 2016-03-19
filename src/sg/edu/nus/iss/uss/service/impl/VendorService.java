@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sg.edu.nus.iss.uss.dao.VendorDataAccess;
+import sg.edu.nus.iss.uss.dao.IVendorDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.IVendorService;
 
 public class VendorService extends UssCommonService implements IVendorService{
 
-	private VendorDataAccess vendorDAO;
+	private IVendorDataAccess vendorDAO;
 
-	public VendorService(VendorDataAccess vendorDAO) {
+	public VendorService(IVendorDataAccess vendorDAO) {
 		this.vendorDAO = vendorDAO;
 	}
 	

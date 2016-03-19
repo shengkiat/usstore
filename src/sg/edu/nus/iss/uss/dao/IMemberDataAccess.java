@@ -5,7 +5,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 
-public interface MemberDataAccess {
+public interface IMemberDataAccess {
 	
 	public List<Member> getAll();
 	public Member getMemberByMemberID(String memberID);

@@ -5,7 +5,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 
-public interface TransactionDataAccess {
+public interface ITransactionDataAccess {
 	
 	public List<Transaction> getAll();
 	public void create(List<Transaction> transactions) throws UssException;

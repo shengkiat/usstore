@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class StoreKeeperFileDataAccess extends FileDataAccess implements
-		StoreKeeperDataAccess {
+		IStoreKeeperDataAccess {
 
 	private List<StoreKeeper> storeKeppers;
 

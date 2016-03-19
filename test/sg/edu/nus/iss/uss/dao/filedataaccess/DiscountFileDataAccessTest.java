@@ -19,7 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
@@ -33,7 +33,7 @@ public class DiscountFileDataAccessTest {
 	private static final String TEST_FILE_NAME = "Discounts.dat";
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	
-	private DiscountDataAccess testDiscountDataAccess;
+	private IDiscountDataAccess testDiscountDataAccess;
 
 	@Before
 	public void setUp() throws Exception {

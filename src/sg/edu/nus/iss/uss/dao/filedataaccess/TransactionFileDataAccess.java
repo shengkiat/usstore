@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class TransactionFileDataAccess extends FileDataAccess implements TransactionDataAccess {
+public class TransactionFileDataAccess extends FileDataAccess implements ITransactionDataAccess {
 	
 	private static final String FILE_NAME = "Transactions.dat";
 	

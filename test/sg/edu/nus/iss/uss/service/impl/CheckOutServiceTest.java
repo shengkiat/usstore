@@ -3,8 +3,8 @@ package sg.edu.nus.iss.uss.service.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
-import sg.edu.nus.iss.uss.dao.ProductDataAccess;
+import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
@@ -35,7 +35,7 @@ public class CheckOutServiceTest {
     @Before
     public void setUp() throws UssException, IOException {
 //        MemberDataAccess memberDataAccess = new MemberFileDataAccess();
-        DiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
+        IDiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
 
         memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
         mockDiscountService = new MockDiscountService(discountDataAccess);
@@ -179,7 +179,7 @@ public class CheckOutServiceTest {
 
 
     public class MockProductService extends ProductService {
-        public MockProductService(ProductDataAccess PrdDataAccess) {
+        public MockProductService(IProductDataAccess PrdDataAccess) {
         	super(PrdDataAccess);
         }
 
@@ -197,7 +197,7 @@ public class CheckOutServiceTest {
     }
 
     public class MockDiscountService extends DiscountService {
-        public MockDiscountService (DiscountDataAccess discountFileAccess) {
+        public MockDiscountService (IDiscountDataAccess discountFileAccess) {
             super(discountFileAccess);
         }
 

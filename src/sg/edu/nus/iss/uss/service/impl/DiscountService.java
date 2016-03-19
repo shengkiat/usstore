@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
@@ -18,9 +18,9 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 	private static final String MEMBER_SUBSEQ_DISCOUNT = "MEMBER_SUBSEQ";
 	
 	private List<Discount> availableDiscountList;
-	private DiscountDataAccess discountFileAccess;
+	private IDiscountDataAccess discountFileAccess;
 	
-	public DiscountService(DiscountDataAccess discountFileAccess) {
+	public DiscountService(IDiscountDataAccess discountFileAccess) {
 		this.discountFileAccess = discountFileAccess;
 		availableDiscountList = new ArrayList<Discount>();
 		availableDiscountList = discountFileAccess.getAll();

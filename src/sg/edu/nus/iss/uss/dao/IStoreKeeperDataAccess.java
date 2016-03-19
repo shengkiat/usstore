@@ -4,7 +4,7 @@ import java.util.List;
 
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
-public interface StoreKeeperDataAccess {
+public interface IStoreKeeperDataAccess {
 	
 	public List<StoreKeeper> getAll();
 }

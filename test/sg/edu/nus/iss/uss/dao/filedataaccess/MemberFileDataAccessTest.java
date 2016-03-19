@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.MemberDataAccess;
+import sg.edu.nus.iss.uss.dao.IMemberDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.util.TestUtil;
@@ -21,7 +21,7 @@ public class MemberFileDataAccessTest {
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Members.dat";
 	
-	private MemberDataAccess testDataAccess;
+	private IMemberDataAccess testDataAccess;
 	
 
 	@Before

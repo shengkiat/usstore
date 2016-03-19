@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sg.edu.nus.iss.uss.dao.VendorDataAccess;
+import sg.edu.nus.iss.uss.dao.IVendorDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
 
-public class VendorFileDataAccess extends FileDataAccess implements VendorDataAccess {
+public class VendorFileDataAccess extends FileDataAccess implements IVendorDataAccess {
 
 	private Map<String, List<Vendor>> vendorMap;
 

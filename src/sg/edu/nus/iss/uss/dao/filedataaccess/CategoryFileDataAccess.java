@@ -3,11 +3,11 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
+import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 
-public class CategoryFileDataAccess extends FileDataAccess implements CategoryDataAccess {
+public class CategoryFileDataAccess extends FileDataAccess implements ICategoryDataAccess {
 
 	private List<Category> CategoryList;
 	List<String[]> CatList;

@@ -2,12 +2,12 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.util.List;
 
-import sg.edu.nus.iss.uss.dao.ProductDataAccess;
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Product;
 
-public class ProductFileDataAccess extends FileDataAccess implements ProductDataAccess {
+public class ProductFileDataAccess extends FileDataAccess implements IProductDataAccess {
 	private List<Product> ProductList;
 	List<String[]> PrdList;
 	String[] strPrd = new String[8];

@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.uss.service.impl;
 
-import sg.edu.nus.iss.uss.dao.MemberDataAccess;
+import sg.edu.nus.iss.uss.dao.IMemberDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
@@ -11,18 +11,18 @@ import java.util.List;
 public class MemberService extends UssCommonService implements IMemberService{
 	public final static int INIT_LOYALTY_POINT = -1;
 	
-	private MemberDataAccess memberDataAccess = null;
+	private IMemberDataAccess memberDataAccess = null;
 	
-	public MemberService(MemberDataAccess memberDataAccess) {
+	public MemberService(IMemberDataAccess memberDataAccess) {
 		super();
 		setMemberDataAccess(memberDataAccess);
 	}
 	
-	private MemberDataAccess getMemberDataAccess() {
+	private IMemberDataAccess getMemberDataAccess() {
 		return memberDataAccess;
 	}
 
-	private void setMemberDataAccess(MemberDataAccess memberDataAccess) {
+	private void setMemberDataAccess(IMemberDataAccess memberDataAccess) {
 		this.memberDataAccess = memberDataAccess;
 	}
 	

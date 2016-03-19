@@ -1,18 +1,18 @@
 package sg.edu.nus.iss.uss.service.impl;
 
-import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
-import sg.edu.nus.iss.uss.dao.ProductDataAccess;
+import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.IProductService;
 
 import java.util.List;
 
 public class ProductService extends UssCommonService implements IProductService{
-	ProductDataAccess PrdDataAccess;
+	IProductDataAccess PrdDataAccess;
 	
 	List<Product> PrdList;
 	
-	public ProductService(ProductDataAccess PrdDataAccess){
+	public ProductService(IProductDataAccess PrdDataAccess){
 		this.PrdDataAccess = PrdDataAccess;
 	}
 	
