@@ -35,27 +35,6 @@ public class VendorFileDataAccessTest {
 
 	private VendorFileDataAccess testDataAccess;
 
-	private String testCategoryCode = "MUG";
-
-	public void testCreateShouldExistAfterExecute() {
-		Category category = new Category();
-		category.setCode(testCategoryCode);
-		category.setName("Mug");
-
-		Path path = getTestPath();
-
-		assertFalse(Files.exists(path));
-
-		testDataAccess = new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-
-		Vendor vendor = new Vendor();
-		vendor.setCategory(category);
-
-		testDataAccess.create(vendor);
-
-		assertTrue(Files.exists(path));
-	}
-
 	@Test
 	public void testReadActualData() {
 
@@ -106,8 +85,7 @@ public class VendorFileDataAccessTest {
 	}
 
 	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR + "/"
-				+ String.format(TEST_FILE_NAME, testCategoryCode));
+		return Paths.get(TEST_DATA_DIR);
 	}
 
 	@Before

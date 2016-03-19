@@ -16,6 +16,10 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements
 		super("Storekeepers.dat");
 	}
 
+	public StoreKeeperFileDataAccess(String fileName, String directory) {
+		super(fileName, directory);
+	}
+	
 	@Override
 	public List<StoreKeeper> getAll() {
 
