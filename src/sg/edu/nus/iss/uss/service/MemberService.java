@@ -85,10 +85,15 @@ public class MemberService extends UssCommonService {
 		getMemberDataAccess().update(member);
 	}
 	
-    // added by Jia Cheng on 15/03/2016
     public boolean isValidMember(String memberID) {
 
         return getMemberDataAccess().isMemberExist(memberID);
+    }
+    
+    public boolean isFirstPurpose(String memberID){
+    	
+    	//TODO 
+    	return false;
     }
 
 }
