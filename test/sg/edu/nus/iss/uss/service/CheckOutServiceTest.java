@@ -2,20 +2,17 @@ package sg.edu.nus.iss.uss.service;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
-import sg.edu.nus.iss.uss.dao.MemberDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.impl.CheckOutService;
 import sg.edu.nus.iss.uss.service.impl.DiscountService;
 import sg.edu.nus.iss.uss.service.impl.MemberService;
 import sg.edu.nus.iss.uss.service.impl.ProductService;
+import sg.edu.nus.iss.uss.util.TestUtil;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +25,16 @@ public class CheckOutServiceTest {
 
     private CheckOutService checkOutService;
 
-    private MockMemberService mockMemberService;
+    private MemberService memberService;
     private MockDiscountService mockDiscountService;
 
 
     @Before
-    public void setUp() throws UssException {
-        MemberDataAccess memberDataAccess = new MemberFileDataAccess();
+    public void setUp() throws UssException, IOException {
+//        MemberDataAccess memberDataAccess = new MemberFileDataAccess();
         DiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
 
-        mockMemberService = new MockMemberService(memberDataAccess);
+        memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
         mockDiscountService = new MockDiscountService(discountDataAccess);
     }
 
@@ -45,10 +42,10 @@ public class CheckOutServiceTest {
     public void testDetermineMemberID() {
         // to call member service to determine memberID
 
-        assertTrue(mockMemberService.isValidMember("S1234567A"));
-        assertTrue(mockMemberService.isValidMember("S1111111B"));
-        assertFalse(mockMemberService.isValidMember("ZZZZZZ"));
-        assertFalse(mockMemberService.isValidMember("AAAAAA"));
+        assertTrue(memberService.isValidMember("F42563743156"));
+        assertTrue(memberService.isValidMember("X437F356"));
+        assertFalse(memberService.isValidMember("ZZZZZZ"));
+        assertFalse(memberService.isValidMember("AAAAAA"));
     }
 
 
@@ -77,40 +74,63 @@ public class CheckOutServiceTest {
     }
 
     @Test
-    public void testCalculateChargePrice(){
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setRoundingMode(RoundingMode.HALF_EVEN);
-
-        int discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1234567A");
+    public void testCalculateChargePriceNormalDiscount() {
         createCheckOutSummaryData();
-        double totalProductPrice = checkOutService.getCheckoutSummary().getTotalPrice();
-
-        double chargePrice = totalProductPrice * ((100.0 - discountAmount) / 100.0);
-        chargePrice = (double) Math.round(chargePrice * 100d) / 100d ;
+        int discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1234567A");
+        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
         assertEquals(chargePrice, 36.54, 0);
+    }
 
-        discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1111111B");
-        chargePrice = totalProductPrice * ((100.0 - discountAmount) / 100.0);
-        chargePrice = (double) Math.round(chargePrice * 100d) / 100d ;
+    @Test
+    public void testCalculateChargePriceDiscountZeroPercent() {
+        createCheckOutSummaryData();
+        int discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1111111B");
+        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
         assertEquals(chargePrice, 40.60, 0);
+    }
 
-//        // to test more than 100% discount this will be an exception
+    @Test
+    public void testCalculateChargePriceDiscountRoundDown() {
+        createCheckOutSummaryData();
+        int discountAmount = 11;
+        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
+        assertEquals(chargePrice, 36.13, 0);
+    }
+
+    @Test
+    public void testCalculateChargePriceDiscountRoundUp() {
+        createCheckOutSummaryData();
+        int discountAmount = 12;
+        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
+        assertEquals(chargePrice, 35.73, 0);
+    }
+
+    @Test
+    public void testCalculateChargePriceDiscountMoreThanOneHundredPercent(){
+        //        // to test more than 100% discount this will be an exception
 //        discountAmount = mockDiscountService.findHighestDiscountByMemberID("S2222222C");
 //        chargePrice = totalProductPrice * ((100.0 - discountAmount) / 100.0);
 //        chargePrice = (double) Math.round(chargePrice * 100d) / 100d ;
         // todo: to throw exception
+    }
 
-        // to test round down
-        discountAmount = 11;
-        chargePrice = totalProductPrice * ((100.0 - discountAmount) / 100.0);
-        chargePrice = (double) Math.round(chargePrice * 100d) / 100d ;
-        assertEquals(chargePrice, 36.13, 0);
+    @Test
+    public void testConvertDollarToPointNormalCase() {
+        createCheckOutSummaryData();
+        double chargePrice = checkOutService.calculateChargePrice(0); // no discount given
+        int pointsConverted = checkOutService.convertDollarToPoint(chargePrice);
+        assertEquals(pointsConverted, 4);
+    }
 
-        // to test round up
-        discountAmount = 12;
-        chargePrice = totalProductPrice * ((100.0 - discountAmount) / 100.0);
-        chargePrice = (double) Math.round(chargePrice * 100d) / 100d ;
-        assertEquals(chargePrice, 35.73, 0);
+    @Test
+    public void testConvertPointToDollar() {
+        createCheckOutSummaryData();
+        int pointsToDollar = 20;
+        double pointsRedeemed = 100;
+
+        double amountDiscounted = checkOutService.convertPointToDollar(119);
+
+        assertEquals(amountDiscounted, 5, 0);
     }
 
     @Test
@@ -136,31 +156,31 @@ public class CheckOutServiceTest {
 
     }
 
+//
+//    public class MockMemberService extends MemberService {
+//        private String member1;
+//        private String member2;
+//        private String member3;
+//
+//        public MockMemberService(MemberDataAccess memberDataAccess) {
+//        	super(memberDataAccess);
+//            member1 = "S1234567A";
+//            member2 = "S1111111B";
+//            member3 = "S2222222C";
+//
+//        }
+//
+//        public boolean isValidMember(String memberID) {
+//            if(memberID.equals(member1) || memberID.equals(member2) || memberID.equals(member3)) {
+//                return true;
+//            }
+//            else {
+//                return false;
+//            }
+//        }
+//    }
 
-    public class MockMemberService extends MemberService {
-        private String member1;
-        private String member2;
-        private String member3;
-
-        public MockMemberService(MemberDataAccess memberDataAccess) {
-        	super(memberDataAccess);
-            member1 = "S1234567A";
-            member2 = "S1111111B";
-            member3 = "S2222222C";
-
-        }
-
-        public boolean isValidMember(String memberID) {
-            if(memberID.equals(member1) || memberID.equals(member2) || memberID.equals(member3)) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-
-    public class MockProductService extends  ProductService {
+    public class MockProductService extends ProductService {
         public MockProductService() {
 
         }
