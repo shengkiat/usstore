@@ -196,6 +196,42 @@ public class FileDataAccessTest {
 		testDataAccess.removeLine(modifiedArr);
 	}
 	
+	@Test
+	public void testRemoveLineShouldWriteCorrectlyIntoTheFileWithOneLine() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] arrTwo = new String[2];
+		arrTwo[0] = "tester2";
+		arrTwo[1] = "this is for testing";
+		testDataAccess.writeNewLine(arrTwo);
+		
+		String[] modifiedArr = new String[2];
+		modifiedArr[0] = "tester";
+		modifiedArr[1] = "p12345678";
+		
+		String expectedFileContentOne = "tester2,this is for testing";
+		
+		testDataAccess.removeLine(modifiedArr);
+		
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(1, result.size());
+		assertEquals(expectedFileContentOne, result.get(0));
+	}
+	
 	@After
 	public void tearDown() throws IOException {
 		testDataAccess = null;
