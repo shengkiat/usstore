@@ -10,7 +10,7 @@ import sg.edu.nus.iss.uss.model.StoreKeeper;
 public class StoreKeeperFileDataAccess extends FileDataAccess implements
 		StoreKeeperDataAccess {
 
-	private List<StoreKeeper> storeKeppers = new ArrayList<StoreKeeper>();
+	private List<StoreKeeper> storeKeppers;
 
 	public StoreKeeperFileDataAccess() {
 		super("Storekeepers.dat");
@@ -25,6 +25,9 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements
 
 	@Override
 	protected void initialLoad() {
+		
+		this.storeKeppers  = new ArrayList<StoreKeeper>();
+		
 		List<String[]> lines = this.readAll();
 
 		for (String[] line : lines) {

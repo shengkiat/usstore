@@ -73,9 +73,38 @@ public class Application {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		
+			
+		
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 950, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Store Keeper Login
+		LoginDialog loginDlg = new LoginDialog(frame);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        loginDlg.setVisible(true);
+        
+        loginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+            
+        // if logon successfully
+        if(loginDlg.isSucceeded()){
+            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+        }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -219,14 +248,8 @@ public class Application {
 
 		
 		
-//		LoginDialog loginDlg = new LoginDialog(frame);
-//		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-//        loginDlg.setVisible(true);
-//        // if logon successfully
-//        if(loginDlg.isSucceeded()){
-//            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
-//        }
-		
+
+
 		
 		
 	}
