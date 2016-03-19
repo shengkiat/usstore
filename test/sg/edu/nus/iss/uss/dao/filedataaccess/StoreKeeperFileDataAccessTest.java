@@ -14,7 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.service.AuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class StoreKeeperFileDataAccessTest {
@@ -44,7 +45,7 @@ public class StoreKeeperFileDataAccessTest {
 		testDataAccess = new StoreKeeperFileDataAccess("Storekeepers.dat",
 				TEST_DATA_DIR);
 
-		AuthorisedService authService = new AuthorisedService(testDataAccess);
+		IAuthorisedService authService = new AuthorisedService(testDataAccess);
 
 		assertTrue(authService.isAuthorised("andy", "123"));
 		assertTrue(authService.isAuthorised("Andy", "123"));
