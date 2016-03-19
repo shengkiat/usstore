@@ -60,11 +60,11 @@ public class ReportingServiceTest {
 		public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate) {
 			List<Transaction> transactions = new ArrayList<>();
 			
+			transactions.add(new Transaction("STA/2", "33334456", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
 			transactions.add(new Transaction("CLO/1", PublicBuyer.PUBLIC_NAME, 1, UssCommonUtil.convertStringToDate("2016-01-01")));
-			transactions.add(new Transaction("CLO/1", PublicBuyer.PUBLIC_NAME, 1, UssCommonUtil.convertStringToDate("2016-02-01")));
 			transactions.add(new Transaction("STA/1", "12345678", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
 			transactions.add(new Transaction("STA/1", "22225555", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
-			transactions.add(new Transaction("STA/2", "33334456", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
+			transactions.add(new Transaction("CLO/1", PublicBuyer.PUBLIC_NAME, 1, UssCommonUtil.convertStringToDate("2016-02-01")));
 			
 			return transactions;
 		}
