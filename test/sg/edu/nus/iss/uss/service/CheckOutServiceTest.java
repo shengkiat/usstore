@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by yeojc on 15/3/2016.
@@ -124,20 +125,38 @@ public class CheckOutServiceTest {
         assertEquals(pointsConverted, 4);
     }
 
+
     @Test
-    public void testConvertPointToDollar() {
+    public void testMakePaymentWithoutAnyPointsRedemption(){
         createCheckOutSummaryData();
-        int pointsToDollar = 20;
-        double pointsRedeemed = 100;
+        int discountAmount = 10;
+        double payAmount = checkOutService.calculateChargePrice(discountAmount);
+        int pointsToRedeem = 0;
+        double amountPaid = checkOutService.makePayment(payAmount, pointsToRedeem);
 
-        double amountDiscounted = checkOutService.convertPointToDollar(119);
-
-        assertEquals(amountDiscounted, 5, 0);
+        assertEquals(amountPaid, 36.54, 0);
     }
 
     @Test
-    public void testMakePayment(){
+    public void testMakePaymentWith100Points(){
+        createCheckOutSummaryData();
+        int discountAmount = 10;
+        double payAmount = checkOutService.calculateChargePrice(discountAmount);
+        int pointsToRedeem = 100;
+        double amountPaid = checkOutService.makePayment(payAmount, pointsToRedeem);
 
+        assertEquals(amountPaid, 31.54, 0);
+    }
+
+    @Test
+    public void testMakePaymentWith105Points(){ // this will only use 100 points
+        createCheckOutSummaryData();
+        int discountAmount = 10;
+        double payAmount = checkOutService.calculateChargePrice(discountAmount);
+        int pointsToRedeem = 100;
+        double amountPaid = checkOutService.makePayment(payAmount, pointsToRedeem);
+
+        assertEquals(amountPaid, 31.54, 0);
     }
 
 
@@ -158,29 +177,6 @@ public class CheckOutServiceTest {
 
     }
 
-//
-//    public class MockMemberService extends MemberService {
-//        private String member1;
-//        private String member2;
-//        private String member3;
-//
-//        public MockMemberService(MemberDataAccess memberDataAccess) {
-//        	super(memberDataAccess);
-//            member1 = "S1234567A";
-//            member2 = "S1111111B";
-//            member3 = "S2222222C";
-//
-//        }
-//
-//        public boolean isValidMember(String memberID) {
-//            if(memberID.equals(member1) || memberID.equals(member2) || memberID.equals(member3)) {
-//                return true;
-//            }
-//            else {
-//                return false;
-//            }
-//        }
-//    }
 
     public class MockProductService extends ProductService {
         public MockProductService(ProductDataAccess PrdDataAccess) {

@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
-import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.PayItem;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.ICheckOutService;
@@ -30,51 +29,14 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return memberID;
     }
 
-    @Override
-    public PayItem addItemIntoCheckOutList(String productID, String memberID){
-
-        //TODO Get product by productID
-
-        //TODO get max discount via memberID
-        Discount discount = null; //TODO
-
-        //calculate charge price
-//		int chargePrice = calculateChargePrice(discount);
-
-        //TODO create PayItem
-
-        if(null == checkoutSummary){
-            checkoutSummary = new CheckoutSummary();
-            checkoutSummary.setCheckoutItems(new ArrayList<Product>());
-        }
-
-        //TODO add PayItem into checkout List
-//		checkoutSummary.getCheckoutList().add(e);
-
-        return null;
-    }
 
     @Override
     public List<Product> addItemIntoCheckOutList(Product product, String memberID){
 
-        //TODO Get product by productID
-
-        //TODO get max discount via memberID
-        Discount discount = null; //TODO
-
-        //calculate charge price
-//        int chargePrice = calculateChargePrice(discount);
-
-        //TODO create PayItem
-
         if(null == checkoutSummary){
             checkoutSummary = new CheckoutSummary();
             checkoutSummary.setCheckoutItems(new ArrayList<Product>());
         }
-
-        //TODO add PayItem into checkout List
-//		checkoutSummary.getCheckoutList().add(e);
-
         checkoutSummary.getCheckoutItems().add(product);
 
         return checkoutSummary.getCheckoutItems();
@@ -84,13 +46,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     public List<Product> addItemIntoCheckOutList(Product product){
 
         return this.addItemIntoCheckOutList(product, this.memberID);
-    }
-
-
-    @Override
-    public PayItem addItemIntoCheckOutList(String productID){
-
-        return this.addItemIntoCheckOutList(productID, this.memberID);
     }
 
     @Override
@@ -103,11 +58,12 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    // change to decimal
-    public int makePayment(String payAmount, int redeemPoint){
-        //TODO
+    public double makePayment(double payAmount, int redeemPoint){
+        double dollarsRedeemed = convertPointToDollar(redeemPoint);
+        double totalPayable = payAmount - dollarsRedeemed;
 
-        return 0;
+        
+        return totalPayable;
     }
 
     @Override
@@ -117,6 +73,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return "";
     }
 
+    @Override
     public double calculateChargePrice(int discount){
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.HALF_EVEN);
@@ -141,10 +98,12 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return pointsConverted;
     }
 
-    @Override
-    public int convertPointToDollar(int point){
+//    @Override
+    private int convertPointToDollar(int point){
         int pointsToDollar = 20;
         int dollarsConverted = point / 20;
+
+        int pointsUsed = dollarsConverted * pointsToDollar;
 
         return dollarsConverted;
     }

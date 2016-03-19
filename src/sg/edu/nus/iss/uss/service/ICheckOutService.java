@@ -11,23 +11,21 @@ public interface ICheckOutService {
 	public CheckoutSummary getCheckoutSummary();
 	
 	public String determineMemberID(String memberID);
-	
-	public PayItem addItemIntoCheckOutList(String productID, String memberID);
-	
+
 	public List<Product> addItemIntoCheckOutList(Product product, String memberID);
 	
 	public List<Product> addItemIntoCheckOutList(Product product);
-	
-	public PayItem addItemIntoCheckOutList(String productID);
-	
+
 	public String alertIfInventoryLevelBelowThreshold(PayItem payItem);
 	
-	public int makePayment(String payAmount, int redeemPoint);
+	public double makePayment(double payAmount, int redeemPoint);
 	
 	public String printoutReceipt(CheckoutSummary checkoutSummary);
 	
     public int convertDollarToPoint(double dollar);
 
-	public int convertPointToDollar(int point);
+    public double calculateChargePrice(int discount);
+
+//	public int convertPointToDollar(int point);
 	
 }
