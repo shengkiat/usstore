@@ -3,10 +3,8 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,7 +36,6 @@ abstract class FileDataAccess {
 		initialLoad();
 	}
 	
-	//TODO should throw custom exception?
 	protected void writeNewLine(String[] arr) throws UssException {
 		validateInput(arr);
 

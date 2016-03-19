@@ -18,13 +18,14 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.service.impl.VendorService;
 
 public class VendorServiceTest {
 
 	@Test
 	public void testGetVendorByCategoryCode() throws UssException {
 
-		VendorService vendorService = new VendorService(
+		IVendorService vendorService = new VendorService(
 				new MockVendorFileDataAccess() {
 					@Override
 					public Map<String, List<Vendor>> getAll() {

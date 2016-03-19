@@ -1,27 +1,33 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.Date;
 
-public class ReportingService extends UssCommonService {
+import sg.edu.nus.iss.uss.service.IReportingService;
+
+public class ReportingService extends UssCommonService implements IReportingService{
 	
+	@Override
 	public String printCategoriesReport(){
 		//TODO
 		
 		return "";
 	}
 	
+	@Override
 	public String printProductsReport(){
 		//TODO
 		
 		return "";
 	}
 	
+	@Override
 	public String printTransactionsReportByDay(Date startDay, Date endDay){
 		//TODO
 		
 		return "";
 	}
 	
+	@Override
 	public String printMembersReport(){
 		//TODO
 		

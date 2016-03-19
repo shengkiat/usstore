@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.TestUtil;
 

@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,15 +9,17 @@ import java.util.Map;
 import sg.edu.nus.iss.uss.dao.VendorDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
 import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.service.IVendorService;
 
-public class VendorService extends UssCommonService {
+public class VendorService extends UssCommonService implements IVendorService{
 
 	private VendorDataAccess vendorDAO;
 
 	public VendorService(VendorDataAccess vendorDAO) {
 		this.vendorDAO = vendorDAO;
 	}
-
+	
+	@Override
 	public List<Vendor> getVendorsByCategoryCode(String categoryCode) {
 
 		Map<String, List<Vendor>> vendors = vendorDAO.getAll();

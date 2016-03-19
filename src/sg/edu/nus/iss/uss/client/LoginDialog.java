@@ -8,7 +8,8 @@ import javax.swing.border.*;
 
 import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
-import sg.edu.nus.iss.uss.service.AuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
 
 public class LoginDialog extends JDialog {
 
@@ -22,7 +23,7 @@ public class LoginDialog extends JDialog {
 
 	private StoreKeeperDataAccess storeKepperDAO = null;
 
-	private AuthorisedService authService = new AuthorisedService(
+	private IAuthorisedService authService = new AuthorisedService(
 			storeKepperDAO);
 
 	public LoginDialog(Frame parent) {

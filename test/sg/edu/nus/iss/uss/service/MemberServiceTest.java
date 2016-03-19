@@ -10,11 +10,12 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class MemberServiceTest {
 
-	MemberService service = null;
+	IMemberService service = null;
 	
 	@Before
 	public void setUp() throws Exception {

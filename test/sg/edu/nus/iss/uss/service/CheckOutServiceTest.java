@@ -9,6 +9,10 @@ import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.service.impl.CheckOutService;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
+import sg.edu.nus.iss.uss.service.impl.ProductService;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

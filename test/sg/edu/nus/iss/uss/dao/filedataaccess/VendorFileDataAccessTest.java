@@ -18,7 +18,8 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
-import sg.edu.nus.iss.uss.service.VendorService;
+import sg.edu.nus.iss.uss.service.IVendorService;
+import sg.edu.nus.iss.uss.service.impl.VendorService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class VendorFileDataAccessTest {
@@ -55,7 +56,7 @@ public class VendorFileDataAccessTest {
 
 		VendorFileDataAccess testDataAccess1 = new VendorFileDataAccess();
 
-		VendorService vendorService = new VendorService(testDataAccess1);
+		IVendorService vendorService = new VendorService(testDataAccess1);
 
 		assertEquals(0, vendorService.getVendorsByCategoryCode("mug").size());
 		assertEquals(4, vendorService.getVendorsByCategoryCode("MUG").size());
