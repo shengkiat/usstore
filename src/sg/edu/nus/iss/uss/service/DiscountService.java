@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -27,12 +29,19 @@ public class DiscountService extends UssCommonService {
 		return availableDiscountList;
 	}
 	
-	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
-		availableDiscountList.add(new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays));
-		discountFileAccess.create(availableDiscountList);
+	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+		ValidateIncomingPrameters(discountCode, description, discountPercentage, startDate, discountDays);
+		if(DiscountExists(discountCode))
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_EXISTS);
+		DaySpecialDiscount temp = new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays);
+		availableDiscountList.add(temp);
+		discountFileAccess.create(temp);
 	}
 	
-	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+		ValidateIncomingPrameters(discountCode, description, discountPercentage, startDate, discountDays);
+		if(DiscountExists(discountCode))
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
 		int index = -1;
 		for(Discount temp : availableDiscountList) {
 			if(temp.getDiscountCode() == discountCode) {
@@ -42,21 +51,24 @@ public class DiscountService extends UssCommonService {
 					moDis.setDescription(description);
 					moDis.setDiscountPercentage(discountPercentage);
 					availableDiscountList.set(index, moDis);
+					discountFileAccess.update(moDis);
 				}
 				else if(temp instanceof DaySpecialDiscount) {
-					DaySpecialDiscount tempDis = (DaySpecialDiscount)temp;
-					tempDis.setDescription(description);
-					tempDis.setDiscountPercentage(discountPercentage);
-					tempDis.setStartDate(startDate);
-					tempDis.setDiscountDays(discountDays);
-					availableDiscountList.set(index, tempDis);
+					DaySpecialDiscount dsDis = (DaySpecialDiscount)temp;
+					dsDis.setDescription(description);
+					dsDis.setDiscountPercentage(discountPercentage);
+					dsDis.setStartDate(startDate);
+					dsDis.setDiscountDays(discountDays);
+					availableDiscountList.set(index, dsDis);
+					discountFileAccess.update(dsDis);
 				}
 			}
 		}
-		discountFileAccess.create(availableDiscountList);
 	}
 	
-	public void RemoveDiscount(String discountCode) {
+	public void RemoveDiscount(String discountCode) throws UssException {
+		if(DiscountExists(discountCode))
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
 		for(Discount temp : availableDiscountList) {
 			if(temp.getDiscountCode() == discountCode) {
 					availableDiscountList.remove(temp);
@@ -99,7 +111,7 @@ public class DiscountService extends UssCommonService {
 		return 0;
 	}
 		
-	public double getTodaysDiscount() {
+	private double getTodaysDiscount() {
 		double todaysHighestDiscount = 0.0;
 		Date today = new Date();
 		
@@ -113,5 +125,26 @@ public class DiscountService extends UssCommonService {
 			}
 		}
 		return todaysHighestDiscount;
+	}
+	
+	private void ValidateIncomingPrameters(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+		if(discountCode == null)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_CODE);
+		if(description == null)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		if(discountPercentage < 0 || discountPercentage > 100)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		if(UssCommonUtil.isDateLeftGreaterThanRight(new Date(), startDate))
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_STARTDATE);
+		if(discountDays <= 0)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DAYS);
+	}
+	
+	private boolean DiscountExists(String discountCode) {
+		for(Discount temp : availableDiscountList) {
+			if(temp.getDiscountCode() == discountCode)
+				return true;
+		}
+		return false;
 	}
 }

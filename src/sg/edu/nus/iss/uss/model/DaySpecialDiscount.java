@@ -1,9 +1,10 @@
 package sg.edu.nus.iss.uss.model;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class DaySpecialDiscount extends Discount{
 	private Date startDate;
@@ -38,8 +39,7 @@ public class DaySpecialDiscount extends Discount{
 	
 	@Override
 	public String toString() {//MEMBER_FIRST,First purchase by member,2016-02-01,30,20,A
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		String discountString = (new BigDecimal(Double.toString(getDiscountPercentage()))).stripTrailingZeros().toPlainString();
-		return (super.toString() + "," + dateformat.format(getStartDate()) + "," + getDiscountDays() + "," + discountString + ",A");
+		return (super.toString() + "," + UssCommonUtil.convertDateToString(getStartDate()) + "," + getDiscountDays() + "," + discountString + ",A");
 	}
 }

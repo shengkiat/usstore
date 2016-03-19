@@ -11,21 +11,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.TestUtil;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 
 public class DiscountServiceTest {
 	//Test fixtures
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Discounts.dat";
-	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	
 	DiscountService dicountService = null;
 
@@ -80,24 +81,24 @@ public class DiscountServiceTest {
 	}
 	
 	@Test
-	public void testAddNewDiscount() throws ParseException {
-		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7);
-		dicountService.AddNewDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, df.parse("2014-08-09"),1);
+	public void testAddNewDiscount() throws ParseException, UssException {
+		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, UssCommonUtil.convertStringToDate("2014-02-01"),7);
+		dicountService.AddNewDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2014-08-09"),1);
 		assertEquals(6, dicountService.getAll().size());
 	}
 	
 	@Test
-	public void testEditDiscount() throws ParseException {
-		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7);
+	public void testEditDiscount() throws ParseException, UssException {
+		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, UssCommonUtil.convertStringToDate("2014-02-01"),7);
 		assertEquals(5, dicountService.getAll().size());
-		dicountService.UpdateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, df.parse("2014-08-09"),1);
+		dicountService.UpdateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2014-08-09"),1);
 		assertEquals(5, dicountService.getAll().size());
 	}
 	
 	@Test
-	public void testRemoveDiscount() throws ParseException {
-		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7);
-		dicountService.AddNewDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, df.parse("2014-08-09"),1);
+	public void testRemoveDiscount() throws ParseException, UssException {
+		dicountService.AddNewDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, UssCommonUtil.convertStringToDate("2014-02-01"),7);
+		dicountService.AddNewDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2014-08-09"),1);
 		assertEquals(6, dicountService.getAll().size());
 		//dicountService.RemoveDiscount("NATIONAL_DAY");
 		//assertEquals(5, dicountService.getAll().size());

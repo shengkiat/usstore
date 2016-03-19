@@ -3,6 +3,7 @@ package sg.edu.nus.iss.uss.exception;
 public class ErrorConstants {
 	
 	public enum UssCode {
+		  DAO(100),
 		  AUTHORIZATION(101),
 		  CATEGORY(102),
 		  CHECKOUT(103),
@@ -39,9 +40,23 @@ public class ErrorConstants {
 	
 	
 	/**
+	 ************************** DISCOUNT ****************************************
+	 */
+	public static final String INVALID_DISCOUNT_CODE = "Invalid discount code!";
+	public static final String INVALID_DISCOUNT_DESCRIPTION = "Invalid discount description!";
+	public static final String INVALID_DISCOUNT_PERCENTAGE = "Invalid discount percentage!";
+	public static final String INVALID_DISCOUNT_DAYS = "Minimum 1 discount day allowed!";
+	public static final String INVALID_DISCOUNT_STARTDATE = "past date not allowed!";	
+	public static final String INVALID_DISCOUNT_RECORDS = "Less than 5 discounts not allowed!";
+	public static final String DISCOUNT_EXISTS = "Discount already exists!";
+	public static final String DISCOUNT_NOT_EXIST = "Discount does not exist!";
+	/**
 	 ************************** OTHER ****************************************
 	 */
 	
-	
+	/**
+	 ************************** DAO ****************************************
+	 */
+	public static final String EMPTY_CONTENT = "All arr content cannot be null or empty";
 
 }

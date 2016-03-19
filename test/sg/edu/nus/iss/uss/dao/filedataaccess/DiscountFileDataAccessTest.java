@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -62,41 +63,38 @@ public class DiscountFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateOnceAndGetAll() throws ParseException {
+	public void testCreateOnceAndGetAll() throws ParseException, UssException {
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-		List<Discount> discounts = new ArrayList<>();
 		
-		discounts.add(new MemberOnlyDiscount("MEMBER_FIRST", "First purchase by member", 20));
-		discounts.add(new MemberOnlyDiscount("MEMBER_SUBSEQ", "Subsequent purchase by member", 10));
-		discounts.add(new DaySpecialDiscount("CENTENARY", "Centenary Celebration in 2014", 15, df.parse("2014-01-01"),365));
+		MemberOnlyDiscount discount = new MemberOnlyDiscount("MEMBER_FIRST", "First purchase by member", 20);
+		//discounts.add(new MemberOnlyDiscount("MEMBER_SUBSEQ", "Subsequent purchase by member", 10));
+		//discounts.add(new DaySpecialDiscount("CENTENARY", "Centenary Celebration in 2014", 15, df.parse("2014-01-01"),365));
 		
-		testDiscountDataAccess.create(discounts);
+		testDiscountDataAccess.create(discount);
 		
 		List<Discount> records = testDiscountDataAccess.getAll();
-		assertEquals(3, records.size());
+		assertEquals(1, records.size());
 		}
 	
 	@Test
-	public void testCreateTwiceAndGetAll() throws ParseException {
+	public void testCreateTwiceAndGetAll() throws ParseException, UssException {
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-		List<Discount> firstDiscounts = new ArrayList<>();
 		
-		firstDiscounts.add(new MemberOnlyDiscount("MEMBER_FIRST", "First purchase by member", 20));
-		firstDiscounts.add(new MemberOnlyDiscount("MEMBER_SUBSEQ", "Subsequent purchase by member", 10));
-		firstDiscounts.add(new DaySpecialDiscount("CENTENARY", "Centenary Celebration in 2014", 15, df.parse("2014-01-01"),365));
-		testDiscountDataAccess.create(firstDiscounts);
+		MemberOnlyDiscount firstDiscount1 = new MemberOnlyDiscount("MEMBER_FIRST", "First purchase by member", 20);
+		//firstDiscounts.add(new MemberOnlyDiscount("MEMBER_SUBSEQ", "Subsequent purchase by member", 10));
+		//firstDiscounts.add(new DaySpecialDiscount("CENTENARY", "Centenary Celebration in 2014", 15, df.parse("2014-01-01"),365));
+		testDiscountDataAccess.create(firstDiscount1);
 		
-		List<Discount> secondDiscounts = new ArrayList<>();
-		secondDiscounts.add(new DaySpecialDiscount("PRESIDENT_BDAY", "University President's birthday", 20, df.parse("2014-01-01"),365));
-		secondDiscounts.add(new DaySpecialDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7));
-		testDiscountDataAccess.create(secondDiscounts);
+		DaySpecialDiscount secondDiscount2 = new DaySpecialDiscount("PRESIDENT_BDAY", "University President's birthday", 20, df.parse("2014-01-01"),365);
+		//secondDiscounts.add(new DaySpecialDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7));
+		testDiscountDataAccess.create(secondDiscount2);
 		
 		List<Discount> records = testDiscountDataAccess.getAll();
 		assertEquals(5, records.size());
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() throws ParseException {
+	public void testCreateAndGetAllWhenThereIsData() throws ParseException, UssException {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 	              new FileOutputStream(TEST_DATA_DIR + File.separator + TEST_FILE_NAME), "utf-8"))) {
 			writer.write("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M");
@@ -118,15 +116,13 @@ public class DiscountFileDataAccessTest {
 		List<Discount> records = testDiscountDataAccess.getAll();
 		assertEquals(4, records.size());
 		
-		List<Discount> discounts = new ArrayList<>();
 		
 		Discount discount1 = new DaySpecialDiscount("ORIENTATION_DAY", "Centenary Celebration in 2014", 50, df.parse("2014-02-01"),7);
-		discounts.add(discount1);
 		
-		Discount discount2 = new DaySpecialDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, df.parse("2014-08-09"),1);
-		discounts.add(discount2);
+		//Discount discount2 = new DaySpecialDiscount("NATIONAL_DAY", "National Day Celebration in 2014", 25, df.parse("2014-08-09"),1);
+		//discounts.add(discount2);
 		
-		testDiscountDataAccess.create(discounts);
+		testDiscountDataAccess.create(discount1);
 		
 		records = testDiscountDataAccess.getAll();
 		assertEquals(6, records.size());
