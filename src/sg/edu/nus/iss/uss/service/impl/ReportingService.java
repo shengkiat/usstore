@@ -21,7 +21,7 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	}
 	
 	@Override
-	public String printTransactionsReportByDay(Date startDay, Date endDay){
+	public String printTransactionsReportByDay(Date startDate, Date endDate){
 		//TODO
 		
 		return "";

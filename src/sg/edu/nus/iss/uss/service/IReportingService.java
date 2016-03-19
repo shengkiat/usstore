@@ -8,7 +8,7 @@ public interface IReportingService {
 	
 	public String printProductsReport();
 	
-	public String printTransactionsReportByDay(Date startDay, Date endDay);
+	public String printTransactionsReportByDay(Date startDate, Date endDate);
 	
 	public String printMembersReport();
 	
