@@ -10,28 +10,26 @@ import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 
 public class CategoryService extends UssCommonService implements ICategoryService{
-	VendorService VendorSvc;
-	ICategoryDataAccess CatDataAccess;
-	
-	List<Category> CategoryList;
+	private VendorService vendorSvc;
+	private ICategoryDataAccess catDataAccess;
 		
 	public CategoryService(VendorService VendorSvc,ICategoryDataAccess CatDataAccess){
-		this.VendorSvc = VendorSvc;
-		this.CatDataAccess = CatDataAccess;
+		this.vendorSvc = VendorSvc;
+		this.catDataAccess = CatDataAccess;
 	}
 	
 	public List<Category> retrieveCategoryList(){
-		return CatDataAccess.getAll();
+		return catDataAccess.getAll();
 	}
 	
 	public void createNewCategory(String code, String Name)  throws UssException {
 		
 		categoryAdditionValidation(code);
 		
-	    Category Cat= new Category();
-		Cat.setCode(code);
-		Cat.setName(Name);
-		CatDataAccess.create(Cat);
+	    Category cat= new Category();
+		cat.setCode(code);
+		cat.setName(Name);
+		catDataAccess.create(cat);
 	
 	}
 	
@@ -45,6 +43,6 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 	}
 	
 	public List<Vendor> CategoryVendor(String CategoryCode) {	
-		return(VendorSvc.getVendorsByCategoryCode(CategoryCode));		
+		return(vendorSvc.getVendorsByCategoryCode(CategoryCode));		
 	}
 }

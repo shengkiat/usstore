@@ -9,8 +9,7 @@ import sg.edu.nus.iss.uss.model.Category;
 
 public class CategoryFileDataAccess extends FileDataAccess implements ICategoryDataAccess {
 
-	private List<Category> CategoryList;
-	List<String[]> CatList;
+	private List<Category> categoryList;
 	
 	public CategoryFileDataAccess() throws UssException {
 		super("Category.dat");
@@ -18,7 +17,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 
 	@Override
 	public List<Category> getAll() {
-		return CategoryList;
+		return categoryList;
 	}
 
 	@Override
@@ -34,14 +33,14 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	@Override
 	protected void initialLoad() {
 		
-		CatList = readAll(); 
+		List<String[]> catList = readAll(); 
 		
-		for(String[] str: CatList)
+		for(String[] str: catList)
 		{
 			Category cat = new Category();
 			cat.setCode(str[0]);
 			cat.setName(str[1]);
-			CategoryList.add(cat);
+			categoryList.add(cat);
 		}
 	}
 	

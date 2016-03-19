@@ -8,9 +8,7 @@ import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Product;
 
 public class ProductFileDataAccess extends FileDataAccess implements IProductDataAccess {
-	private List<Product> ProductList;
-	List<String[]> PrdList;
-	String[] strPrd = new String[8];
+	private List<Product> productList;
 	
 	public ProductFileDataAccess() throws UssException {
 		super("Products.dat");
@@ -18,12 +16,12 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 
 	@Override
 	public List<Product> getAll() {
-		return ProductList;
+		return productList;
 	}
 
 	@Override
 	public void create(Product e) throws UssException {
-
+		String[] strPrd = new String[getTotalNumberOfFields()];
 		strPrd[0] = e.getProductID();
 		strPrd[1] = e.getName();
 		strPrd[2] = e.getBriefDescription();
@@ -37,6 +35,7 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 
 	@Override
 	public void update(Product e) throws UssException {
+		String[] strPrd = new String[getTotalNumberOfFields()];
 		strPrd[0] = e.getProductID();
 		strPrd[1] = e.getName();
 		strPrd[2] = e.getBriefDescription();
@@ -50,14 +49,14 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 	
 	@Override
 	protected void initialLoad() {
-		PrdList = readAll(); 
+		List<String[]> prdList = readAll(); 
 		Integer iQtyAvailable;
 		Double dblPrice;
 		Integer iBarCodeNo;
 		Integer iQtyReOrder;
 		Integer iOrderQty;
 		
-		for(String[] str: PrdList)
+		for(String[] str: prdList)
 		{
 			iQtyAvailable = Integer.parseInt(str[3]);
 			dblPrice = Double.parseDouble(str[4]);
@@ -65,7 +64,7 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 			iQtyReOrder = Integer.parseInt(str[6]);
 			iOrderQty = Integer.parseInt(str[7]);
 			
-			ProductList.add(new Product(str[0],str[1],str[2],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty));
+			productList.add(new Product(str[0],str[1],str[2],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty));
 				
 		}
 	}

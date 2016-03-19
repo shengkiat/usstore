@@ -5,15 +5,15 @@ import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.IProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService extends UssCommonService implements IProductService{
-	IProductDataAccess PrdDataAccess;
 	
-	List<Product> PrdList;
+	private IProductDataAccess prdDataAccess;
 	
-	public ProductService(IProductDataAccess PrdDataAccess){
-		this.PrdDataAccess = PrdDataAccess;
+	public ProductService(IProductDataAccess prdDataAccess){
+		this.prdDataAccess = prdDataAccess;
 	}
 	
 	
@@ -24,18 +24,20 @@ public class ProductService extends UssCommonService implements IProductService{
 	}
 	
 	public List<Product> retrieveProductList(){
-		return PrdDataAccess.getAll();
+		return prdDataAccess.getAll();
 	}
 	
 	public List<Product> retrieveProductListByThreshold(){
+		
+		List<Product> prdList = new ArrayList<>();
 			
 		for(Product Prd:retrieveProductList()){
 		     if (Prd.isBelowThreshold()) {
-		    	  PrdList.add(Prd);
+		    	  prdList.add(Prd);
 		     }
 		}
 		
-		return PrdList;
+		return prdList;
 	}
 	
 	public Product createNewProductEntry(String categoryCode, String productName, String briefDescription, int price,
