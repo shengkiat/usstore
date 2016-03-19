@@ -2,7 +2,9 @@ package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -69,42 +71,49 @@ public class ReportingServiceTest {
 
 		@Override
 		public void createTransactions(List<Transaction> transactions) throws UssException {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 	}
 	
 	private class MockIProductService implements IProductService {
+		
+		private final Map<String, Product> products = new HashMap<>();
+		
+		{
+			products.put("CLO/1", null);
+			products.put("STA/1", null);
+			products.put("STA/2", null);
+		}
 
 		@Override
 		public Product getProductByProductID(String productID) {
-			// TODO Auto-generated method stub
-			return null;
+			return products.get(productID);
 		}
 
 		@Override
 		public List<Product> retrieveProductList() {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 
 		@Override
 		public List<Product> retrieveProductListByThreshold(int threshold) {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 
 		@Override
 		public Product createNewProductEntry(String categoryCode, String productName, String briefDescription,
 				int price, int barCodeNumber, int reorderQuantity, int orderQuantity) {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 
 		@Override
 		public boolean checkIfProductIsBelowThreshold(Product product) {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 
 		@Override
 		public void deductInventoryFromCheckout(List<Product> productItems) {
-			throw new RuntimeException("do not required to call");
+			throw new RuntimeException("not expected to call");
 		}
 	}
 }
