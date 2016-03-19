@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +55,8 @@ public class ReportingService extends UssCommonService implements IReportingServ
 			Product product = productService.getProductByProductID(transaction.getProductID());	
 			result.add(new ReportTransaction(transaction, product));
 		}
+		
+		Collections.sort(result);
 		
 		return result;
 	}

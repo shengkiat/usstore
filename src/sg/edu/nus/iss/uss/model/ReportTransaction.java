@@ -2,7 +2,7 @@ package sg.edu.nus.iss.uss.model;
 
 import java.util.Date;
 
-public class ReportTransaction {
+public class ReportTransaction implements Comparable<ReportTransaction> {
 	
 	private final int transactionID;
 	private final String productID;
@@ -69,6 +69,12 @@ public class ReportTransaction {
 		builder.append(productBriefDescription);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public int compareTo(ReportTransaction arg0) {
+		// TODO Auto-generated method stub
+		return this.productID.compareTo(arg0.getProductID());
 	}
 	
 

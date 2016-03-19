@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,16 +11,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.model.PublicBuyer;
+import sg.edu.nus.iss.uss.model.ReportTransaction;
+import sg.edu.nus.iss.uss.model.TestProductBuilder;
+import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
-import sg.edu.nus.iss.uss.util.TestUtil;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
+
+import static org.junit.Assert.*;
 
 public class ReportingServiceTest {
 	
@@ -44,6 +47,45 @@ public class ReportingServiceTest {
 		reportingService.retrieveReportTransactions(startDate, endDate);
 	}
 	
+	@Test
+	public void testRetrieveReportTransactionsShouldRetrieveSuccessfullyWithSortedProductId() {
+		
+		String[] testProductIds = new String[] {
+				"STA/2", "CLO/1", "STA/1", "STA/1", "CLO/1"
+		};
+		
+		reportingService = new ReportingService(new MockITransactionService() {
+			@Override
+			public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate) {
+				List<Transaction> transactions = new ArrayList<>();
+				
+				for(String productId : testProductIds) {
+					transactions.add(new TestTransactionBuilder().withProductID(productId).build());
+				}
+				
+				return transactions;
+			}
+		}
+		, new MockIProductService());
+		
+		Date startDate = UssCommonUtil.convertStringToDate("2001-01-01");
+		Date endDate = UssCommonUtil.convertStringToDate("2999-12-31");
+		List<ReportTransaction> reportTransactions = reportingService.retrieveReportTransactions(startDate, endDate);
+		
+		assertEquals(testProductIds.length, reportTransactions.size());
+		
+		Arrays.sort(testProductIds);
+		
+		for(int i = 0; i<reportTransactions.size(); i++) {
+			ReportTransaction reportTransaction = reportTransactions.get(i);
+			assertNotNull(reportTransaction.getProductID());
+			assertNotNull(reportTransaction.getProductName());
+			assertNotNull(reportTransaction.getProductBriefDescription());
+			
+			assertEquals(testProductIds[i], reportTransaction.getProductID());
+		}
+	}
+	
 	@Before
 	public void setUp() {
 		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService());
@@ -60,11 +102,11 @@ public class ReportingServiceTest {
 		public List<Transaction> retrieveTransactionListByDate(Date startDate, Date endDate) {
 			List<Transaction> transactions = new ArrayList<>();
 			
-			transactions.add(new Transaction("STA/2", "33334456", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
-			transactions.add(new Transaction("CLO/1", PublicBuyer.PUBLIC_NAME, 1, UssCommonUtil.convertStringToDate("2016-01-01")));
-			transactions.add(new Transaction("STA/1", "12345678", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
-			transactions.add(new Transaction("STA/1", "22225555", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
-			transactions.add(new Transaction("CLO/1", PublicBuyer.PUBLIC_NAME, 1, UssCommonUtil.convertStringToDate("2016-02-01")));
+			transactions.add(new TestTransactionBuilder().withProductID("STA/2").build());
+			transactions.add(new TestTransactionBuilder().withProductID("CLO/1").build());
+			transactions.add(new TestTransactionBuilder().withProductID("STA/1").build());
+			transactions.add(new TestTransactionBuilder().withProductID("STA/1").build());
+			transactions.add(new TestTransactionBuilder().withProductID("CLO/1").build());
 			
 			return transactions;
 		}
@@ -80,9 +122,9 @@ public class ReportingServiceTest {
 		private final Map<String, Product> products = new HashMap<>();
 		
 		{
-			products.put("CLO/1", null);
-			products.put("STA/1", null);
-			products.put("STA/2", null);
+			products.put("CLO/1", new TestProductBuilder().build());
+			products.put("STA/1", new TestProductBuilder().build());
+			products.put("STA/2", new TestProductBuilder().build());
 		}
 
 		@Override
