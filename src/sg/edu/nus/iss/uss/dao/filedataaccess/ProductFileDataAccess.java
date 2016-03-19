@@ -22,7 +22,7 @@ public class ProductFileDataAccess extends FileDataAccess implements ProductData
 	}
 
 	@Override
-	public void create(Product e) {
+	public void create(Product e) throws UssException {
 
 		strPrd[0] = e.getProductID();
 		strPrd[1] = e.getName();
@@ -36,7 +36,7 @@ public class ProductFileDataAccess extends FileDataAccess implements ProductData
 	}
 
 	@Override
-	public void update(Product e) {
+	public void update(Product e) throws UssException {
 		strPrd[0] = e.getProductID();
 		strPrd[1] = e.getName();
 		strPrd[2] = e.getBriefDescription();

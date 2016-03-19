@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import sg.edu.nus.iss.uss.service.AuthorisedService;
 import java.awt.BorderLayout;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -19,8 +18,17 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JTextField;
+
+import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -37,6 +45,10 @@ public class Application {
 	
 	private JPanel rightMemberPanel ;
 	
+	private StoreKeeperDataAccess storeKeeperDAO;
+	private IAuthorisedService authService;
+
+	
 	
 	/**
 	 * Launch the application.
@@ -45,6 +57,10 @@ public class Application {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
+					
+					
+					
 					Application window = new Application();
 					window.frame.setVisible(true);
 					
@@ -64,18 +80,49 @@ public class Application {
 
 	/**
 	 * Create the application.
+	 * @throws UssException 
 	 */
-	public Application() {
+	public Application() throws UssException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws UssException 
 	 */
-	private void initialize() {
+	private void initialize() throws UssException {
+		
+		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
+		this.authService = new AuthorisedService(storeKeeperDAO);
+		
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 950, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Store Keeper Login
+		LoginDialog loginDlg = new LoginDialog(frame, authService);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        loginDlg.setVisible(true);
+        
+        loginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+            
+        // if logon successfully
+        if(loginDlg.isSucceeded()){
+            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+        }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -219,14 +266,8 @@ public class Application {
 
 		
 		
-//		LoginDialog loginDlg = new LoginDialog(frame);
-//		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-//        loginDlg.setVisible(true);
-//        // if logon successfully
-//        if(loginDlg.isSucceeded()){
-//            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
-//        }
-		
+
+
 		
 		
 	}

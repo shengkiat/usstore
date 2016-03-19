@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -25,12 +26,12 @@ private static final String FILE_NAME = "Discounts.dat";
 	
 	private List<Discount> records;
 
-	public DiscountFileDataAccess() {
+	public DiscountFileDataAccess() throws UssException {
 		super(FILE_NAME);
 		initialLoad();
 	}
 	
-	public DiscountFileDataAccess(String fileName, String directory) {
+	public DiscountFileDataAccess(String fileName, String directory) throws UssException {
 		super(fileName, directory);
 		initialLoad();
 	}
@@ -63,7 +64,7 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 
 	@Override
-	public void create(List<Discount> discounts) {
+	public void create(List<Discount> discounts) throws UssException {
 		for(Discount discount : discounts) {
 			if(records.indexOf(discount) == -1) {
 				String[] arr = new String[TOTAL_FIELDS];
@@ -93,7 +94,7 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 
 	@Override
-	public void update(Discount discount) {
+	public void update(Discount discount) throws UssException {
 		for(Discount temp : records) {
 			if(temp.getDiscountCode() == discount.getDiscountCode()) {
 				String[] arr = new String[TOTAL_FIELDS];
@@ -132,7 +133,7 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 
 	@Override
-	public void create(Discount discount) {
+	public void create(Discount discount) throws UssException {
 		// TODO Auto-generated method stub
 		
 	}

@@ -22,7 +22,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements CategoryDa
 	}
 
 	@Override
-	public void create(Category e) {
+	public void create(Category e) throws UssException {
 		String[] strCat = new String[2];
 		
 		strCat[0] = e.getCode();

@@ -3,10 +3,8 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,17 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+
 abstract class FileDataAccess {
 	
 	
 	private final String fileName;
 	private final String directory;
 	
-	public FileDataAccess(String fileName) {
+	public FileDataAccess(String fileName) throws UssException {
 		this(fileName, "data");
 	}
 	
-	protected FileDataAccess(String fileName, String directory) {
+	protected FileDataAccess(String fileName, String directory) throws UssException {
 		Objects.requireNonNull(fileName, "fileName cannot be null");
 		Objects.requireNonNull(directory, "directory cannot be null");
 		
@@ -35,23 +36,20 @@ abstract class FileDataAccess {
 		initialLoad();
 	}
 	
-	//TODO should throw custom exception?
-	protected void writeNewLine(String[] arr) {
+	protected void writeNewLine(String[] arr) throws UssException {
 		validateInput(arr);
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), true))) {
 			writer.write(generateWriteContent(arr));
 			writer.newLine();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} 
+		
+		catch (IOException e) {
+			throw new UssException(ErrorConstants.UssCode.DAO, e);
 		}
 	}
 	
-	protected void overwriteLine(String[] arr) {
+	protected void overwriteLine(String[] arr) throws UssException {
 		
 		validateInput(arr);
 		
@@ -68,16 +66,14 @@ abstract class FileDataAccess {
 				writer.newLine();
 			}
 			
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} 
+		
+		catch (IOException e) {
+			throw new UssException(ErrorConstants.UssCode.DAO, e);
 		}
 	}
 	
-	private void validateInput(String[] arr) {
+	private void validateInput(String[] arr) throws UssException {
 		Objects.requireNonNull(arr, "arr cannot be null");
 		
 		if (arr.length != getTotalNumberOfFields()) {
@@ -90,7 +86,7 @@ abstract class FileDataAccess {
 			}
 		}
 		
-		throw new IllegalArgumentException("All arr content cannot be null or empty");
+		throw new UssException(ErrorConstants.UssCode.DAO, ErrorConstants.EMPTY_CONTENT);
 	}
 	
 	private void validatePrimaryKeyFound(String[] arr, List<String[]> existingContents) {
@@ -163,7 +159,7 @@ abstract class FileDataAccess {
 		return fileName;
 	}
 	
-	protected abstract void initialLoad();
+	protected abstract void initialLoad() throws UssException;
 	
 	protected abstract int getTotalNumberOfFields();
 	

@@ -1,14 +1,15 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.List;
 
+import sg.edu.nus.iss.uss.model.Category;
+import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.service.ICategoryService;
 import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.model.Category;
-import sg.edu.nus.iss.uss.model.Vendor;
 
-public class CategoryService extends UssCommonService {
+public class CategoryService extends UssCommonService implements ICategoryService{
 	VendorService VendorSvc;
 	CategoryDataAccess CatDataAccess;
 	

@@ -6,7 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
-import sg.edu.nus.iss.uss.service.MemberService;
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.service.IMemberService;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
 
 public class TestUtil {
 	
@@ -38,14 +40,14 @@ public class TestUtil {
 	}
 
 	
-	public static MemberService setUpMemberServiceWithThreeMember() throws IOException{
+	public static IMemberService setUpMemberServiceWithThreeMember() throws IOException, UssException{
 		String fileName = getTestPath(TEST_FILE_FOR_MEMBER);
 		initFileWithThreeMembers(fileName);
-		MemberService service = new MemberService(new MemberFileDataAccess(TEST_FILE_FOR_MEMBER, TEST_DATA_DIR));
+		IMemberService service = new MemberService(new MemberFileDataAccess(TEST_FILE_FOR_MEMBER, TEST_DATA_DIR));
 		return service;
 	}
 	
-	public static void destoryMemberServiceAndFile(MemberService memberService){
+	public static void destoryMemberServiceAndFile(IMemberService memberService){
 		
 		memberService = null;
 		destoryFile(getTestPath(TEST_FILE_FOR_MEMBER));

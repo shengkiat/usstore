@@ -1,16 +1,18 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
+import sg.edu.nus.iss.uss.service.IDiscountService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class DiscountService extends UssCommonService {
+public class DiscountService extends UssCommonService implements IDiscountService{
 	private static final String MEMBER_FIRST_DISCOUNT = "MEMBER_FIRST";
 	private static final String MEMBER_SUBSEQ_DISCOUNT = "MEMBER_SUBSEQ";
 	
@@ -27,12 +29,12 @@ public class DiscountService extends UssCommonService {
 		return availableDiscountList;
 	}
 	
-	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		availableDiscountList.add(new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays));
 		discountFileAccess.create(availableDiscountList);
 	}
 	
-	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		int index = -1;
 		for(Discount temp : availableDiscountList) {
 			if(temp.getDiscountCode() == discountCode) {

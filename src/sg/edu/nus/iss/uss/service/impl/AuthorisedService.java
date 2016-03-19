@@ -1,15 +1,10 @@
-package sg.edu.nus.iss.uss.service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+package sg.edu.nus.iss.uss.service.impl;
 
 import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
-import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
 
-public class AuthorisedService extends UssCommonService {
+public class AuthorisedService extends UssCommonService implements IAuthorisedService{
 
 	private StoreKeeperDataAccess storeKepperDAO;
 
@@ -18,6 +13,7 @@ public class AuthorisedService extends UssCommonService {
 		this.storeKepperDAO = storeKepperDAO;
 	}
 
+	@Override
 	public boolean isAuthorised(String userName, String password) {
 		try {
 			for (StoreKeeper storeKepperInfo : this.storeKepperDAO.getAll()) {
