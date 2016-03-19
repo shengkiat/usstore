@@ -27,6 +27,13 @@ public class Member implements IBuyer{
 		this.loyaltyPoint = loyaltyPoint;
 	}
 	
+	public Member(String name, String memberID, int loyaltyPoint) {
+		super();
+		this.name = name;
+		this.memberID = memberID;
+		this.loyaltyPoint = loyaltyPoint;
+	}
+
 	@Override
 	public String toString() {//Yan Martel,F42563743156,150
 		//TODO toString

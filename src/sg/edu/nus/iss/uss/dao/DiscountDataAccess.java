@@ -9,5 +9,6 @@ public interface DiscountDataAccess {
 	public List<Discount> getAll();
 	public void create(Discount discount);
 	public void update(Discount discount);
+	public void create(List<Discount> discounts);
 
 }

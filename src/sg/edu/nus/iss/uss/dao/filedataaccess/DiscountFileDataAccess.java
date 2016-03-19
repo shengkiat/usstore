@@ -130,4 +130,10 @@ private static final String FILE_NAME = "Discounts.dat";
 	protected int getTotalNumberOfFields() {
 		return TOTAL_FIELDS;
 	}
+
+	@Override
+	public void create(Discount discount) {
+		// TODO Auto-generated method stub
+		
+	}
 }

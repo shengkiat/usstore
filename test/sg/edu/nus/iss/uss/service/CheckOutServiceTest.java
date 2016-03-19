@@ -2,6 +2,9 @@ package sg.edu.nus.iss.uss.service;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
+import sg.edu.nus.iss.uss.dao.MemberDataAccess;
 import sg.edu.nus.iss.uss.model.Product;
 
 import java.math.RoundingMode;
@@ -24,8 +27,8 @@ public class CheckOutServiceTest {
 
     @Before
     public void setUp() {
-        mockMemberService = new MockMemberService();
-        mockDiscountService = new MockDiscountService();
+        mockMemberService = new MockMemberService(null);
+        mockDiscountService = new MockDiscountService(null);
     }
 
     @Test
@@ -129,7 +132,8 @@ public class CheckOutServiceTest {
         private String member2;
         private String member3;
 
-        public MockMemberService() {
+        public MockMemberService(MemberDataAccess memberDataAccess) {
+        	super(memberDataAccess);
             member1 = "S1234567A";
             member2 = "S1111111B";
             member3 = "S2222222C";
@@ -165,8 +169,8 @@ public class CheckOutServiceTest {
     }
 
     public class MockDiscountService extends DiscountService {
-        public MockDiscountService () {
-
+        public MockDiscountService (DiscountDataAccess discountFileAccess) {
+        	super(discountFileAccess);
         }
 
         public int findHighestDiscountByMemberID(String memberID){
