@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.service.AuthorisedService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
@@ -25,7 +26,7 @@ public class StoreKeeperFileDataAccessTest {
 	private StoreKeeperFileDataAccess testDataAccess;
 
 	@Test
-	public void testReadActualData() {
+	public void testReadActualData() throws UssException {
 
 		StoreKeeperFileDataAccess actualDataAccess = new StoreKeeperFileDataAccess();
 
@@ -38,7 +39,7 @@ public class StoreKeeperFileDataAccessTest {
 	}
 
 	@Test
-	public void testReadTestData() {
+	public void testReadTestData() throws UssException {
 
 		testDataAccess = new StoreKeeperFileDataAccess("Storekeepers.dat",
 				TEST_DATA_DIR);

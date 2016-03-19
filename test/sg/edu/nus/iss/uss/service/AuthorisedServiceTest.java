@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class AuthorisedServiceTest {
@@ -26,7 +27,7 @@ public class AuthorisedServiceTest {
 	}
 
 	@Test
-	public void testValidStoreKeepers() {
+	public void testValidStoreKeepers() throws UssException {
 		AuthorisedService authService = new AuthorisedService(
 				new MockStoreKeeperFileDataAccess() {
 					@Override
@@ -90,6 +91,10 @@ public class AuthorisedServiceTest {
 
 	private class MockStoreKeeperFileDataAccess extends
 			StoreKeeperFileDataAccess {
+
+		public MockStoreKeeperFileDataAccess() throws UssException {
+			super();
+		}
 
 		@Override
 		protected void initialLoad() {

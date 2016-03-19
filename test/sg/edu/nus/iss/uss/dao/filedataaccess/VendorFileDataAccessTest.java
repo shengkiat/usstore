@@ -2,26 +2,20 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.VendorDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.VendorService;
@@ -35,8 +29,29 @@ public class VendorFileDataAccessTest {
 
 	private VendorFileDataAccess testDataAccess;
 
+	private String testCategoryCode = "MUG";
+
+	public void testCreateShouldExistAfterExecute() throws UssException {
+		Category category = new Category();
+		category.setCode(testCategoryCode);
+		category.setName("Mug");
+
+		Path path = getTestPath();
+
+		assertFalse(Files.exists(path));
+
+		testDataAccess = new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+
+		Vendor vendor = new Vendor();
+		vendor.setCategory(category);
+
+		testDataAccess.create(vendor);
+
+		assertTrue(Files.exists(path));
+	}
+
 	@Test
-	public void testReadActualData() {
+	public void testReadActualData() throws UssException {
 
 		VendorFileDataAccess testDataAccess1 = new VendorFileDataAccess();
 
@@ -50,7 +65,7 @@ public class VendorFileDataAccessTest {
 	}
 
 	@Test
-	public void testReadTestData() {
+	public void testReadTestData() throws UssException {
 
 		testDataAccess = new VendorFileDataAccess("", TEST_DATA_DIR);
 
@@ -93,71 +108,23 @@ public class VendorFileDataAccessTest {
 
 		try {
 
-			File file = new File(TEST_DATA_DIR + File.separator
-					+ "VendorsMUG.dat");
+			TestUtil.createFileWithLines(
+					TestUtil.getTestPath("VendorsMUG.dat"), new String[] {
+							"Nancy's Gift,Best of the best",
+							"My Store,Nothing to sell", "Jacky Store,Pen",
+							"Megatron Gift,Bad Boy Shop" });
 
-			Files.createDirectories(this.getTestPath().getParent());
+			TestUtil.createFileWithLines(
+					TestUtil.getTestPath("VendorsCLO.dat"), new String[] {
+							"John's Gift,Best of the best",
+							"Your Store,Nothing to sell", "Jacky Store,Pen",
+							"Optimus Prime Gift,Bad Boy Shop" });
 
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write("Nancy's Gift,Best of the best");
-			bw.newLine();
-
-			bw.write("My Store,Nothing to sell");
-			bw.newLine();
-
-			bw.write("Jacky Store,Pen");
-			bw.newLine();
-
-			bw.write("Megatron Gift,Bad Boy Shop");
-			bw.close();
-
-			file = new File(TEST_DATA_DIR + File.separator + "VendorsCLO.dat");
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			fw = new FileWriter(file.getAbsoluteFile());
-			bw = new BufferedWriter(fw);
-			bw.write("John's Gift,Best of the best");
-			bw.newLine();
-
-			bw.write("Your Store,Nothing to sell");
-			bw.newLine();
-
-			bw.write("Jacky Store,Pen");
-			bw.newLine();
-
-			bw.write("Optimus Prime Gift,Bad Boy Shop");
-			bw.close();
-
-			file = new File(TEST_DATA_DIR + File.separator + "VendorsShirt.dat");
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			fw = new FileWriter(file.getAbsoluteFile());
-			bw = new BufferedWriter(fw);
-			bw.write("John's Gift,Best of the best");
-			bw.newLine();
-
-			bw.write("Your Store,Nothing to sell");
-			bw.newLine();
-
-			bw.write("Jacky Store,Pen");
-			bw.newLine();
-
-			bw.write("Optimus Prime Gift,Bad Boy Shop");
-			bw.close();
+			TestUtil.createFileWithLines(
+					TestUtil.getTestPath("VendorsShirt.dat"), new String[] {
+							"John's Gift,Best of the best",
+							"Your Store,Nothing to sell", "Jacky Store,Pen",
+							"Optimus Prime Gift,Bad Boy Shop" });
 
 		} catch (FileAlreadyExistsException e) {
 			throw new RuntimeException("Test data file already exists: "

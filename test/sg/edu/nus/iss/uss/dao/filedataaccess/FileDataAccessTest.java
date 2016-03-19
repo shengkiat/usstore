@@ -186,7 +186,7 @@ public class FileDataAccessTest {
 	
 	private class FileDataAccessImpl extends FileDataAccess {
 
-		protected FileDataAccessImpl() {
+		protected FileDataAccessImpl() throws UssException {
 			super(TEST_FILE_NAME, TEST_DATA_DIR);
 		}
 

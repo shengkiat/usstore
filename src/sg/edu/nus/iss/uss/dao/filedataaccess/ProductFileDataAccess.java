@@ -3,11 +3,12 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.ProductDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 
 public class ProductFileDataAccess extends FileDataAccess implements ProductDataAccess {
 
-	public ProductFileDataAccess() {
+	public ProductFileDataAccess() throws UssException {
 		super("Products.dat");
 	}
 

@@ -3,11 +3,12 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 
 public class CategoryFileDataAccess extends FileDataAccess implements CategoryDataAccess {
 
-	public CategoryFileDataAccess() {
+	public CategoryFileDataAccess() throws UssException {
 		super("Category.dat");
 	}
 
