@@ -79,7 +79,9 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {
-		throw new RuntimeException("not implemented yet");
+		StringBuilder builder = new StringBuilder();
+		builder.append(arr[FIELD_TRANSACTION_ID]).append(getContentDelimiter()).append(arr[FIELD_DATE]);
+		return builder.toString();
 	}
 
 	@Override
