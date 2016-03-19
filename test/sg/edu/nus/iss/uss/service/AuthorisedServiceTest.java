@@ -29,11 +29,8 @@ public class AuthorisedServiceTest {
 
 	@Test
 	public void testValidStoreKeepers() throws UssException {
-<<<<<<< HEAD
+
 		IAuthorisedService authService = new AuthorisedService(
-=======
-		AuthorisedService authService = new AuthorisedService(
->>>>>>> refs/remotes/origin/master
 				new MockStoreKeeperFileDataAccess() {
 					@Override
 					public List<StoreKeeper> getAll() {

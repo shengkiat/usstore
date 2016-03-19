@@ -17,11 +17,7 @@ public class TransactionServiceTest {
 	
 	@Test(expected=NullPointerException.class)
 	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullStartDate() throws UssException {
-<<<<<<< HEAD
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
-=======
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
->>>>>>> refs/remotes/origin/master
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -34,13 +30,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-<<<<<<< HEAD
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() {
-		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
-=======
 	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() throws UssException {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
->>>>>>> refs/remotes/origin/master
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -54,11 +45,7 @@ public class TransactionServiceTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() throws UssException {
-<<<<<<< HEAD
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
-=======
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
->>>>>>> refs/remotes/origin/master
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -73,11 +60,7 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() throws UssException {
-<<<<<<< HEAD
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
-=======
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
->>>>>>> refs/remotes/origin/master
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -94,11 +77,7 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void testRetrieveTransactionListByDateShouldReturnForMatchingTransaction() throws UssException {
-<<<<<<< HEAD
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
-=======
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
->>>>>>> refs/remotes/origin/master
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -122,13 +101,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-<<<<<<< HEAD
-	public void testCreateTransactionsShouldBeSave() {
-		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
-=======
 	public void testCreateTransactionsShouldBeSave() throws UssException {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
->>>>>>> refs/remotes/origin/master
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
 		List<Transaction> transactions = new ArrayList<>();
 		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-01-01")));

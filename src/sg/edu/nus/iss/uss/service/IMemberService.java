@@ -11,7 +11,7 @@ public interface IMemberService {
 
 	public Member getMemberByMemberID(String memberID);
 
-	public void registerNewMember(String name, String idCardNumber);
+	public void registerNewMember(String name, String idCardNumber) throws UssException;
 
 	public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException;
 

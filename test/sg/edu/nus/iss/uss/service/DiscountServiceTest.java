@@ -18,10 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
-<<<<<<< HEAD
 import sg.edu.nus.iss.uss.service.impl.DiscountService;
-=======
->>>>>>> refs/remotes/origin/master
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
