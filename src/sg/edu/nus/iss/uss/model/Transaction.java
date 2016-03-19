@@ -11,9 +11,9 @@ public class Transaction {
 	private final int quantityPurchased;
 	private final Date date;
 	
-	public Transaction(String productID, String memberID, int quantityPurchased, Date date) {
+	public Transaction(String productID, String buyerID, int quantityPurchased, Date date) {
 		this.productID = productID;
-		this.buyerID = memberID;
+		this.buyerID = buyerID;
 		this.quantityPurchased = quantityPurchased;
 		this.date = date;
 	}
