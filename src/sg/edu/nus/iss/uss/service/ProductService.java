@@ -1,13 +1,20 @@
 package sg.edu.nus.iss.uss.service;
 
+import sg.edu.nus.iss.uss.dao.CategoryDataAccess;
+import sg.edu.nus.iss.uss.dao.ProductDataAccess;
 import sg.edu.nus.iss.uss.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService extends UssCommonService {
+	ProductDataAccess PrdDataAccess;
 	
-	private List<Product> productList = null;
+	List<Product> PrdList;
+	
+	public ProductService(ProductDataAccess PrdDataAccess){
+		this.PrdDataAccess = PrdDataAccess;
+	}
+	
 	
 	public Product getProductByProductID(String productID){
 		//TODO TBI
@@ -16,25 +23,18 @@ public class ProductService extends UssCommonService {
 	}
 	
 	public List<Product> retrieveProductList(){
-		
-		//TODO get product List from Products.dat file
-		
-		if(null == productList){
-			productList = new ArrayList<Product>();
-		}
-		
-		return productList;
+		return PrdDataAccess.getAll();
 	}
 	
-	public List<Product> retrieveProductListByThreshold(int threshold){
-		
-		//TODO get product List from Products.dat file, filter by threshold
-		
-		if(null == productList){
-			productList = new ArrayList<Product>();
+	public List<Product> retrieveProductListByThreshold(){
+			
+		for(Product Prd:retrieveProductList()){
+		     if (Prd.isBelowThreshold()) {
+		    	  PrdList.add(Prd);
+		     }
 		}
 		
-		return productList;
+		return PrdList;
 	}
 	
 	public Product createNewProductEntry(String categoryCode, String productName, String briefDescription, int price,
@@ -47,9 +47,7 @@ public class ProductService extends UssCommonService {
 
 
     public boolean checkIfProductIsBelowThreshold (Product product) {
-        // todo to return true false to check if product inventory has fallen below threshold
-
-        return false;
+        return product.isBelowThreshold();
     }
 
     public void deductInventoryFromCheckout(List<Product> productItems) {

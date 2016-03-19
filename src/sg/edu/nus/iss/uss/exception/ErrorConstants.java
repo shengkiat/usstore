@@ -3,6 +3,7 @@ package sg.edu.nus.iss.uss.exception;
 public class ErrorConstants {
 	
 	public enum UssCode {
+		  DAO(100),
 		  AUTHORIZATION(101),
 		  CATEGORY(102),
 		  CHECKOUT(103),
@@ -36,12 +37,16 @@ public class ErrorConstants {
 	 */
 	public static final String MEMBER_NOT_EXISTS = "Member does not exist!";
 	public static final String NOT_ENOUGH_POINTS = "Not enough points!";
+	public static final String CATEGORY_EXISTS = "Category Exists!";
 	
 	
 	/**
 	 ************************** OTHER ****************************************
 	 */
 	
-	
+	/**
+	 ************************** DAO ****************************************
+	 */
+	public static final String EMPTY_CONTENT = "All arr content cannot be null or empty";
 
 }
