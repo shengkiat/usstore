@@ -68,7 +68,7 @@ public class TestUtil {
 		
 	}
 
-	private static void createFileWithLines(String fileFullPath, String[] lines) throws IOException {
+	public static void createFileWithLines(String fileFullPath, String[] lines) throws IOException {
 //		File file = new File("C:\\NUS\\project\\usstore\\test\\sg\\edu\\nus\\iss\\uss\\filedataaccess\\Members.dat");
 
 		File file = new File(fileFullPath);

@@ -89,22 +89,14 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TestUtil.getTestPath(TEST_FILE_NAME)), "utf-8"))) {
-			writer.write("1,CLO/1,F42563743156,2,2013-09-28");
-			writer.newLine();
-			writer.write("1,MUG/1,F42563743156,3,2012-09-28");
-			writer.newLine();
-			writer.write("2,STA/1,PUBLIC,1,2013-09-29");
-			writer.newLine();
-			writer.write("3,STA/2,R64565FG4,2,2013-09-30");
-			writer.newLine();
-		} 
+	public void testCreateAndGetAllWhenThereIsData() throws IOException {
 		
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME),  new String[] {
+			"1,CLO/1,F42563743156,2,2013-09-28",
+			"1,MUG/1,F42563743156,3,2012-09-28",
+			"2,STA/1,PUBLIC,1,2013-09-29",
+			"3,STA/2,R64565FG4,2,2013-09-30"
+		});
 		
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
