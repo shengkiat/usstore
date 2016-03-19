@@ -6,9 +6,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
+import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class VendorServiceTest {
 
@@ -22,7 +30,34 @@ public class VendorServiceTest {
 	@Test
 	public void testGetVendorByCategoryCode() {
 
-		vendorService = new VendorService();
+		
+		
+		VendorService vendorService = new VendorService(new MockVendorFileDataAccess()
+		{
+		//@Override
+//		public List<Vendor> getAll() {
+//
+//			return null;
+//			
+//		}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		assertNotNull(vendorService.getVendorsByCategoryCode("MUG"));
 		assertNotNull(vendorService.getVendorsByCategoryCode("CLO"));
@@ -102,4 +137,12 @@ public class VendorServiceTest {
 
 	}
 
+	private class MockVendorFileDataAccess extends VendorFileDataAccess {
+		
+		@Override
+		protected void initialLoad() {
+			//do nothing
+		}
+	}
+	
 }

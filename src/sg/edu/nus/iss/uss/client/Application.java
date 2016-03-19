@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 public class Application {
 
 	private JFrame frame;
-	private AuthorisedService authService = new AuthorisedService();
+	//private AuthorisedService authService = new AuthorisedService();
 	private JTextField textFieldBarcode;
 	
 	

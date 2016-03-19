@@ -56,7 +56,7 @@ public class LoginDialog extends JDialog {
 	 
 	            public void actionPerformed(ActionEvent e) {
 	            	
-	            	AuthorisedService authService = new AuthorisedService();
+	            	AuthorisedService authService = new AuthorisedService(null);
 	            	
 	               if (authService.isAuthorised(getUsername(), getPassword())) {
 	                    JOptionPane.showMessageDialog(LoginDialog.this,

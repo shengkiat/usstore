@@ -4,11 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.model.Category;
@@ -59,4 +61,18 @@ public class VendorFileDataAccessTest {
 	}
 	
 
+	@Before
+	public void setUp() throws IOException {
+		Path path = getTestPath();
+
+        Files.createDirectories(path.getParent());
+
+        try {
+            Files.createFile(path);
+        } catch (FileAlreadyExistsException e) {
+            throw new RuntimeException("Test data file already exists: " + e.getMessage());
+        }
+	}
+	
+	
 }
