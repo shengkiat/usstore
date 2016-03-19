@@ -33,9 +33,13 @@ public class TestUtil {
 		return TEST_DATA_DIR;
 	}
 	
+	public static String getTestPath(String fileName) {
+		return TEST_DATA_DIR + File.separator + fileName;
+	}
+
 	
 	public static MemberService setUpMemberServiceWithThreeMember() throws IOException{
-		String fileName = TEST_DATA_DIR+ File.separator+ TEST_FILE_FOR_MEMBER;
+		String fileName = getTestPath(TEST_FILE_FOR_MEMBER);
 		initFileWithThreeMembers(fileName);
 		MemberService service = new MemberService(new MemberFileDataAccess(TEST_FILE_FOR_MEMBER, TEST_DATA_DIR));
 		return service;
@@ -44,7 +48,7 @@ public class TestUtil {
 	public static void destoryMemberServiceAndFile(MemberService memberService){
 		
 		memberService = null;
-		destoryFile(TEST_DATA_DIR+ File.separator+ TEST_FILE_FOR_MEMBER);
+		destoryFile(getTestPath(TEST_FILE_FOR_MEMBER));
 	}
 	
 	

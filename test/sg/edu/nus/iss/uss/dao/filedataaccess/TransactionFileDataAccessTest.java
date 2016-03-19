@@ -3,6 +3,7 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -90,7 +91,7 @@ public class TransactionFileDataAccessTest {
 	@Test
 	public void testCreateAndGetAllWhenThereIsData() {
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TEST_DATA_DIR + "\\" + TEST_FILE_NAME), "utf-8"))) {
+	              new FileOutputStream(TestUtil.getTestPath(TEST_FILE_NAME)), "utf-8"))) {
 			writer.write("1,CLO/1,F42563743156,2,2013-09-28");
 			writer.newLine();
 			writer.write("1,MUG/1,F42563743156,3,2012-09-28");
@@ -164,6 +165,6 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR + "/" + TEST_FILE_NAME);
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 }
