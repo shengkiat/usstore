@@ -2,10 +2,10 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.TransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
@@ -31,7 +32,7 @@ public class TransactionFileDataAccessTest {
 	private TransactionDataAccess testDataAccess;
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() {
+	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Date currentDate = new Date();
@@ -55,7 +56,7 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsNoDataForTwoTransaction() {
+	public void testCreateAndGetAllWhenThereIsNoDataForTwoTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
 		Date currentDate = new Date();
@@ -88,22 +89,34 @@ public class TransactionFileDataAccessTest {
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TEST_DATA_DIR + "\\" + TEST_FILE_NAME), "utf-8"))) {
-			writer.write("1,CLO/1,F42563743156,2,2013-09-28");
-			writer.newLine();
-			writer.write("1,MUG/1,F42563743156,3,2012-09-28");
-			writer.newLine();
-			writer.write("2,STA/1,PUBLIC,1,2013-09-29");
-			writer.newLine();
-			writer.write("3,STA/2,R64565FG4,2,2013-09-30");
-			writer.newLine();
-		} 
+	public void testCreateShouldWriteContentIntoFile() throws UssException {
+		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		Date currentDate = new Date();
+		List<Transaction> transactions = new ArrayList<>();
+		
+		transactions.add(new Transaction("CLO/1", "F42563743156", 2, currentDate));
+		transactions.add(new Transaction("MUG/1", "F42563743156", 3, currentDate));
+		
+		for(Transaction transaction : transactions) {
+			assertEquals(0, transaction.getTransactionID());
 		}
+		
+		testDataAccess.create(transactions);
+		
+		List<String> records = getLinesFromFile();
+		assertEquals(2, records.size());
+	}
+	
+	@Test
+	public void testCreateAndGetAllWhenThereIsData() throws IOException, UssException {
+		
+		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME),  new String[] {
+			"1,CLO/1,F42563743156,2,2013-09-28",
+			"1,MUG/1,F42563743156,3,2012-09-28",
+			"2,STA/1,PUBLIC,1,2013-09-29",
+			"3,STA/2,R64565FG4,2,2013-09-30"
+		});
 		
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
@@ -139,6 +152,20 @@ public class TransactionFileDataAccessTest {
 		assertEquals(4, highestTransactionId);
 	}
 	
+	private List<String> getLinesFromFile() {
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	
 	@Before
 	public void setUp() throws IOException {
@@ -157,13 +184,14 @@ public class TransactionFileDataAccessTest {
 	public void tearDown() throws IOException {
 		testDataAccess = null;
 		
-		Path path = getTestPath();
-
-        Files.createDirectories(path.getParent());
-        Files.deleteIfExists(path);
+		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 	
 	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR + "/" + TEST_FILE_NAME);
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
+	}
+	
+	private Charset getCharsetForFile() {
+		return Charset.forName("utf-8");
 	}
 }

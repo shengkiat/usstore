@@ -5,7 +5,14 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.DiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.MemberDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.service.impl.CheckOutService;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
+import sg.edu.nus.iss.uss.service.impl.ProductService;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -26,9 +33,12 @@ public class CheckOutServiceTest {
 
 
     @Before
-    public void setUp() {
-        mockMemberService = new MockMemberService(null);
-        mockDiscountService = new MockDiscountService(null);
+    public void setUp() throws UssException {
+        MemberDataAccess memberDataAccess = new MemberFileDataAccess();
+        DiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
+
+        mockMemberService = new MockMemberService(memberDataAccess);
+        mockDiscountService = new MockDiscountService(discountDataAccess);
     }
 
     @Test
@@ -170,7 +180,7 @@ public class CheckOutServiceTest {
 
     public class MockDiscountService extends DiscountService {
         public MockDiscountService (DiscountDataAccess discountFileAccess) {
-        	super(discountFileAccess);
+            super(discountFileAccess);
         }
 
         public int findHighestDiscountByMemberID(String memberID){

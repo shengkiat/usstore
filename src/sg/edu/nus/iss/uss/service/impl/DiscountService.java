@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,9 +10,10 @@ import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
+import sg.edu.nus.iss.uss.service.IDiscountService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class DiscountService extends UssCommonService {
+public class DiscountService extends UssCommonService implements IDiscountService{
 	private static final String MEMBER_FIRST_DISCOUNT = "MEMBER_FIRST";
 	private static final String MEMBER_SUBSEQ_DISCOUNT = "MEMBER_SUBSEQ";
 	

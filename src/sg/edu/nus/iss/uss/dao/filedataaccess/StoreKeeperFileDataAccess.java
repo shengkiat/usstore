@@ -5,17 +5,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.StoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 
 public class StoreKeeperFileDataAccess extends FileDataAccess implements
 		StoreKeeperDataAccess {
 
-	private List<StoreKeeper> storeKeppers = new ArrayList<StoreKeeper>();
+	private List<StoreKeeper> storeKeppers;
 
-	public StoreKeeperFileDataAccess() {
+	public StoreKeeperFileDataAccess() throws UssException {
 		super("Storekeepers.dat");
 	}
 
+	public StoreKeeperFileDataAccess(String fileName, String directory) throws UssException {
+		super(fileName, directory);
+	}
+	
 	@Override
 	public List<StoreKeeper> getAll() {
 
@@ -25,6 +30,9 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements
 
 	@Override
 	protected void initialLoad() {
+		
+		this.storeKeppers  = new ArrayList<StoreKeeper>();
+		
 		List<String[]> lines = this.readAll();
 
 		for (String[] line : lines) {

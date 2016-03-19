@@ -2,48 +2,29 @@ package sg.edu.nus.iss.uss.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
+import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class MemberServiceTest {
-	private static final String TEST_DATA_DIR;
-	private static final String TEST_FILE_NAME = "Members.dat";
-	
-	static {
-		StringBuilder builder = new StringBuilder(System.getProperty("user.dir"));
-		builder.append(File.separator).append("test");
-		builder.append(File.separator).append("sg");
-		builder.append(File.separator).append("edu");
-		builder.append(File.separator).append("nus");
-		builder.append(File.separator).append("iss");
-		builder.append(File.separator).append("uss");
-		builder.append(File.separator).append("service");
-		TEST_DATA_DIR =  builder.toString();
-	}
 
-	MemberService service = null;
+	IMemberService service = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		initFileWithThreeMembers();
-		service = new MemberService(new MemberFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR));
+		service = TestUtil.setUpMemberServiceWithThreeMember();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		service = null;
-		destoryFile();
+		TestUtil.destoryMemberServiceAndFile(service);
 	}
 	
 	@Test
@@ -98,7 +79,7 @@ public class MemberServiceTest {
 	
 
 	@Test
-	public void testRetrieveMembersAfterAddOneMember(){
+	public void testRetrieveMembersAfterAddOneMember() throws UssException{
 		List<Member> membersBefore = service.retrieveMemberList();
 		
 		assertEquals(3, membersBefore.size());
@@ -110,55 +91,5 @@ public class MemberServiceTest {
 		assertEquals(4, membersAfter.size());
 		
 	}
-	
-	
-	private void initFileWithThreeMembers() throws IOException{
-		/*
-		 * Create Members.dat file with three members
-		 * 
-		 */
-		
-		String [] lines = new String []{
-			"Yan Martel,F42563743156,150",
-			"Suraj Sharma,X437F356,250",
-			"Ang Lee,R64565FG4,-1"
-		};
-
-		createFileWithLines(TEST_DATA_DIR+ File.separator+ TEST_FILE_NAME, lines);
-		
-	}
-
-	private void createFileWithLines(String fileName, String[] lines) throws IOException {
-//		File file = new File("C:\\NUS\\project\\usstore\\test\\sg\\edu\\nus\\iss\\uss\\service\\Members.dat");
-
-		File file = new File(fileName);
-		
-		// if file doesnt exists, then create it
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-
-		FileWriter fw = new FileWriter(file.getAbsoluteFile());
-		BufferedWriter bw = new BufferedWriter(fw);
-		for(String line : lines){
-			bw.write(line);
-			bw.newLine();
-		}
-		
-		bw.close();
-		
-	}
-	
-	private void destoryFile(){
-		
-
-		File file = new File(TEST_DATA_DIR+ File.separator+ TEST_FILE_NAME);
-
-		// if file doesnt exists, then create it
-		if (file.exists()) {
-			file.delete();
-		}
-	}
-	
 
 }

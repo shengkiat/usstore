@@ -1,13 +1,14 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import sg.edu.nus.iss.uss.dao.MemberDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
+import sg.edu.nus.iss.uss.service.IMemberService;
 
 import java.util.List;
 
-public class MemberService extends UssCommonService {
+public class MemberService extends UssCommonService implements IMemberService{
 	public final static int INIT_LOYALTY_POINT = -1;
 	
 	private MemberDataAccess memberDataAccess = null;
@@ -24,26 +25,30 @@ public class MemberService extends UssCommonService {
 	private void setMemberDataAccess(MemberDataAccess memberDataAccess) {
 		this.memberDataAccess = memberDataAccess;
 	}
-
+	
+	@Override
 	public List<Member> retrieveMemberList(){
 		
 		return getMemberDataAccess().getAll();
 		
 	}
 	
+	@Override
 	public Member getMemberByMemberID(String memberID){
 		
 		return getMemberDataAccess().getMemberByMemberID(memberID);
 		
 	}
 	
-	public void registerNewMember(String name, String idCardNumber){
+	@Override
+	public void registerNewMember(String name, String idCardNumber) throws UssException{
 		
 		Member member = new Member(name, idCardNumber, INIT_LOYALTY_POINT);
 		
 		getMemberDataAccess().create(member);;
 	}
 	
+	@Override
 	public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException{
 		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
 		
@@ -53,6 +58,7 @@ public class MemberService extends UssCommonService {
 		getMemberDataAccess().update(member);
 	}
 	
+	@Override
 	public void addMemberLoyaltyPoint(int point, String memberID) throws UssException{
 		
 		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
@@ -71,6 +77,7 @@ public class MemberService extends UssCommonService {
 		
 	}
 	
+	@Override
 	public void deductMemberLoyltyPoint(int point, String memberID) throws UssException{
 		
 		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
@@ -85,11 +92,13 @@ public class MemberService extends UssCommonService {
 		getMemberDataAccess().update(member);
 	}
 	
+	@Override
     public boolean isValidMember(String memberID) {
 
         return getMemberDataAccess().isMemberExist(memberID);
     }
     
+	@Override
     public boolean isFirstPurpose(String memberID){
     	
     	//TODO 

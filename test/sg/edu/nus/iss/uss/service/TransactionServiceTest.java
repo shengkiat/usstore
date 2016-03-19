@@ -7,16 +7,17 @@ import java.util.List;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.impl.TransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
-
 import static org.junit.Assert.*;
 
 public class TransactionServiceTest {
 	
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullStartDate() {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullStartDate() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -29,8 +30,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForNullEndDate() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -43,8 +44,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+	public void testRetrieveTransactionListByDateShouldThrowExceptionForInvalidDates() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -58,8 +59,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+	public void testRetrieveTransactionListByDateShouldReturnNothingForNoTransaction() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -75,8 +76,8 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testRetrieveTransactionListByDateShouldReturnForMatchingTransaction() {
-		TransactionService service = new TransactionService(new MockTransactionFileDataAccess()
+	public void testRetrieveTransactionListByDateShouldReturnForMatchingTransaction() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess()
 				{
 				@Override
 				public List<Transaction> getAll() {
@@ -97,14 +98,40 @@ public class TransactionServiceTest {
 		List<Transaction> result = service.retrieveTransactionListByDate(startDate, endDate);
 		assertNotNull(result);
 		assertEquals(3, result.size());
-		
 	}
 	
-	private class MockTransactionFileDataAccess extends TransactionFileDataAccess {
+	@Test
+	public void testCreateTransactionsShouldBeSave() throws UssException {
+		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
+		List<Transaction> transactions = new ArrayList<>();
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-01-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-02-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
+		
+		service.createTransactions(transactions);
+		
+		Date startDate = UssCommonUtil.convertStringToDate("2016-02-01");
+		Date endDate = UssCommonUtil.convertStringToDate("2016-04-01");
+		List<Transaction> result = service.retrieveTransactionListByDate(startDate, endDate);
+		assertNotNull(result);
+		assertEquals(3, result.size());
+	}
+	
+	private class MockTransactionFileDataAccessWithoutFileAccess extends TransactionFileDataAccess {
+		
+		public MockTransactionFileDataAccessWithoutFileAccess()
+				throws UssException {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+
 		@Override
 		protected void initialLoad() {
 			//do nothing
 		}
 	}
+	
 }
