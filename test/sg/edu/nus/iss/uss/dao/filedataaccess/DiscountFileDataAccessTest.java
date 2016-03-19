@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -87,26 +88,18 @@ public class DiscountFileDataAccessTest {
 		testDiscountDataAccess.create(secondDiscount2);
 		
 		List<Discount> records = testDiscountDataAccess.getAll();
-		assertEquals(5, records.size());
+		assertEquals(2, records.size());
 	}
 	
 	@Test
-	public void testCreateAndGetAllWhenThereIsData() throws ParseException, UssException {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-	              new FileOutputStream(TestUtil.getTestPath(TEST_FILE_NAME)), "utf-8"))) {
-			writer.write("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M");
-			writer.newLine();
-			writer.write("MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M");
-			writer.newLine();
-			writer.write("CENTENARY,Centenary Celebration in 2014,2014-01-01,365,15,A");
-			writer.newLine();
-			writer.write("PRESIDENT_BDAY,University President's birthday,2014-01-01,365,20,A");
-			writer.newLine();
-		} 
+	public void testCreateAndGetAllWhenThereIsData() throws ParseException, UssException, IOException {
 		
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME), new String[] {
+				"MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M",
+				"MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M",
+				"CENTENARY,Centenary Celebration in 2014,2014-01-01,365,15,A",
+				"PRESIDENT_BDAY,University President's birthday,2014-01-01,365,20,A" 
+		});
 		
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
@@ -122,6 +115,6 @@ public class DiscountFileDataAccessTest {
 		testDiscountDataAccess.create(discount1);
 		
 		records = testDiscountDataAccess.getAll();
-		assertEquals(6, records.size());
+		assertEquals(5, records.size());
 	}
 }
