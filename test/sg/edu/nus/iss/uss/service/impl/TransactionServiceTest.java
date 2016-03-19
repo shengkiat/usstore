@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.service.impl.TransactionService;
@@ -84,11 +85,11 @@ public class TransactionServiceTest {
 				public List<Transaction> getAll() {
 					List<Transaction> transactions = new ArrayList<>();
 					
-					transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-01-01")));
-					transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-02-01")));
-					transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
-					transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
-					transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
+					transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-01-01")).build());
+					transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-02-01")).build());
+					transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-03-01")).build());
+					transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-04-01")).build());
+					transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-05-01")).build());
 					
 					return transactions;
 				}
@@ -106,11 +107,11 @@ public class TransactionServiceTest {
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
 		List<Transaction> transactions = new ArrayList<>();
-		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-01-01")));
-		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-02-01")));
-		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
-		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
-		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
+		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-01-01")).build());
+		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-02-01")).build());
+		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-03-01")).build());
+		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-04-01")).build());
+		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-05-01")).build());
 		
 		service.createTransactions(transactions);
 		

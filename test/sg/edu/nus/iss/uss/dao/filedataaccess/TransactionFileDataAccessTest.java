@@ -21,6 +21,7 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
@@ -35,11 +36,10 @@ public class TransactionFileDataAccessTest {
 	public void testCreateAndGetAllWhenThereIsNoDataForSingleTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
-		Date currentDate = new Date();
 		List<Transaction> transactions = new ArrayList<>();
 		
-		transactions.add(new Transaction("CLO/1", "F42563743156", 2, currentDate));
-		transactions.add(new Transaction("MUG/1", "F42563743156", 3, currentDate));
+		transactions.add(new TestTransactionBuilder().build());
+		transactions.add(new TestTransactionBuilder().build());
 		
 		for(Transaction transaction : transactions) {
 			assertEquals(0, transaction.getTransactionID());
@@ -62,15 +62,15 @@ public class TransactionFileDataAccessTest {
 		Date currentDate = new Date();
 		List<Transaction> firstTransactions = new ArrayList<>();
 		
-		firstTransactions.add(new Transaction("CLO/1", "F42563743156", 2, currentDate));
-		firstTransactions.add(new Transaction("MUG/1", "F42563743156", 3, currentDate));
+		firstTransactions.add(new TestTransactionBuilder().build());
+		firstTransactions.add(new TestTransactionBuilder().build());
 		
 		testDataAccess.create(firstTransactions);
 		
 		List<Transaction> secondTransactions = new ArrayList<>();
 		
-		secondTransactions.add(new Transaction("MUG/2", "F42563743156", 2, currentDate));
-		secondTransactions.add(new Transaction("CLO/2", "F42563743156", 3, currentDate));
+		secondTransactions.add(new TestTransactionBuilder().build());
+		secondTransactions.add(new TestTransactionBuilder().build());
 		
 		testDataAccess.create(secondTransactions);
 		
@@ -95,8 +95,8 @@ public class TransactionFileDataAccessTest {
 		Date currentDate = new Date();
 		List<Transaction> transactions = new ArrayList<>();
 		
-		transactions.add(new Transaction("CLO/1", "F42563743156", 2, currentDate));
-		transactions.add(new Transaction("MUG/1", "F42563743156", 3, currentDate));
+		transactions.add(new TestTransactionBuilder().build());
+		transactions.add(new TestTransactionBuilder().build());
 		
 		for(Transaction transaction : transactions) {
 			assertEquals(0, transaction.getTransactionID());
