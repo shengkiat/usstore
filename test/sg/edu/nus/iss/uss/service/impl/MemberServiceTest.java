@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
+import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.impl.MemberService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 

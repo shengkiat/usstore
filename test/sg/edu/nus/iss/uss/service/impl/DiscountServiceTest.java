@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.*;
 

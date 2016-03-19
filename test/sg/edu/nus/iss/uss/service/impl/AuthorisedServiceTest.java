@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +16,7 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
 import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
 
 public class AuthorisedServiceTest {

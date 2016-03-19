@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -18,6 +18,7 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
+import sg.edu.nus.iss.uss.service.IVendorService;
 import sg.edu.nus.iss.uss.service.impl.VendorService;
 
 public class VendorServiceTest {

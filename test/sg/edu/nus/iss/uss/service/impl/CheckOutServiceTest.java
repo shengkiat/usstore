@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.service;
+package sg.edu.nus.iss.uss.service.impl;
 
 import org.junit.Before;
 import org.junit.Test;
