@@ -20,7 +20,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements Transac
 	
 	private static final int TOTAL_FIELDS = 5;
 	
-	private List<Transaction> records;
+	private List<Transaction> records = new ArrayList<>();
 	private int currentTransactionId;
 
 	public TransactionFileDataAccess() {

@@ -97,7 +97,26 @@ public class TransactionServiceTest {
 		List<Transaction> result = service.retrieveTransactionListByDate(startDate, endDate);
 		assertNotNull(result);
 		assertEquals(3, result.size());
+	}
+	
+	@Test
+	public void testCreateTransactionsShouldBeSave() {
+		TransactionService service = new TransactionService(new MockTransactionFileDataAccess());
 		
+		List<Transaction> transactions = new ArrayList<>();
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-01-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-02-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-03-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-04-01")));
+		transactions.add(new Transaction("", "", 1, UssCommonUtil.convertStringToDate("2016-05-01")));
+		
+		service.createTransactions(transactions);
+		
+		Date startDate = UssCommonUtil.convertStringToDate("2016-02-01");
+		Date endDate = UssCommonUtil.convertStringToDate("2016-04-01");
+		List<Transaction> result = service.retrieveTransactionListByDate(startDate, endDate);
+		assertNotNull(result);
+		assertEquals(3, result.size());
 	}
 	
 	private class MockTransactionFileDataAccess extends TransactionFileDataAccess {
