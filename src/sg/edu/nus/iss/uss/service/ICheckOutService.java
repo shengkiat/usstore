@@ -1,10 +1,10 @@
 package sg.edu.nus.iss.uss.service;
 
-import java.util.List;
-
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
 import sg.edu.nus.iss.uss.model.PayItem;
 import sg.edu.nus.iss.uss.model.Product;
+
+import java.util.List;
 
 public interface ICheckOutService {
 	
@@ -26,7 +26,7 @@ public interface ICheckOutService {
 	
 	public String printoutReceipt(CheckoutSummary checkoutSummary);
 	
-    public int convertDollarToPoint(int dollar);
+    public int convertDollarToPoint(double dollar);
 
 	public int convertPointToDollar(int point);
 	
