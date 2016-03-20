@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 import sg.edu.nus.iss.uss.dao.filedataaccess.FileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
+import sg.edu.nus.iss.uss.client.ReportTransactionTableModelTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccessTest;
 import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscountTest;
@@ -33,7 +34,8 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	MemberOnlyDiscountTest.class,
 	CheckOutServiceTest.class,
 	DiscountServiceTest.class,
-	ReportingServiceTest.class
+	ReportingServiceTest.class,
+	ReportTransactionTableModelTest.class
 })
 public class AllTests {
 
