@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+
 public class UssCommonUtil {
 
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
@@ -14,13 +17,12 @@ public class UssCommonUtil {
 		return DEFAULT_DATE_FORMATTER.format(date);
 	}
 	
-	public static Date convertStringToDate(String date) {
+	public static Date convertStringToDate(String date) throws UssException {
+		
 		try {
 			return DEFAULT_DATE_FORMATTER.parse(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new UssException(ErrorConstants.UssCode.VALIDATION, "The date format must be " + DATE_FORMAT);
 		}
 	}
 	

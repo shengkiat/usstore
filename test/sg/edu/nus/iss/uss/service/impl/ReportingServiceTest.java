@@ -29,26 +29,26 @@ public class ReportingServiceTest {
 	private IReportingService reportingService;
 
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveReportTransactionsShouldThrowExceptionForNullStartDate() {
+	public void testRetrieveReportTransactionsShouldThrowExceptionForNullStartDate() throws UssException {
 		Date endDate = UssCommonUtil.convertStringToDate("2013-01-02");
 		reportingService.retrieveReportTransactions(null, endDate);
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testRetrieveReportTransactionsShouldThrowExceptionForNullEndDate() {
+	public void testRetrieveReportTransactionsShouldThrowExceptionForNullEndDate() throws UssException {
 		Date startDate = UssCommonUtil.convertStringToDate("2013-01-01");
 		reportingService.retrieveReportTransactions(startDate, null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testRetrieveReportTransactionsShouldThrowExceptionForInvalidDates() {
+	public void testRetrieveReportTransactionsShouldThrowExceptionForInvalidDates() throws UssException {
 		Date startDate = UssCommonUtil.convertStringToDate("2013-01-03");
 		Date endDate = UssCommonUtil.convertStringToDate("2013-01-02");
 		reportingService.retrieveReportTransactions(startDate, endDate);
 	}
 	
 	@Test
-	public void testRetrieveReportTransactionsShouldRetrieveSuccessfullyWithSortedProductId() {
+	public void testRetrieveReportTransactionsShouldRetrieveSuccessfullyWithSortedProductId() throws UssException {
 		
 		String[] testProductIds = new String[] {
 				"STA/2", "CLO/1", "STA/1", "STA/1", "CLO/1"

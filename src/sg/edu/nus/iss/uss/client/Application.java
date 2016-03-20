@@ -24,10 +24,18 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
+import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.service.IReportingService;
+import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.ProductService;
+import sg.edu.nus.iss.uss.service.impl.ReportingService;
+import sg.edu.nus.iss.uss.service.impl.TransactionService;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -47,7 +55,7 @@ public class Application {
 	
 	private IStoreKeeperDataAccess storeKeeperDAO;
 	private IAuthorisedService authService;
-
+	private IReportingService reportingService;
 	
 	
 	/**
@@ -94,6 +102,11 @@ public class Application {
 		
 		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
 		this.authService = new AuthorisedService(storeKeeperDAO);
+
+		ITransactionService transactionService = new TransactionService(new TransactionFileDataAccess());
+		IProductService productService = new ProductService(new ProductFileDataAccess());
+		
+		this.reportingService = new ReportingService(transactionService, productService);
 		
 		
 		frame = new JFrame();
@@ -259,7 +272,7 @@ public class Application {
 		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnNonMemberPay);
 	
-		JPanel reportingTransactionPanel = new ReportTransactionPanel();
+		JPanel reportingTransactionPanel = new ReportTransactionPanel(frame, reportingService);
 		//reportingTransactionPanel.add(scrollPane);
 		
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");

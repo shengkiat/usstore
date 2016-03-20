@@ -35,7 +35,7 @@ private static final String FILE_NAME = "Discounts.dat";
 	}
 	
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
 		records = new ArrayList<>();		
 		List<String[]> stringContent = readAll();
 		/*if(readAll().size() < 5) {

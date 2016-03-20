@@ -37,7 +37,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements ITransa
 	}
 	
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
 		records = new ArrayList<>();
 		currentTransactionId = 0;
 		
