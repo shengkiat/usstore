@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -230,6 +232,19 @@ public class FileDataAccessTest {
 		
 		assertEquals(1, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
+	}
+	
+	@Before
+	public void setUp() throws IOException {
+		Path path = getTestPath();
+
+        Files.createDirectories(path.getParent());
+
+        try {
+            Files.createFile(path);
+        } catch (FileAlreadyExistsException e) {
+            throw new RuntimeException("Test data file already exists: " + e.getMessage());
+        }
 	}
 	
 	@After
