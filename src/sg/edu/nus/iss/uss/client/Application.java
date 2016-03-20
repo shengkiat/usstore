@@ -193,9 +193,6 @@ public class Application {
 		JMenuItem mntmProducts = new JMenuItem("Products");
 		mnReporting.add(mntmProducts);
 		
-		JMenuItem mntmTransactions = new JMenuItem("Transactions");
-		mnReporting.add(mntmTransactions);
-		
 		JMenuItem mntmMembers = new JMenuItem("Members");
 		mnReporting.add(mntmMembers);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
@@ -262,8 +259,24 @@ public class Application {
 		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnNonMemberPay);
 	
+		JPanel reportingTransactionPanel = new ReportTransactionPanel();
+		//reportingTransactionPanel.add(scrollPane);
 		
-
+		JMenuItem mntmTransactions = new JMenuItem("Transactions");
+		mntmTransactions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(leftPanel);
+				frame.remove(rightClickPaymentPanel);
+				frame.remove(rightMemberPanel);
+				
+				frame.add(reportingTransactionPanel);
+				
+                frame.revalidate(); // For Java 1.7 or above.
+                // frame.getContentPane().validate(); // For Java 1.6 or below.
+                frame.repaint();
+			}
+		});
+		mnReporting.add(mntmTransactions);
 		
 		
 
