@@ -38,6 +38,12 @@ abstract class FileDataAccess {
 	
 	protected void writeNewLine(String[] arr) throws UssException {
 		validateInput(arr);
+		
+		List<String[]> existingContents = readAll();
+		
+		if (isValidatingRecordFoundRequiredWhenWriteNewLine() && isRecordFound(arr, existingContents)) {
+			throw new UssException(ErrorConstants.UssCode.DAO, "Record already exist using key, " + getPrimaryKey(arr));
+		}
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), true))) {
 			writer.write(generateWriteContent(arr));
@@ -55,7 +61,7 @@ abstract class FileDataAccess {
 		
 		List<String[]> existingContents = readAll();
 		
-		validatePrimaryKeyFound(arr, existingContents);
+		validateRecordExist(arr, existingContents);
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
 			
@@ -78,7 +84,7 @@ abstract class FileDataAccess {
 		
 		List<String[]> existingContents = readAll();
 		
-		validatePrimaryKeyFound(arr, existingContents);
+		validateRecordExist(arr, existingContents);
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
 			
@@ -111,16 +117,22 @@ abstract class FileDataAccess {
 		throw new UssException(ErrorConstants.UssCode.DAO, ErrorConstants.EMPTY_CONTENT);
 	}
 	
-	private void validatePrimaryKeyFound(String[] arr, List<String[]> existingContents) {
+	private void validateRecordExist(String[] arr, List<String[]> existingContents) {
+		if (!isRecordFound(arr, existingContents)) {
+			throw new IllegalArgumentException("Unable to found existing content to overwrite using " + getPrimaryKey(arr));
+		}
+	}
+	
+	private boolean isRecordFound(String[] arr, List<String[]> existingContents) {
 		Objects.requireNonNull(arr, "arr cannot be null");
 		
 		for(String[] existingContent: existingContents) {
 			if (getPrimaryKey(arr).equals(getPrimaryKey(existingContent))) {
-				return;
+				return true;
 			}
 		}
 		
-		throw new IllegalArgumentException("Unable to found existing content to overwrite using " + getPrimaryKey(arr));
+		return false;
 	}
 	
 	private String generateWriteContent(String[] arr) {
@@ -186,5 +198,9 @@ abstract class FileDataAccess {
 	protected abstract int getTotalNumberOfFields();
 	
 	protected abstract String getPrimaryKey(String[] arr);
+	
+	protected boolean isValidatingRecordFoundRequiredWhenWriteNewLine() {
+		return true;
+	}
 
 }

@@ -93,4 +93,9 @@ public class TransactionFileDataAccess extends FileDataAccess implements ITransa
 	protected int getTotalNumberOfFields() {
 		return TOTAL_FIELDS;
 	}
+	
+	@Override
+	protected boolean isValidatingRecordFoundRequiredWhenWriteNewLine() {
+		return false;
+	}
 }

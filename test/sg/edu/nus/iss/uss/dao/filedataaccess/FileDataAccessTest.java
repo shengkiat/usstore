@@ -100,6 +100,23 @@ public class FileDataAccessTest {
 		assertEquals(expectedFileContentTwo, result.get(1));
 	}
 	
+	@Test(expected=UssException.class)
+	public void testWriteNewLineShouldThrowExceptionForRecordAlreadyExist() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] arrTwo = new String[2];
+		arrTwo[0] = "tester";
+		arrTwo[1] = "this is for testing";
+		
+		testDataAccess.writeNewLine(arrTwo);
+	}
+	
 	@Test(expected=NullPointerException.class)
 	public void testOverwriteLineShouldThrowExceptionForNullParameter() throws UssException {
 		testDataAccess = new FileDataAccessImpl();
