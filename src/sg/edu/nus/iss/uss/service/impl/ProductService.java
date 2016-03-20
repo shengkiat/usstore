@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.uss.service.impl;
 
-import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.IProductService;
@@ -18,9 +17,13 @@ public class ProductService extends UssCommonService implements IProductService{
 	
 	
 	public Product getProductByProductID(String productID){
-		//TODO TBI
-		
-		return null;
+		Product product = null;
+		for(Product prd:retrieveProductList()){
+		     if (prd.getProductID().equals(productID)) {
+		    	 product = prd;
+		     }
+		}
+		return product;
 	}
 	
 	public List<Product> retrieveProductList(){
@@ -31,9 +34,9 @@ public class ProductService extends UssCommonService implements IProductService{
 		
 		List<Product> prdList = new ArrayList<>();
 			
-		for(Product Prd:retrieveProductList()){
-		     if (Prd.isBelowThreshold()) {
-		    	  prdList.add(Prd);
+		for(Product prd:retrieveProductList()){
+		     if (prd.isBelowThreshold()) {
+		    	  prdList.add(prd);
 		     }
 		}
 		
