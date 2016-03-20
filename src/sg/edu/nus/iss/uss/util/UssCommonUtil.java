@@ -19,6 +19,10 @@ public class UssCommonUtil {
 	
 	public static Date convertStringToDate(String date) throws UssException {
 		
+		if (date == null || !date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+			throw new UssException(ErrorConstants.UssCode.VALIDATION, "The date format must be " + DATE_FORMAT);
+		}
+		
 		try {
 			return DEFAULT_DATE_FORMATTER.parse(date);
 		} catch (ParseException e) {
