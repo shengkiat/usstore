@@ -13,6 +13,10 @@ public class UssCommonUtil {
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 	
+	public static SimpleDateFormat getDefaultDateFormatter() {
+		return DEFAULT_DATE_FORMATTER;
+	}
+	
 	public static String convertDateToString(Date date){
 		return DEFAULT_DATE_FORMATTER.format(date);
 	}

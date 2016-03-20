@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.service.IReportingService;
@@ -26,8 +28,8 @@ public class ReportTransactionPanel extends JPanel {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
-	private JTextField textFieldStartDate;
-	private JTextField textFieldEndDate;
+	private JFormattedTextField textFieldStartDate;
+	private JFormattedTextField textFieldEndDate;
 	
 	private JTable searchResult;
 	
@@ -41,14 +43,14 @@ public class ReportTransactionPanel extends JPanel {
 		JLabel lblStartDate = new JLabel("Start Date(" + UssCommonUtil.DATE_FORMAT + "):");
 		searchPanel.add(lblStartDate);
 		
-		textFieldStartDate = new JTextField();
+		textFieldStartDate = new JFormattedTextField(UssCommonUtil.getDefaultDateFormatter());
 		searchPanel.add(textFieldStartDate);
 		textFieldStartDate.setColumns(10);
 		
 		JLabel lblEndDate = new JLabel("End Date(" + UssCommonUtil.DATE_FORMAT + "):");
 		searchPanel.add(lblEndDate);
 		
-		textFieldEndDate = new JTextField();
+		textFieldEndDate = new JFormattedTextField(UssCommonUtil.getDefaultDateFormatter());
 		searchPanel.add(textFieldEndDate);
 		textFieldEndDate.setColumns(10);
 		
@@ -60,7 +62,7 @@ public class ReportTransactionPanel extends JPanel {
 				String endDateStr = textFieldEndDate.getText();
 				
 				if ("".equals(startDateStr) || "".equals(endDateStr)) {
-					JOptionPane.showMessageDialog(new JFrame(), "Please enter Start Date and End Date", "Required Fields",
+					JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.REQUIRED_START_END_DATE, "",
 					        JOptionPane.ERROR_MESSAGE);
 				}
 				

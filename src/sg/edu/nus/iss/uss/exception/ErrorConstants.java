@@ -64,5 +64,5 @@ public class ErrorConstants {
 	/**
 	 ************************** VALIDATION ****************************************
 	 */
-
+	public static final String REQUIRED_START_END_DATE = "Please enter Start Date and End Date";
 }
