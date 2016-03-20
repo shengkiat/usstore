@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.client;
+package sg.edu.nus.iss.uss.client.reporting;
 
 import java.util.HashMap;
 import java.util.List;

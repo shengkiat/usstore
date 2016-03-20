@@ -23,6 +23,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;

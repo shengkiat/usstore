@@ -1,10 +1,11 @@
-package sg.edu.nus.iss.uss.client;
+package sg.edu.nus.iss.uss.client.reporting;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.client.reporting.ReportTransactionTableModel;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.TestReportTransactionBuilder;
 

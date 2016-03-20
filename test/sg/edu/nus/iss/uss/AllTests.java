@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 import sg.edu.nus.iss.uss.dao.filedataaccess.FileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
-import sg.edu.nus.iss.uss.client.ReportTransactionTableModelTest;
+import sg.edu.nus.iss.uss.client.reporting.ReportTransactionTableModelTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccessTest;
 import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscountTest;

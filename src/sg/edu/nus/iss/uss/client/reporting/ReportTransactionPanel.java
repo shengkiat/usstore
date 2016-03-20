@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.client;
+package sg.edu.nus.iss.uss.client.reporting;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
