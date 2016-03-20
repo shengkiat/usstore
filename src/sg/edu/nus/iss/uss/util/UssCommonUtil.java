@@ -4,23 +4,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+
 public class UssCommonUtil {
 
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 	
+	public static SimpleDateFormat getDefaultDateFormatter() {
+		return DEFAULT_DATE_FORMATTER;
+	}
+	
 	public static String convertDateToString(Date date){
 		return DEFAULT_DATE_FORMATTER.format(date);
 	}
 	
-	public static Date convertStringToDate(String date) {
+	public static Date convertStringToDate(String date) throws UssException {
+		
+		if (date == null || !date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+			throw new UssException(ErrorConstants.UssCode.VALIDATION, "The date format must be " + DATE_FORMAT);
+		}
+		
 		try {
 			return DEFAULT_DATE_FORMATTER.parse(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new UssException(ErrorConstants.UssCode.VALIDATION, "The date format must be " + DATE_FORMAT);
 		}
 	}
 	

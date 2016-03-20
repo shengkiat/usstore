@@ -3,7 +3,8 @@ package sg.edu.nus.iss.uss.exception;
 public class ErrorConstants {
 	
 	public enum UssCode {
-		  DAO(100),
+		  DAO(99),
+		  VALIDATION(100),
 		  AUTHORIZATION(101),
 		  CATEGORY(102),
 		  CHECKOUT(103),
@@ -59,5 +60,9 @@ public class ErrorConstants {
 	 ************************** DAO ****************************************
 	 */
 	public static final String EMPTY_CONTENT = "All arr content cannot be null or empty";
-
+	
+	/**
+	 ************************** VALIDATION ****************************************
+	 */
+	public static final String REQUIRED_START_END_DATE = "Please enter Start Date and End Date";
 }

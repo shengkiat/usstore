@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.uss.client;
+package sg.edu.nus.iss.uss.client.reporting;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +17,17 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 												   "Product Description", "Buyer", "Quantity Purchased",
 												   "Date"};
 	
-	private Map<Integer, ReportTransaction> reportTransactions;
+	private Map<Integer, ReportTransaction> reportTransactionMap;
 	
 	public ReportTransactionTableModel(List<ReportTransaction> reportTransactions) {
-		this.reportTransactions = new HashMap<>();
-		for(int i = 0; i<reportTransactions.size(); i++) {
-			this.reportTransactions.put(i, reportTransactions.get(i));
-		}
+		this.reportTransactionMap = new HashMap<>();
+		addIntoMap(reportTransactions);
 	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column){  
+        return false;  
+    }
 
 	@Override
 	public int getColumnCount() {
@@ -33,12 +36,17 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return reportTransactions.size();
+		return reportTransactionMap.size();
+	}
+	
+	@Override
+	public String getColumnName(int column) {
+		return COLUMN_NAMES[column];
 	}
 
 	@Override
 	public Object getValueAt(int row, int column) {
-		ReportTransaction reportTransaction = reportTransactions.get(row);
+		ReportTransaction reportTransaction = reportTransactionMap.get(row);
 		return toArray(reportTransaction)[column];
 	}
 	
@@ -54,6 +62,18 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 		result[6] = UssCommonUtil.convertDateToString(reportTransaction.getDate());
 		
 		return result;
+	}
+	
+	void updateData(List<ReportTransaction> reportTransactions) {
+		reportTransactionMap.clear();
+		addIntoMap(reportTransactions);
+		fireTableDataChanged();
+	}
+	
+	private void addIntoMap(List<ReportTransaction> reportTransactions) {
+		for(int i = 0; i<reportTransactions.size(); i++) {
+			this.reportTransactionMap.put(i, reportTransactions.get(i));
+		}
 	}
 
 }

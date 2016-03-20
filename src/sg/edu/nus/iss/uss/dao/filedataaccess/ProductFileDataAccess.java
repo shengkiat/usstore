@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
@@ -49,6 +50,8 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 	
 	@Override
 	protected void initialLoad() {
+		productList = new ArrayList<>();
+		
 		List<String[]> prdList = readAll(); 
 		Integer iQtyAvailable;
 		Double dblPrice;

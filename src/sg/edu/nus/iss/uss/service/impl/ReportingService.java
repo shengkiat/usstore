@@ -53,6 +53,8 @@ public class ReportingService extends UssCommonService implements IReportingServ
 		
 		for(Transaction transaction : transactions) {
 			Product product = productService.getProductByProductID(transaction.getProductID());	
+			
+			Objects.requireNonNull(product, "product should not be null using " + transaction.getProductID());
 			result.add(new ReportTransaction(transaction, product));
 		}
 		
