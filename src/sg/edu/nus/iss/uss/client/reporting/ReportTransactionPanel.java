@@ -75,6 +75,12 @@ public class ReportTransactionPanel extends JPanel {
 						
 						ReportTransactionTableModel tableModel = (ReportTransactionTableModel) searchResult.getModel();
 						tableModel.updateData(reportTransactions);
+						
+						if (reportTransactions.isEmpty()) {
+							JOptionPane.showMessageDialog(new JFrame(), "No records found", "",
+							        JOptionPane.INFORMATION_MESSAGE);
+						}
+						
 					} 
 					
 					catch (UssException e1) {
