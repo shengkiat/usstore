@@ -11,11 +11,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.client.ValidationDialog;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.service.IReportingService;
@@ -37,14 +39,14 @@ public class ReportTransactionPanel extends JPanel {
 		JPanel searchPanel = new JPanel();
 		this.add(searchPanel);
 		
-		JLabel lblStartDate = new JLabel("Start Date:");
+		JLabel lblStartDate = new JLabel("Start Date(" + UssCommonUtil.DATE_FORMAT + "):");
 		searchPanel.add(lblStartDate);
 		
 		textFieldStartDate = new JTextField();
 		searchPanel.add(textFieldStartDate);
 		textFieldStartDate.setColumns(10);
 		
-		JLabel lblEndDate = new JLabel("End Date:");
+		JLabel lblEndDate = new JLabel("End Date(" + UssCommonUtil.DATE_FORMAT + "):");
 		searchPanel.add(lblEndDate);
 		
 		textFieldEndDate = new JTextField();
@@ -55,11 +57,12 @@ public class ReportTransactionPanel extends JPanel {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String startDateStr = textFieldEndDate.getText();
+				String startDateStr = textFieldStartDate.getText();
 				String endDateStr = textFieldEndDate.getText();
 				
-				if (startDateStr == null || endDateStr == null) {
-					
+				if ("".equals(startDateStr) || "".equals(endDateStr)) {
+					JOptionPane.showMessageDialog(new JFrame(), "Please enter Start Date and End Date", "Required Fields",
+					        JOptionPane.ERROR_MESSAGE);
 				}
 				
 				else {
@@ -71,17 +74,31 @@ public class ReportTransactionPanel extends JPanel {
 						
 						ReportTransactionTableModel tableModel = (ReportTransactionTableModel) searchResult.getModel();
 						tableModel.updateData(reportTransactions);
-						
 					} 
 					
 					catch (UssException e1) {
-						
+						JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "",
+						        JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
 			}
 		});
 		searchPanel.add(btnSearch);
+		
+		JButton btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textFieldStartDate.setText("");
+				textFieldEndDate.setText("");
+				
+				ReportTransactionTableModel tableModel = (ReportTransactionTableModel) searchResult.getModel();
+				tableModel.updateData(new ArrayList<ReportTransaction>());
+				
+			}
+		});
+		searchPanel.add(btnReset);
 		
 		searchResult = new JTable(new ReportTransactionTableModel(new ArrayList<ReportTransaction>()));
 		
