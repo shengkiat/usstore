@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 
 public class ReportTransactionTableModelTest {
 	
+	private static final int EXPECTED_COLUMN_COUNT = 7;
+	
 	@Test
 	public void testGetRowCountShouldBeCorrect() {
 		List<ReportTransaction> reportTransactions = new ArrayList<>();
@@ -25,7 +27,23 @@ public class ReportTransactionTableModelTest {
 	@Test
 	public void testGetColumnCountShouldBeCorrect() {
 		ReportTransactionTableModel tableModel = new ReportTransactionTableModel(new ArrayList<ReportTransaction>());
-		assertEquals(7, tableModel.getColumnCount());
+		assertEquals(EXPECTED_COLUMN_COUNT, tableModel.getColumnCount());
+	}
+	
+	@Test
+	public void testGetValueAtShouldBeCorrect() {
+		List<ReportTransaction> reportTransactions = new ArrayList<>();
+		reportTransactions.add(new TestReportTransactionBuilder().build());
+		reportTransactions.add(new TestReportTransactionBuilder().build());
+		
+		ReportTransactionTableModel tableModel = new ReportTransactionTableModel(reportTransactions);
+		
+		for(int row = 0; row<reportTransactions.size(); row++) {
+			for(int column = 0; column<EXPECTED_COLUMN_COUNT; column++) {
+				assertNotNull(tableModel.getValueAt(row, column));
+			}
+		}
+		
 	}
 
 }
