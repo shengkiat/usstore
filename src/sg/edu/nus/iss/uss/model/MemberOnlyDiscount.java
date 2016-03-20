@@ -2,9 +2,11 @@ package sg.edu.nus.iss.uss.model;
 
 import java.math.BigDecimal;
 
+import sg.edu.nus.iss.uss.exception.UssException;
+
 public class MemberOnlyDiscount extends Discount{
 
-	public MemberOnlyDiscount(String discountCode, String description, double discountPercentage) {
+	public MemberOnlyDiscount(String discountCode, String description, double discountPercentage) throws UssException {
 		super(discountCode, description, discountPercentage);
 	}
 	@Override

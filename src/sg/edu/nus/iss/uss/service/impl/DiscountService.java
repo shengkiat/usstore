@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.uss.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,64 +15,39 @@ import sg.edu.nus.iss.uss.util.UssCommonUtil;
 public class DiscountService extends UssCommonService implements IDiscountService{
 	private static final String MEMBER_FIRST_DISCOUNT = "MEMBER_FIRST";
 	private static final String MEMBER_SUBSEQ_DISCOUNT = "MEMBER_SUBSEQ";
-	
-	private List<Discount> availableDiscountList;
+
 	private IDiscountDataAccess discountFileAccess;
 	
 	public DiscountService(IDiscountDataAccess discountFileAccess) {
 		this.discountFileAccess = discountFileAccess;
-		availableDiscountList = new ArrayList<Discount>();
-		availableDiscountList = discountFileAccess.getAll();
 	}
 	
 	public List<Discount> getAll() {
-		return availableDiscountList;
+		return discountFileAccess.getAll();
 	}
 	
-	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
-		ValidateIncomingPrameters(discountCode, description, discountPercentage, startDate, discountDays);
-		if(DiscountExists(discountCode))
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_EXISTS);
+	public void addNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+		validateStartDate(startDate);
 		DaySpecialDiscount temp = new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays);
-		availableDiscountList.add(temp);
 		discountFileAccess.create(temp);
 	}
 	
-	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
-		ValidateIncomingPrameters(discountCode, description, discountPercentage, startDate, discountDays);
-		if(DiscountExists(discountCode))
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
-		int index = -1;
-		for(Discount temp : availableDiscountList) {
-			if(temp.getDiscountCode() == discountCode) {
-				index = availableDiscountList.indexOf(temp);
-				if(temp instanceof MemberOnlyDiscount) {
-					MemberOnlyDiscount moDis = (MemberOnlyDiscount)temp;
-					moDis.setDescription(description);
-					moDis.setDiscountPercentage(discountPercentage);
-					availableDiscountList.set(index, moDis);
-					discountFileAccess.update(moDis);
-				}
-				else if(temp instanceof DaySpecialDiscount) {
-					DaySpecialDiscount dsDis = (DaySpecialDiscount)temp;
-					dsDis.setDescription(description);
-					dsDis.setDiscountPercentage(discountPercentage);
-					dsDis.setStartDate(startDate);
-					dsDis.setDiscountDays(discountDays);
-					availableDiscountList.set(index, dsDis);
-					discountFileAccess.update(dsDis);
-				}
-			}
+	public void updateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+		validateStartDate(startDate);
+		Discount discount = discountFileAccess.getDiscountByDiscountCode(discountCode);
+		if(discount instanceof MemberOnlyDiscount) {
+			MemberOnlyDiscount moDis = (MemberOnlyDiscount)discount;
+			moDis.setDescription(description);
+			moDis.setDiscountPercentage(discountPercentage);
+			discountFileAccess.update(moDis);
 		}
-	}
-	
-	public void RemoveDiscount(String discountCode) throws UssException {
-		if(DiscountExists(discountCode))
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
-		for(Discount temp : availableDiscountList) {
-			if(temp.getDiscountCode() == discountCode) {
-					availableDiscountList.remove(temp);
-			}
+		else if(discount instanceof DaySpecialDiscount) {
+			DaySpecialDiscount dsDis = (DaySpecialDiscount)discount;
+			dsDis.setDescription(description);
+			dsDis.setDiscountPercentage(discountPercentage);
+			dsDis.setStartDate(startDate);
+			dsDis.setDiscountDays(discountDays);
+			discountFileAccess.update(dsDis);
 		}
 	}
 	
@@ -81,42 +55,28 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 		double memberDiscount = getTodaysDiscount();
 		if(isMember) {
 			if(isFirstPurchase) {
-				if(memberDiscount < getMemberFirstDiscount()) {
-					memberDiscount = getMemberFirstDiscount();
+				if(memberDiscount < getDiscountValueByCode(MEMBER_FIRST_DISCOUNT)) {
+					memberDiscount = getDiscountValueByCode(MEMBER_FIRST_DISCOUNT);
 				}
 			}
 			else {
-				if(memberDiscount < getMemberSubseqDiscount()) {
-					memberDiscount = getMemberSubseqDiscount();
+				if(memberDiscount < getDiscountValueByCode(MEMBER_SUBSEQ_DISCOUNT)) {
+					memberDiscount = getDiscountValueByCode(MEMBER_SUBSEQ_DISCOUNT);
 				}
 			}
 		}
 		return memberDiscount;
 	}
 	
-	private double getMemberFirstDiscount() {
-		for(Discount temp : availableDiscountList) {
-			if(temp.getDiscountCode().equals(MEMBER_FIRST_DISCOUNT)) {
-				return temp.getDiscountPercentage();
-			}
-		}
-		return 0;
-	}
-	
-	private double getMemberSubseqDiscount() {
-		for(Discount temp : availableDiscountList) {
-			if(temp.getDiscountCode().equals(MEMBER_SUBSEQ_DISCOUNT)) {
-				return temp.getDiscountPercentage();
-			}
-		}
-		return 0;
+	private double getDiscountValueByCode(String dicountcode) {
+		return discountFileAccess.getDiscountByDiscountCode(dicountcode).getDiscountPercentage();
 	}
 		
 	private double getTodaysDiscount() {
 		double todaysHighestDiscount = 0.0;
 		Date today = new Date();
 		
-		for(Discount discount : availableDiscountList) {
+		for(Discount discount : discountFileAccess.getAll()) {
 			if(discount instanceof DaySpecialDiscount) {
 				if (UssCommonUtil.isDateWithinRange(((DaySpecialDiscount) discount).getStartDate(), ((DaySpecialDiscount) discount).getEndDate(), today)) {
 					if(todaysHighestDiscount < discount.getDiscountPercentage()) {
@@ -128,24 +88,8 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 		return todaysHighestDiscount;
 	}
 	
-	private void ValidateIncomingPrameters(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
-		if(discountCode == null)
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_CODE);
-		if(description == null)
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
-		if(discountPercentage < 0 || discountPercentage > 100)
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+	private void validateStartDate(Date startDate) throws UssException {
 		if(UssCommonUtil.isDateLeftGreaterThanRight(new Date(), startDate))
 			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_STARTDATE);
-		if(discountDays <= 0)
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DAYS);
-	}
-	
-	private boolean DiscountExists(String discountCode) {
-		for(Discount temp : availableDiscountList) {
-			if(temp.getDiscountCode() == discountCode)
-				return true;
-		}
-		return false;
 	}
 }

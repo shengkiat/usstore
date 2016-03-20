@@ -4,14 +4,18 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class DaySpecialDiscount extends Discount{
 	private Date startDate;
 	private int discountDays;//Period of discount in days (where applicable or “ALWAYS”)
 
-	public DaySpecialDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) {
+	public DaySpecialDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		super(discountCode, description, discountPercentage);
+		if(discountDays <= 0)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DAYS);
 		this.startDate = startDate;
 		this.discountDays = discountDays;
 	}
@@ -25,7 +29,9 @@ public class DaySpecialDiscount extends Discount{
 	public int getDiscountDays() {
 		return discountDays;
 	}
-	public void setDiscountDays(int discountDays) {
+	public void setDiscountDays(int discountDays) throws UssException {
+		if(discountDays <= 0)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DAYS);
 		this.discountDays = discountDays;
 	}
 	

@@ -1,12 +1,19 @@
 package sg.edu.nus.iss.uss.model;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+
 public abstract class Discount {
 	
 	private String discountCode;
 	private String description;
 	private double discountPercentage;//Percentage discount without the percentage symbol e.g. “10” for 10% discount
 	
-	public Discount(String discountCode, String description, double discountPercentage) {
+	public Discount(String discountCode, String description, double discountPercentage) throws UssException {
+		if(discountCode == null)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_CODE);
+		if(discountPercentage < 0 || discountPercentage > 100)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
 		this.discountCode = discountCode;
 		this.description = description;
 		this.discountPercentage = discountPercentage;
@@ -26,18 +33,10 @@ public abstract class Discount {
 	public double getDiscountPercentage() {
 		return discountPercentage;
 	}
-	public void setDiscountPercentage(double discountPercentage) {
+	public void setDiscountPercentage(double discountPercentage) throws UssException {
+		if(discountPercentage < 0 || discountPercentage > 100)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
 		this.discountPercentage = discountPercentage;
-	}
-	
-	public boolean isValid() {
-		
-		return true;//TODO
-	}
-	
-	public boolean isValidToday() {
-		
-		return true;//TODO
 	}	
 	
 	@Override
