@@ -83,7 +83,7 @@ public class DaySpecialDiscountTest {
 	}
 
 	@Test
-	public void testSetStartDate() {
+	public void testSetStartDate() throws UssException {
 		discount1.setStartDate(UssCommonUtil.convertStringToDate("2016-05-07"));
 		assertEquals("2016-05-07", UssCommonUtil.convertDateToString(discount1.getStartDate()));
 		

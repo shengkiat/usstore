@@ -64,7 +64,7 @@ public class DiscountFileDataAccessTest {
 			"MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M",
 			"CENTENARY,Centenary Celebration in 2014,2014-01-01,365,15,A",
 			"PRESIDENT_BDAY,University President's birthday,2014-02-01,365,20,A",
-			"ORIENTATION_DAY,Orientation Day, 2014-02-02,3,50,A"
+			"ORIENTATION_DAY,Orientation Day,2014-02-02,3,50,A"
 			});
 	}
 	@Test
@@ -94,7 +94,7 @@ public class DiscountFileDataAccessTest {
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		assertEquals(5, testDiscountDataAccess.getAll().size());
 	
-		DaySpecialDiscount discount = new DaySpecialDiscount("ORIENTATION_DAY", "Orientation day", 50, UssCommonUtil.convertStringToDate("2014-02-01"),7);
+		DaySpecialDiscount discount = new DaySpecialDiscount("ORIENTATION_DAY", "Orientation day", 50, UssCommonUtil.convertStringToDate("2016-12-01"),7);
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.DISCOUNT_EXISTS);
 		testDiscountDataAccess.create(discount);	
