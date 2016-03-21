@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class ReportTransactionTableModel extends AbstractTableModel {
+final class ReportTransactionTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
@@ -19,9 +19,8 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 	
 	private Map<Integer, ReportTransaction> reportTransactionMap;
 	
-	public ReportTransactionTableModel(List<ReportTransaction> reportTransactions) {
+	public ReportTransactionTableModel() {
 		this.reportTransactionMap = new HashMap<>();
-		addIntoMap(reportTransactions);
 	}
 	
 	@Override
@@ -53,13 +52,13 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 	private String[] toArray(ReportTransaction reportTransaction) {
 		String[] result = new String[getColumnCount()];
 		
-		result[0] = "" + reportTransaction.getTransactionID();
-		result[1] = reportTransaction.getProductID();
-		result[2] = reportTransaction.getProductName();
-		result[3] = reportTransaction.getProductBriefDescription();
-		result[4] = reportTransaction.getBuyerID();
-		result[5] = "" + reportTransaction.getQuantityPurchased();
-		result[6] = UssCommonUtil.convertDateToString(reportTransaction.getDate());
+		result[ReportTransactionColumn.COLUMN_TRANSACTION_ID.getIndex()] = "" + reportTransaction.getTransactionID();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_ID.getIndex()] = reportTransaction.getProductID();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_NAME.getIndex()] = reportTransaction.getProductName();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_DESCRIPTION.getIndex()] = reportTransaction.getProductBriefDescription();
+		result[ReportTransactionColumn.COLUMN_BUYER_ID.getIndex()] = reportTransaction.getBuyerID();
+		result[ReportTransactionColumn.COLUMN_QUANTITY_PURCHASE.getIndex()] = "" + reportTransaction.getQuantityPurchased();
+		result[ReportTransactionColumn.COLUMN_DATE.getIndex()] = UssCommonUtil.convertDateToString(reportTransaction.getDate());
 		
 		return result;
 	}

@@ -50,7 +50,7 @@ public class ReportingServiceTest {
 	@Test
 	public void testRetrieveReportTransactionsShouldRetrieveSuccessfullyWithSortedProductId() throws UssException {
 		
-		String[] testProductIds = new String[] {
+		final String[] testProductIds = new String[] {
 				"STA/2", "CLO/1", "STA/1", "STA/1", "CLO/1"
 		};
 		

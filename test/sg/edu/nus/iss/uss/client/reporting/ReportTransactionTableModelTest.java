@@ -21,13 +21,15 @@ public class ReportTransactionTableModelTest {
 		reportTransactions.add(new TestReportTransactionBuilder().build());
 		reportTransactions.add(new TestReportTransactionBuilder().build());
 		
-		ReportTransactionTableModel tableModel = new ReportTransactionTableModel(reportTransactions);
+		ReportTransactionTableModel tableModel = new ReportTransactionTableModel();
+		tableModel.updateData(reportTransactions);
+		
 		assertEquals(reportTransactions.size(), tableModel.getRowCount());
 	}
 	
 	@Test
 	public void testGetColumnCountShouldBeCorrect() {
-		ReportTransactionTableModel tableModel = new ReportTransactionTableModel(new ArrayList<ReportTransaction>());
+		ReportTransactionTableModel tableModel = new ReportTransactionTableModel();
 		assertEquals(EXPECTED_COLUMN_COUNT, tableModel.getColumnCount());
 	}
 	
@@ -37,7 +39,8 @@ public class ReportTransactionTableModelTest {
 		reportTransactions.add(new TestReportTransactionBuilder().build());
 		reportTransactions.add(new TestReportTransactionBuilder().build());
 		
-		ReportTransactionTableModel tableModel = new ReportTransactionTableModel(reportTransactions);
+		ReportTransactionTableModel tableModel = new ReportTransactionTableModel();
+		tableModel.updateData(reportTransactions);
 		
 		for(int row = 0; row<reportTransactions.size(); row++) {
 			for(int column = 0; column<EXPECTED_COLUMN_COUNT; column++) {
