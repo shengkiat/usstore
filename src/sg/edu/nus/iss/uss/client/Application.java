@@ -53,7 +53,7 @@ public class Application {
 	private JTextField textFieldBarcode;
 	
 
-	private JPanel rightEnterAmountPanel;
+	private JPanel leftPanel, rightEnterAmountPanel;
 	
 	private JPanel rightFinishPaymentPanel;
 	
@@ -224,7 +224,7 @@ public class Application {
 		mnReporting.add(mntmMembers);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		JPanel leftPanel = new JPanel();
+		 leftPanel = new JPanel();
 		leftPanel.setBounds(800, 800, 200, 100);
 		frame.getContentPane().add(leftPanel);
 		
@@ -452,9 +452,10 @@ public class Application {
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");
 		mntmTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//frame.remove(leftPanel);
-				//frame.remove(rightClickPaymentPanel);
-				//frame.remove(rightMemberPanel);
+				frame.remove(leftPanel);
+				frame.remove(rightFinishPaymentPanel);
+				frame.remove(rightEnterAmountPanel);
+				frame.remove(rightMemberPanel);
 				
 				frame.add(reportingTransactionPanel);
 				
