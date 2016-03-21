@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -25,6 +26,7 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
@@ -50,7 +52,7 @@ public class Application {
 
 	private JFrame frame;
 	//private AuthorisedService authService = new AuthorisedService();
-	private JTextField textFieldBarcode;
+	private JTextField txtBarcode;
 	
 
 	private JPanel leftPanel, rightEnterAmountPanel;
@@ -62,6 +64,10 @@ public class Application {
 	private IStoreKeeperDataAccess storeKeeperDAO;
 	private IAuthorisedService authService;
 	private IReportingService reportingService;
+	private IProductDataAccess productDAO;
+	private IProductService productService;
+	
+	
 	
 
 	private JTextField txtAmountReceived;
@@ -70,7 +76,7 @@ public class Application {
 	private JLabel lbl1, lbl2, lbl3;
 	private	JLabel lblMemberName, lblMemberLoyaltyPts, lblAmountReceived;
 
-
+	private DefaultTableModel shoppingcart;
 	
 	/**
 	 * Launch the application.
@@ -114,6 +120,7 @@ public class Application {
 	 */
 	private void initialize() throws UssException {
 		
+		// Initialize Services
 		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
 		this.authService = new AuthorisedService(storeKeeperDAO);
 
@@ -121,6 +128,22 @@ public class Application {
 		IProductService productService = new ProductService(new ProductFileDataAccess());
 		
 		this.reportingService = new ReportingService(transactionService, productService);
+		
+		this.productDAO  = new ProductFileDataAccess();
+		this.productService = new ProductService(productDAO);
+		
+		
+		
+		
+		
+		// Initialize Table Model use for shopping cart
+		shoppingcart = new DefaultTableModel(0, 0);
+		// add header of the table
+		String header[] = new String[] { "Product", "Price"};
+
+		// add header in table model     
+		shoppingcart.setColumnIdentifiers(header);
+		
 		
 		
 		frame = new JFrame();
@@ -228,15 +251,13 @@ public class Application {
 		leftPanel.setBounds(800, 800, 200, 100);
 		frame.getContentPane().add(leftPanel);
 		
-		String[] selections = { "green", "red", "orange", "dark blue" };
-		
-		String[] columnNames = {"Product Name","Price"};
-		Object[][] data = { { "Orange", "$4"},
-                { "Apple", "$5"} };
-		JTable tbScanProducts = new JTable(data, columnNames);
 		
 		
-		JList list = new JList(selections);
+
+		JTable tbScanProducts = new JTable();
+		tbScanProducts.setModel(shoppingcart);
+		
+
 		//tbScanProducts.setValueIsAdjusting(true);
 		tbScanProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -254,11 +275,20 @@ public class Application {
 		JLabel lblBarcode = new JLabel("BarCode:");
 		barcodePanel.add(lblBarcode);
 		
-		textFieldBarcode = new JTextField();
-		barcodePanel.add(textFieldBarcode);
-		textFieldBarcode.setColumns(10);
+		txtBarcode = new JTextField();
+		barcodePanel.add(txtBarcode);
+		txtBarcode.setColumns(10);
 		
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO
+				readBarcode();
+				
+				
+				
+			}
+		});
 		barcodePanel.add(btnAdd);
 		scrollPane.setPreferredSize(new Dimension(500, 500));
 		leftPanel.add(scrollPane);
@@ -457,7 +487,7 @@ public class Application {
 				frame.remove(rightEnterAmountPanel);
 				frame.remove(rightMemberPanel);
 				
-				frame.add(reportingTransactionPanel);
+				frame.getContentPane().add(reportingTransactionPanel);
 				
                 frame.revalidate(); // For Java 1.7 or above.
                 // frame.getContentPane().validate(); // For Java 1.6 or below.
@@ -523,6 +553,13 @@ private void memberMakePayment(){
 		
 	}
 	
+	private void readBarcode(){
+		
+		String barcode  = txtBarcode.getText();
+		
+		
 	
+		
+	}
 
 }
