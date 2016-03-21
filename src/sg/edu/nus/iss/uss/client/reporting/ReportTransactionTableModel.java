@@ -52,13 +52,13 @@ final class ReportTransactionTableModel extends AbstractTableModel {
 	private String[] toArray(ReportTransaction reportTransaction) {
 		String[] result = new String[getColumnCount()];
 		
-		result[0] = "" + reportTransaction.getTransactionID();
-		result[1] = reportTransaction.getProductID();
-		result[2] = reportTransaction.getProductName();
-		result[3] = reportTransaction.getProductBriefDescription();
-		result[4] = reportTransaction.getBuyerID();
-		result[5] = "" + reportTransaction.getQuantityPurchased();
-		result[6] = UssCommonUtil.convertDateToString(reportTransaction.getDate());
+		result[ReportTransactionColumn.COLUMN_TRANSACTION_ID.getIndex()] = "" + reportTransaction.getTransactionID();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_ID.getIndex()] = reportTransaction.getProductID();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_NAME.getIndex()] = reportTransaction.getProductName();
+		result[ReportTransactionColumn.COLUMN_PRODUCT_DESCRIPTION.getIndex()] = reportTransaction.getProductBriefDescription();
+		result[ReportTransactionColumn.COLUMN_BUYER_ID.getIndex()] = reportTransaction.getBuyerID();
+		result[ReportTransactionColumn.COLUMN_QUANTITY_PURCHASE.getIndex()] = "" + reportTransaction.getQuantityPurchased();
+		result[ReportTransactionColumn.COLUMN_DATE.getIndex()] = UssCommonUtil.convertDateToString(reportTransaction.getDate());
 		
 		return result;
 	}

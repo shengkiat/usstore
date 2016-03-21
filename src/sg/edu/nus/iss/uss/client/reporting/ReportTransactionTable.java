@@ -14,19 +14,19 @@ final class ReportTransactionTable extends JTable {
 	}
 	
 	private void adjustColumnWidth() {
-		TableColumn transactionIdCol = getColumnModel().getColumn(0);
+		TableColumn transactionIdCol = getColumnModel().getColumn(ReportTransactionColumn.COLUMN_TRANSACTION_ID.getIndex());
 		transactionIdCol.setPreferredWidth(20);
 		
-		TableColumn productIdCol = getColumnModel().getColumn(1);
+		TableColumn productIdCol = getColumnModel().getColumn(ReportTransactionColumn.COLUMN_PRODUCT_DESCRIPTION.getIndex());
 		productIdCol.setPreferredWidth(10);
 		
-		TableColumn productNameCol = getColumnModel().getColumn(2);
+		TableColumn productNameCol = getColumnModel().getColumn(ReportTransactionColumn.COLUMN_PRODUCT_NAME.getIndex());
 		productNameCol.setPreferredWidth(50);
 		
-		TableColumn productDescriptionCol = getColumnModel().getColumn(3);
+		TableColumn productDescriptionCol = getColumnModel().getColumn(ReportTransactionColumn.COLUMN_PRODUCT_DESCRIPTION.getIndex());
 		productDescriptionCol.setPreferredWidth(150);
 		
-		TableColumn buyerCol = getColumnModel().getColumn(4);
+		TableColumn buyerCol = getColumnModel().getColumn(ReportTransactionColumn.COLUMN_BUYER_ID.getIndex());
 		buyerCol.setPreferredWidth(20);
 	}
 }
