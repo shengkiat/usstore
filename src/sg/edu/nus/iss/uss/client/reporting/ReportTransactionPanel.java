@@ -33,7 +33,7 @@ public class ReportTransactionPanel extends JPanel {
 	
 	private JTable searchResult;
 	
-	public ReportTransactionPanel(JFrame frame, IReportingService reportingService) {
+	public ReportTransactionPanel(JFrame frame, final IReportingService reportingService) {
 		setBounds(800, 800, 200, 100);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		

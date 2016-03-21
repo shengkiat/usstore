@@ -427,6 +427,25 @@ public class Application {
 		
 		btnMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnMemberPay);
+		
+		JButton btnNonMemberPay = new JButton("Non Member");
+		btnNonMemberPay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				//TODO
+				nonMemberMakePayment();
+				
+				
+				
+				
+			}
+		});
+		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		rightMemberPanel.add(btnNonMemberPay);
+		
+		
+		
+		
 		final JPanel reportingTransactionPanel = new ReportTransactionPanel(frame, reportingService);
 		//reportingTransactionPanel.add(scrollPane);
 		
