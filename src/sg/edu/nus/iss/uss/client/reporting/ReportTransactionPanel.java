@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -24,14 +22,14 @@ import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class ReportTransactionPanel extends JPanel {
+public final class ReportTransactionPanel extends JPanel {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
 	private JFormattedTextField textFieldStartDate;
 	private JFormattedTextField textFieldEndDate;
 	
-	private JTable searchResult;
+	private ReportTransactionTable searchResult;
 	
 	public ReportTransactionPanel(JFrame frame, final IReportingService reportingService) {
 		setBounds(800, 800, 200, 100);
@@ -53,6 +51,9 @@ public class ReportTransactionPanel extends JPanel {
 		textFieldEndDate = new JFormattedTextField(UssCommonUtil.getDefaultDateFormatter());
 		searchPanel.add(textFieldEndDate);
 		textFieldEndDate.setColumns(10);
+		
+		//textFieldStartDate.setText("2011-01-01");
+		//textFieldEndDate.setText("2016-01-01");
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -107,7 +108,7 @@ public class ReportTransactionPanel extends JPanel {
 		});
 		searchPanel.add(btnReset);
 		
-		searchResult = new JTable(new ReportTransactionTableModel(new ArrayList<ReportTransaction>()));
+		searchResult = new ReportTransactionTable();
 		
 		JScrollPane scrollPane = new JScrollPane(searchResult);
 		this.add( scrollPane, BorderLayout.CENTER );

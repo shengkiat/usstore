@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public class ReportTransactionTableModel extends AbstractTableModel {
+final class ReportTransactionTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
@@ -19,9 +19,8 @@ public class ReportTransactionTableModel extends AbstractTableModel {
 	
 	private Map<Integer, ReportTransaction> reportTransactionMap;
 	
-	public ReportTransactionTableModel(List<ReportTransaction> reportTransactions) {
+	public ReportTransactionTableModel() {
 		this.reportTransactionMap = new HashMap<>();
-		addIntoMap(reportTransactions);
 	}
 	
 	@Override
