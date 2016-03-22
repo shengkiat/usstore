@@ -234,6 +234,21 @@ public class Application {
 		});
 		mnCategory.add(mntmNewCategory);
 		
+		JMenu mnPromotion = new JMenu("Promotions");
+		menuBar.add(mnPromotion);
+		
+		JMenuItem mntmNewPromotion = new JMenuItem("New Promotion");
+		mntmNewPromotion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				NewPromotionDialog promotionDlg = new NewPromotionDialog();
+				
+				promotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				promotionDlg.setVisible(true);	
+			}
+		});
+		mnPromotion.add(mntmNewPromotion);
+		
 		JMenu mnReporting = new JMenu("Reporting");
 		menuBar.add(mnReporting);
 		
