@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -96,6 +98,23 @@ public class FileDataAccessTest {
 		assertEquals(2, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
 		assertEquals(expectedFileContentTwo, result.get(1));
+	}
+	
+	@Test(expected=UssException.class)
+	public void testWriteNewLineShouldThrowExceptionForRecordAlreadyExist() throws UssException {
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester";
+		arrOne[1] = "p12345678";
+		
+		testDataAccess.writeNewLine(arrOne);
+		
+		String[] arrTwo = new String[2];
+		arrTwo[0] = "tester";
+		arrTwo[1] = "this is for testing";
+		
+		testDataAccess.writeNewLine(arrTwo);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -230,6 +249,19 @@ public class FileDataAccessTest {
 		
 		assertEquals(1, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
+	}
+	
+	@Before
+	public void setUp() throws IOException {
+		Path path = getTestPath();
+
+        Files.createDirectories(path.getParent());
+
+        try {
+            Files.createFile(path);
+        } catch (FileAlreadyExistsException e) {
+            throw new RuntimeException("Test data file already exists: " + e.getMessage());
+        }
 	}
 	
 	@After

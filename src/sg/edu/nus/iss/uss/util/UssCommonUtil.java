@@ -10,15 +10,18 @@ import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Product;
 
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+
 public class UssCommonUtil {
 
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 	
-	
 	public static HashMap<Category,ArrayList<Product>> catPrdHMap ;
 	
+
 	public static SimpleDateFormat getDefaultDateFormatter() {
 		return DEFAULT_DATE_FORMATTER;
 	}
@@ -63,7 +66,7 @@ public class UssCommonUtil {
     public void Clear_HM() {
     	catPrdHMap.clear();
     	}
-    }
+    
     
     
 }

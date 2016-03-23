@@ -95,7 +95,7 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 
 	@Override
 	protected String getPrimaryKey(String[] arr) {
-		throw new RuntimeException("not implemented yet");
+		return arr[0];
 	}
 
 	@Override

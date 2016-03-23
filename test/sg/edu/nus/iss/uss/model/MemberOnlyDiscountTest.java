@@ -4,12 +4,20 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
 
 public class MemberOnlyDiscountTest {
 	//Test fixtures
 	MemberOnlyDiscount memDiscount1 = null;
 	MemberOnlyDiscount memDiscount2 = null;
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 
 	@Before
 	public void setUp() throws Exception {
@@ -24,7 +32,7 @@ public class MemberOnlyDiscountTest {
 	}
 	
 	@Test
-	public void testMemberOnlyDiscountTest() {
+	public void testMemberOnlyDiscount() {
 		assertEquals("MEMBER_FIRST", memDiscount1.getDiscountCode());
 		assertEquals("First purchase by member", memDiscount1.getDescription());
 		assertEquals(10.5, memDiscount1.getDiscountPercentage(),0);
@@ -33,6 +41,20 @@ public class MemberOnlyDiscountTest {
 		assertEquals("Subsequent purchase by member", memDiscount2.getDescription());
 		assertEquals(12.5, memDiscount2.getDiscountPercentage(),0);
 		assertEquals("MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,12.5,M", memDiscount2.toString());
+	}
+	
+	@Test
+	public void testMemberOnlyDiscountWithInvalidCode() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_CODE);
+		memDiscount2 = new MemberOnlyDiscount(null, "Subsequent purchase by member", 12.5);
+	}
+	
+	@Test
+	public void testMemberOnlyDiscountWithInvalidPercentaage() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		memDiscount2 = new MemberOnlyDiscount("TEST", "Subsequent purchase by member", 112.5);
 	}
 
 	@Test
@@ -76,10 +98,17 @@ public class MemberOnlyDiscountTest {
 	}
 
 	@Test
-	public void testSetDiscountPercentage() {
+	public void testSetDiscountPercentage() throws UssException {
 		memDiscount1.setDiscountPercentage(10.20);
 		assertEquals(10.2, memDiscount1.getDiscountPercentage(),0);
 		assertEquals("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,10.2,M", memDiscount1.toString());
+	}
+	
+	@Test
+	public void testSetInvalidDiscountPercentage() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		memDiscount1.setDiscountPercentage(110.20);
 	}
 
 }

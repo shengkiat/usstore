@@ -86,7 +86,7 @@ public class StoreKeeperFileDataAccess extends FileDataAccess implements
 
 	@Override
 	protected String getPrimaryKey(String[] arr) {
-		throw new RuntimeException("not implemented yet");
+		return arr[0];
 	}
 
 	@Override

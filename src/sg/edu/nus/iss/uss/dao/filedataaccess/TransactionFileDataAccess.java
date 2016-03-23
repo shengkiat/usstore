@@ -37,7 +37,7 @@ public class TransactionFileDataAccess extends FileDataAccess implements ITransa
 	}
 	
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
 		records = new ArrayList<>();
 		currentTransactionId = 0;
 		
@@ -92,5 +92,10 @@ public class TransactionFileDataAccess extends FileDataAccess implements ITransa
 	@Override
 	protected int getTotalNumberOfFields() {
 		return TOTAL_FIELDS;
+	}
+	
+	@Override
+	protected boolean isValidatingRecordFoundRequiredWhenWriteNewLine() {
+		return false;
 	}
 }

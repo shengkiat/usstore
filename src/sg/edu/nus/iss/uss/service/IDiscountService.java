@@ -10,13 +10,11 @@ public interface IDiscountService {
 	
 	public List<Discount> getAll();
 
-	public void AddNewDiscount(String discountCode, String description, double discountPercentage, Date startDate,
+	public void addNewDiscount(String discountCode, String description, double discountPercentage, Date startDate,
 			int discountDays) throws UssException;
 
-	public void UpdateDiscount(String discountCode, String description, double discountPercentage, Date startDate,
+	public void updateDiscount(String discountCode, String description, double discountPercentage, Date startDate,
 			int discountDays) throws UssException;
-
-	public void RemoveDiscount(String discountCode) throws UssException;
 
 	public double getMembersTodaysHighestDiscount(Boolean isMember, Boolean isFirstPurchase);
 }

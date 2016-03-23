@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
+
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
@@ -37,7 +38,8 @@ public class ProductService extends UssCommonService implements IProductService{
 		
 		for(Category cat : catList)
 		{
-			if (!UssCommonUtil.catPrdHMap.containsKey(cat)) {
+			if (!UssCommonUtil.catPrdHMap.containsKey(cat)) 
+			{
 				for(Product prd : prdList)
 				{
                     ArrayList<Product> pList = new ArrayList<Product> ();
@@ -49,15 +51,6 @@ public class ProductService extends UssCommonService implements IProductService{
 			}
 		}
 	}
-	
-	public Category getCategory(String categorycode){
-		for(Category cat: retrieveCategoryList())
-		{
-		   if (cat.getCode().toUpperCase().equals(categorycode.toUpperCase())) 
-			   category = cat;
-		}
-        return category;   
-	}
 
 	public Product getProductByProductID(String productID){
 		Product product = null;
@@ -67,6 +60,15 @@ public class ProductService extends UssCommonService implements IProductService{
 		     }
 		}
 		return product;
+	}
+	
+	public Category getCategory(String categorycode){
+		for(Category cat: retrieveCategoryList())
+		{
+		   if (cat.getCode().toUpperCase().equals(categorycode.toUpperCase())) 
+			   category = cat;
+		}
+        return category;   
 	}
 	
 	

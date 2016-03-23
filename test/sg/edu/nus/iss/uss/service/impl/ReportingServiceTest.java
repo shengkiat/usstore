@@ -137,11 +137,6 @@ public class ReportingServiceTest {
 			throw new RuntimeException("not expected to call");
 		}
 
-		@Override
-		public Product createNewProductEntry(String categoryCode,int prdtNo, String productName, String briefDescription,
-				int price, int barCodeNumber, int reorderQuantity, int orderQuantity) {
-			throw new RuntimeException("not expected to call");
-		}
 
 		@Override
 		public boolean checkIfProductIsBelowThreshold(Product product) {
@@ -151,6 +146,20 @@ public class ReportingServiceTest {
 		@Override
 		public void deductInventoryFromCheckout(List<Product> productItems) {
 			throw new RuntimeException("not expected to call");
+		}
+
+		@Override
+		public List<Product> retrieveProductListByThreshold() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void createNewProductEntry(String categoryCode, String productName, String briefDescription,
+				int QuantityAvailable, double price, int barCodeNumber, int reorderQuantity, int orderQuantity)
+				throws UssException {
+			throw new RuntimeException("not expected to call");
+			
 		}
 	}
 }
