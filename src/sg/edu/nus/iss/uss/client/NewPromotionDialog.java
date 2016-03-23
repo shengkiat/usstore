@@ -3,6 +3,8 @@ package sg.edu.nus.iss.uss.client;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -140,9 +142,25 @@ public class NewPromotionDialog extends JDialog {
 		getContentPane().add(panel, gbc_panel);
 		
 		JButton btnAddProduct = new JButton("Add Promotion");
+		/*btnAddProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					IDiscountDataAccess discountDataAcess = new DiscountFileDataAccess();
+				} catch (UssException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				IDiscountService dicountService = new DiscountService(discountDataAcess);
+			}
+		});*/
 		panel.add(btnAddProduct);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		panel.add(btnCancel);
 	}
 
