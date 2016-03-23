@@ -125,12 +125,12 @@ public class Application {
 		this.authService = new AuthorisedService(storeKeeperDAO);
 
 		ITransactionService transactionService = new TransactionService(new TransactionFileDataAccess());
-		IProductService productService = new ProductService(new ProductFileDataAccess());
+		IProductService productService = new ProductService(new ProductFileDataAccess(), null);
 		
 		this.reportingService = new ReportingService(transactionService, productService);
 		
 		this.productDAO  = new ProductFileDataAccess();
-		this.productService = new ProductService(productDAO);
+		this.productService = new ProductService(productDAO, null);
 		
 		
 		

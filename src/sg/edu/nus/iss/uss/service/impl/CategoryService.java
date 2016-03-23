@@ -5,6 +5,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.ICategoryService;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -25,12 +26,12 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 	public void createNewCategory(String code, String Name)  throws UssException {
 		
 		categoryAdditionValidation(code);
-		
 	    Category cat= new Category();
 		cat.setCode(code);
 		cat.setName(Name);
 		catDataAccess.create(cat);
-	
+		UssCommonUtil.catPrdHMap.put(cat, null);
+		
 	}
 	
 	private void categoryAdditionValidation(String code) throws UssException  {

@@ -11,8 +11,20 @@ import sg.edu.nus.iss.uss.model.Product;
 public class ProductFileDataAccess extends FileDataAccess implements IProductDataAccess {
 	private List<Product> productList;
 	
+	private static final String FILE_NAME = "Products.dat";
+	private static final int FIELD_PRODUCT_ID = 0;
+	private static final int FIELD_NAME = 1;
+	private static final int FIELD_DESCRIPTION = 2;
+	private static final int FIELD_QUANTITY_AVAILABLE = 3;
+	private static final int FIELD_PRICE = 4;
+	private static final int FIELD_BARCODENUMBER = 5;
+	private static final int FIELD_REORDER_QUANTITY = 6;
+	private static final int FIELD_ORDER_QUANTITY = 7;
+	
+	private static final int TOTAL_FIELDS = 8;
+	
 	public ProductFileDataAccess() throws UssException {
-		super("Products.dat");
+		super(FILE_NAME);
 	}
 
 	@Override
@@ -21,30 +33,32 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 	}
 
 	@Override
-	public void create(Product e) throws UssException {
-		String[] strPrd = new String[getTotalNumberOfFields()];
-		strPrd[0] = e.getProductID();
-		strPrd[1] = e.getName();
-		strPrd[2] = e.getBriefDescription();
-		strPrd[3] = "" + e.getQuantityAvailable();
-		strPrd[4] = "" + e.getPrice();
-		strPrd[5] = "" + e.getBarCodeNumber();
-		strPrd[6] = "" + e.getReorderQuantity();
-		strPrd[7] = "" + e.getOrderQuantity();
+	public void create(Product e) throws UssException  {
+		String[] strPrd = new String[TOTAL_FIELDS];
+		
+		strPrd[FIELD_PRODUCT_ID] = e.getProductID();
+		strPrd[FIELD_NAME] = e.getName();
+		strPrd[FIELD_DESCRIPTION] = e.getBriefDescription();
+		strPrd[FIELD_QUANTITY_AVAILABLE] = "" + e.getQuantityAvailable();
+		strPrd[FIELD_PRICE] = "" + e.getPrice();
+		strPrd[FIELD_BARCODENUMBER] = "" + e.getBarCodeNumber();
+		strPrd[FIELD_REORDER_QUANTITY] = "" + e.getReorderQuantity();
+		strPrd[FIELD_ORDER_QUANTITY] = "" + e.getOrderQuantity();
+		
 		writeNewLine(strPrd);
 	}
 
 	@Override
-	public void update(Product e) throws UssException {
-		String[] strPrd = new String[getTotalNumberOfFields()];
-		strPrd[0] = e.getProductID();
-		strPrd[1] = e.getName();
-		strPrd[2] = e.getBriefDescription();
-		strPrd[3] = "" + e.getQuantityAvailable();
-		strPrd[4] = "" + e.getPrice();
-		strPrd[5] = "" + e.getBarCodeNumber();
-		strPrd[6] = "" + e.getReorderQuantity();
-		strPrd[7] = "" + e.getOrderQuantity();
+	public void update(Product e) throws UssException  {
+		String[] strPrd = new String[TOTAL_FIELDS];
+		strPrd[FIELD_PRODUCT_ID] = e.getProductID();
+		strPrd[FIELD_NAME] = e.getName();
+		strPrd[FIELD_DESCRIPTION] = e.getBriefDescription();
+		strPrd[FIELD_QUANTITY_AVAILABLE] = "" + e.getQuantityAvailable();
+		strPrd[FIELD_PRICE] = "" + e.getPrice();
+		strPrd[FIELD_BARCODENUMBER] = "" + e.getBarCodeNumber();
+		strPrd[FIELD_REORDER_QUANTITY] = "" + e.getReorderQuantity();
+		strPrd[FIELD_ORDER_QUANTITY] = "" + e.getOrderQuantity();
 		overwriteLine(strPrd);
 	}
 	
@@ -53,33 +67,41 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		productList = new ArrayList<>();
 		
 		List<String[]> prdList = readAll(); 
+  
 		Integer iQtyAvailable;
 		Double dblPrice;
 		Integer iBarCodeNo;
 		Integer iQtyReOrder;
 		Integer iOrderQty;
 		
+		Product prdt;
+		
 		for(String[] str: prdList)
 		{
-			iQtyAvailable = Integer.parseInt(str[3]);
-			dblPrice = Double.parseDouble(str[4]);
-			iBarCodeNo = Integer.parseInt(str[5]);
-			iQtyReOrder = Integer.parseInt(str[6]);
-			iOrderQty = Integer.parseInt(str[7]);
+			iQtyAvailable = Integer.parseInt(str[FIELD_QUANTITY_AVAILABLE]);
+			dblPrice = Double.parseDouble(str[FIELD_PRICE]);
+			iBarCodeNo = Integer.parseInt(str[FIELD_BARCODENUMBER]);
+			iQtyReOrder = Integer.parseInt(str[FIELD_REORDER_QUANTITY]);
+			iOrderQty = Integer.parseInt(str[FIELD_ORDER_QUANTITY]);
 			
-			productList.add(new Product(str[0],str[1],str[2],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty));
+			prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty);
+			prdt.setProductNo(prdt.getProductNo());
+			productList.add(prdt);
 				
 		}
+		
+		
+		
 	}
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {
-		return arr[0];
+		return arr[FIELD_PRODUCT_ID];
 	}
 	
 	@Override
 	protected int getTotalNumberOfFields() {
-		return 8;
+		return TOTAL_FIELDS;
 	}
 	
 }
