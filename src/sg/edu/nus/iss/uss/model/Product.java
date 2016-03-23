@@ -120,7 +120,9 @@ public class Product implements Comparator<Product> {
         Integer sPos = this.productID.indexOf('/');
         Integer ePos = this.productID.indexOf(',');
 		
-        return ((productNo == 0) ? Integer.parseInt(this.productID.substring(sPos+1, ePos)) : this.productNo);
+        ////return ((productNo == 0) ? Integer.parseInt(this.productID.substring(sPos+1, ePos)) : this.productNo)
+        
+        return productNo;
 	}
 	
 	public String getCategoryCode(){
