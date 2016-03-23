@@ -1,6 +1,10 @@
 package sg.edu.nus.iss.uss.model;
 
-public class Product {
+import java.util.Comparator;
+import java.util.HashMap;
+
+public class Product implements Comparator<Product> {	
+	
 	private String productID;
 	private String name;
 	private String briefDescription;
@@ -9,19 +13,25 @@ public class Product {
 	private int barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
+	private int productNo;
+	private int purchaseQty;
+	
+	//HashMap<String,int> noofPrdt = new HaspMap<String,int>();
 	
 	public String getProductID() {
 		return productID;
 	}
-	public void setProductID(String productID) {
-		this.productID = productID;
+	public void setProductID(String catCode,int prdtNo) {
+		this.productID = catCode + "/" + String.valueOf(prdtNo) ;
 	}
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getBriefDescription() {
 		return briefDescription;
 	}
@@ -29,10 +39,20 @@ public class Product {
 		this.briefDescription = briefDescription;
 	}
 	public int getQuantityAvailable() {
-		return quantityAvailable;
+		return (quantityAvailable);
 	}
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
+	}
+	public int getpurchaseQty() {
+		return (purchaseQty);
+	}
+	public void setpurchaseQty(int qtyPurchased) {
+		this.purchaseQty = qtyPurchased;
+		this.quantityAvailable = quantityAvailable - qtyPurchased;
+	}
+	public void DeductQtyAvailable(int PurchaseQty) {	
+		   this.quantityAvailable = this.quantityAvailable - PurchaseQty;
 	}
 	public double getPrice() {
 		return price;
@@ -80,11 +100,44 @@ public class Product {
 		String sReOrderqty = "" + this.reorderQuantity;
 		String sOrderqty = "" + this.orderQuantity;
 		
-		return 	productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty;  
+		return 	(productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty);  
 	     
 	}
 	
 	public boolean isBelowThreshold(){
-	    return (this.quantityAvailable >= this.reorderQuantity);	    
+		boolean blnThreshold = ((this.quantityAvailable >= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
+	    return blnThreshold ;	    
 	}
+	
+	public void setProductNo(int productNo){
+		this.productNo = productNo;
+	}
+	
+	public int getProductNo(){
+		// extract numeric portion out of the string and 
+	    // and compare them convert them to int
+		 
+        Integer sPos = this.productID.indexOf('/');
+        Integer ePos = this.productID.indexOf(',');
+		
+        return ((productNo == 0) ? Integer.parseInt(this.productID.substring(sPos+1, ePos)) : this.productNo);
+	}
+	
+	public String getCategoryCode(){
+	    return this.getProductID().substring(0, this.getProductID().indexOf("/"));
+	}
+	
+	 public static class ProductByIDNo implements Comparator<Product> {
+	  @Override
+	  public int compare(Product Prdt1, Product Prdt2) {
+	       return Prdt1.getProductNo() - Prdt2.getProductNo();
+	    }
+	  }
+
+		@Override
+		public int compare(Product o1, Product o2) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
 }
