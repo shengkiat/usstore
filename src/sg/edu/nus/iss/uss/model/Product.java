@@ -1,7 +1,10 @@
 package sg.edu.nus.iss.uss.model;
 
 import java.util.Comparator;
-import java.util.HashMap;
+
+import sg.edu.nus.iss.uss.exception.UssException;
+
+//Comparator<Product>,
 
 public class Product implements Comparator<Product> {	
 	
@@ -13,10 +16,11 @@ public class Product implements Comparator<Product> {
 	private int barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
+	//Added
 	private int productNo;
 	private int purchaseQty;
 	
-	//HashMap<String,int> noofPrdt = new HaspMap<String,int>();
+	public Product() {}
 	
 	public String getProductID() {
 		return productID;
@@ -47,12 +51,13 @@ public class Product implements Comparator<Product> {
 	public int getpurchaseQty() {
 		return (purchaseQty);
 	}
-	public void setpurchaseQty(int qtyPurchased) {
+	public void setpurchaseQty(int qtyPurchased) throws UssException {
 		this.purchaseQty = qtyPurchased;
-		this.quantityAvailable = quantityAvailable - qtyPurchased;
+		DeductQtyAvailable();
 	}
-	public void DeductQtyAvailable(int PurchaseQty) {	
-		   this.quantityAvailable = this.quantityAvailable - PurchaseQty;
+	
+	public void DeductQtyAvailable() {	
+		   this.quantityAvailable = this.quantityAvailable - this.purchaseQty;
 	}
 	public double getPrice() {
 		return price;
@@ -110,36 +115,36 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public void setProductNo(int productNo){
+		if (this.productNo ==0) {
+			// throw exception, product no cannot be 0
+		}
 		this.productNo = productNo;
 	}
 	
 	public int getProductNo(){
-		// extract numeric portion out of the string and 
-	    // and compare them convert them to int
-		 
-        Integer sPos = this.productID.indexOf('/');
-        Integer ePos = this.productID.indexOf(',');
-		
-        ////return ((productNo == 0) ? Integer.parseInt(this.productID.substring(sPos+1, ePos)) : this.productNo)
-        
-        return productNo;
+		if (this.productNo == 0)     { 
+	        Integer sPos = this.productID.indexOf('/');
+	        Integer ePos = this.productID.indexOf(',');
+	        this.productNo = Integer.parseInt(this.productID.substring(sPos+1, ePos));
+		}
+        return this.productNo;
 	}
 	
 	public String getCategoryCode(){
 	    return this.getProductID().substring(0, this.getProductID().indexOf("/"));
 	}
 	
-	 public static class ProductByIDNo implements Comparator<Product> {
-	  @Override
-	  public int compare(Product Prdt1, Product Prdt2) {
-	       return Prdt1.getProductNo() - Prdt2.getProductNo();
-	    }
-	  }
 
-		@Override
-		public int compare(Product o1, Product o2) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
+	@Override
+	public int compare(Product p1, Product p2) {
+		// TODO Auto-generated method stub
+	    
+		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo()));
+		/*int i = p1.getCategoryCode().compareTo(p2.getCategoryCode());
+		if (i==0) i = p1.getProductNo() - p2.getProductNo();
+		return i;*/
+	     
+	     
+	}
 
 }
