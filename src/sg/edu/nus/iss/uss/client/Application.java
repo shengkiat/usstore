@@ -182,6 +182,16 @@ public class Application {
 		menuBar.add(mnInventory);
 
 		JMenuItem mntmAddStock = new JMenuItem("Add Stock");
+		mntmAddStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReplenishInventoryDialog addStockDlg = new ReplenishInventoryDialog(productService);
+				
+				addStockDlg.setLocationRelativeTo(null);
+				addStockDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				addStockDlg.setVisible(true);
+				
+			}
+		});
 		mnInventory.add(mntmAddStock);
 
 		JMenuItem mntmNewProduct = new JMenuItem("New Product");
