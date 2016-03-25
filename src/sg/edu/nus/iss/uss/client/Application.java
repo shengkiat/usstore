@@ -28,15 +28,18 @@ import javax.swing.JTextField;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
+import sg.edu.nus.iss.uss.service.IDiscountService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
 import sg.edu.nus.iss.uss.service.impl.ProductService;
 import sg.edu.nus.iss.uss.service.impl.ReportingService;
 import sg.edu.nus.iss.uss.service.impl.TransactionService;
@@ -132,9 +135,7 @@ public class Application {
 		this.productDAO  = new ProductFileDataAccess();
 		this.productService = new ProductService(productDAO, null);
 		
-		
-		
-		
+		IDiscountService discountService = new DiscountService(new DiscountFileDataAccess());
 		
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);
@@ -241,13 +242,25 @@ public class Application {
 		mntmNewPromotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				NewPromotionDialog promotionDlg = new NewPromotionDialog();
+				NewPromotionDialog promotionDlg = new NewPromotionDialog(discountService);
 				
 				promotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				promotionDlg.setVisible(true);	
 			}
 		});
 		mnPromotion.add(mntmNewPromotion);
+		
+		JMenuItem mntmUpdatePromotion = new JMenuItem("Update");
+		mntmUpdatePromotion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//UpdatePromotionDialog updatePromotionDlg = new UpdatePromotionDialog();
+				
+				//updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				//updatePromotionDlg.setVisible(true);	
+			}
+		});
+		mnPromotion.add(mntmUpdatePromotion);
 		
 		JMenu mnReporting = new JMenu("Reporting");
 		menuBar.add(mnReporting);
