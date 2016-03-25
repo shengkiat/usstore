@@ -428,7 +428,7 @@ public class Application {
 		btnMemberPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				MemberLoginDialog memberLoginDlg = new MemberLoginDialog();
+				MemberLoginDialog memberLoginDlg = new MemberLoginDialog(memberService);
 
 				memberLoginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				memberLoginDlg.setLocationRelativeTo(null);
