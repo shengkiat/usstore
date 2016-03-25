@@ -26,24 +26,13 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
-import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
-import sg.edu.nus.iss.uss.dao.IProductDataAccess;
-import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
-import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.dao.*;
+import sg.edu.nus.iss.uss.dao.filedataaccess.*;
+
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.service.IAuthorisedService;
-import sg.edu.nus.iss.uss.service.IProductService;
-import sg.edu.nus.iss.uss.service.IReportingService;
-import sg.edu.nus.iss.uss.service.ITransactionService;
-import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
-import sg.edu.nus.iss.uss.service.impl.ProductService;
-import sg.edu.nus.iss.uss.service.impl.ReportingService;
-import sg.edu.nus.iss.uss.service.impl.TransactionService;
+import sg.edu.nus.iss.uss.service.*;
+import sg.edu.nus.iss.uss.service.impl.*;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
