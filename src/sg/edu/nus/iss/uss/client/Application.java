@@ -55,23 +55,25 @@ public class Application {
 	private IStoreKeeperDataAccess storeKeeperDAO;
 	private IProductDataAccess productDAO;
 	private ICategoryDataAccess categoryDAO;
-	private	ITransactionDataAccess transactionDAO;
+	private ITransactionDataAccess transactionDAO;
 	private IVendorDataAccess vendorDAO;
-	
+	private IMemberDataAccess memberDAO;
+
 	private IAuthorisedService authService;
 	private IReportingService reportingService;
 	private IProductService productService;
 	private ITransactionService transactionService;
-	private	ICategoryService categoryService;
+	private ICategoryService categoryService;
 	private IVendorService vendorService;
-	
+	private IMemberService memberService;
+
 	private List<Product> products;
-private double subTotal = 0;
-	
+	private double subTotal = 0;
+
 	private JTextField txtAmountReceived;
 	private JTextField txtMemberDollarRedem;
 
-	private JLabel lbl1, lbl2, lbl3,lblsubTotal;
+	private JLabel lbl1, lbl2, lbl3, lblsubTotal;
 	private JLabel lblMemberName, lblMemberLoyaltyPts, lblAmountReceived;
 
 	private DefaultTableModel shoppingcart;
@@ -116,25 +118,22 @@ private double subTotal = 0;
 
 		this.transactionDAO = new TransactionFileDataAccess();
 		this.transactionService = new TransactionService(transactionDAO);
-		
 
 		this.reportingService = new ReportingService(transactionService, productService);
 
-
-		//this.productDAO = new ProductFileDataAccess();
+		// this.productDAO = new ProductFileDataAccess();
 		this.categoryDAO = new CategoryFileDataAccess();
 		this.productService = new ProductService(productDAO);
 
 		// Get the list of products
-		//this.products = this.productService.retrieveProductList();
+		// this.products = this.productService.retrieveProductList();
 
 		this.vendorDAO = new VendorFileDataAccess();
 		this.vendorService = new VendorService(vendorDAO);
-		this.categoryService = new CategoryService(vendorService,categoryDAO);
-		
+		this.categoryService = new CategoryService(vendorService, categoryDAO);
 
-		
-		
+		this.memberDAO = new MemberFileDataAccess();
+		this.memberService = new MemberService(memberDAO);
 
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);
@@ -170,8 +169,8 @@ private double subTotal = 0;
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NewMemberDialog newMemberDlg = new NewMemberDialog();
-
+				NewMemberDialog newMemberDlg = new NewMemberDialog(memberService);
+				newMemberDlg.setLocationRelativeTo(null);
 				newMemberDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				newMemberDlg.setVisible(true);
 
@@ -190,7 +189,7 @@ private double subTotal = 0;
 			public void actionPerformed(ActionEvent e) {
 
 				NewProductDialog newProductDlg = new NewProductDialog();
-
+				newProductDlg.setLocationRelativeTo(null);
 				newProductDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				newProductDlg.setVisible(true);
 
@@ -206,7 +205,7 @@ private double subTotal = 0;
 			public void actionPerformed(ActionEvent e) {
 
 				CategoryDialog categoryDlg = new CategoryDialog(categoryService);
-
+				categoryDlg.setLocationRelativeTo(null);
 				categoryDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				categoryDlg.setVisible(true);
 
@@ -288,7 +287,7 @@ private double subTotal = 0;
 		JLabel lblTotal = new JLabel("Total:");
 		subtotalPanel.add(lblTotal);
 
-		 lblsubTotal = new JLabel("0");
+		lblsubTotal = new JLabel("0");
 		subtotalPanel.add(lblsubTotal);
 
 		// TODO
@@ -522,13 +521,13 @@ private double subTotal = 0;
 		for (Product product : this.products) {
 			if (Integer.toString(product.getBarCodeNumber()).equals(barcode)) {
 
-				this.shoppingcart.addRow(new Object[]{product.getName(), product.getPrice()});
+				this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
 				subTotal += product.getPrice();
-				
+
 				NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
-				
+
 				lblsubTotal.setText(currencyIntance.format(subTotal));
-				
+
 				break;
 
 			}
