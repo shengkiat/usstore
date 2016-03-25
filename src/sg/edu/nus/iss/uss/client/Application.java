@@ -56,11 +56,14 @@ public class Application {
 	private IProductDataAccess productDAO;
 	private ICategoryDataAccess categoryDAO;
 	private	ITransactionDataAccess transactionDAO;
+	private IVendorDataAccess vendorDAO;
 	
 	private IAuthorisedService authService;
 	private IReportingService reportingService;
 	private IProductService productService;
 	private ITransactionService transactionService;
+	private	ICategoryService categoryService;
+	private IVendorService vendorService;
 	
 	private List<Product> products;
 private double subTotal = 0;
@@ -125,7 +128,9 @@ private double subTotal = 0;
 		// Get the list of products
 		//this.products = this.productService.retrieveProductList();
 
-
+		this.vendorDAO = new VendorFileDataAccess();
+		this.vendorService = new VendorService(vendorDAO);
+		this.categoryService = new CategoryService(vendorService,categoryDAO);
 		
 
 		
@@ -200,7 +205,7 @@ private double subTotal = 0;
 		mntmNewCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				CategoryDialog categoryDlg = new CategoryDialog();
+				CategoryDialog categoryDlg = new CategoryDialog(categoryService);
 
 				categoryDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				categoryDlg.setVisible(true);

@@ -8,6 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import sg.edu.nus.iss.uss.service.ICategoryService;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
@@ -23,11 +27,16 @@ public class CategoryDialog extends JDialog {
 	private JTextField textField;
 	private JTextField textField_1;
 
+	private DefaultTableModel shoppingcart;
+	private	ICategoryService categoryService;
 	/**
 	 * Create the dialog.
 	 */
-	public CategoryDialog() {
-
+	public CategoryDialog(ICategoryService categoryService) {
+this.categoryService = categoryService;
+		
+		
+		
 		setBounds(100, 100, 650, 400);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
