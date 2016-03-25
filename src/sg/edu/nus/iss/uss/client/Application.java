@@ -29,6 +29,7 @@ import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
@@ -65,11 +66,13 @@ public class Application {
 	private IStoreKeeperDataAccess storeKeeperDAO;
 	private IProductDataAccess productDAO;
 	private ICategoryDataAccess categoryDAO;
-
+	private	ITransactionDataAccess transactionDAO;
+	
 	private IAuthorisedService authService;
 	private IReportingService reportingService;
 	private IProductService productService;
-
+	private ITransactionService transactionService;
+	
 	private List<Product> products;
 private double subTotal = 0;
 	
@@ -119,17 +122,25 @@ private double subTotal = 0;
 		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
 		this.authService = new AuthorisedService(storeKeeperDAO);
 
-		ITransactionService transactionService = new TransactionService(new TransactionFileDataAccess());
-		IProductService productService = new ProductService(new ProductFileDataAccess(), null);
+		this.transactionDAO = new TransactionFileDataAccess();
+		this.transactionService = new TransactionService(transactionDAO);
+		
 
 		this.reportingService = new ReportingService(transactionService, productService);
 
-		this.productDAO = new ProductFileDataAccess();
+
+		//this.productDAO = new ProductFileDataAccess();
 		this.categoryDAO = new CategoryFileDataAccess();
-		this.productService = new ProductService(productDAO, categoryDAO);
+		this.productService = new ProductService(productDAO);
 
 		// Get the list of products
-		this.products = this.productService.retrieveProductList();
+		//this.products = this.productService.retrieveProductList();
+
+
+		
+
+		
+		
 
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);

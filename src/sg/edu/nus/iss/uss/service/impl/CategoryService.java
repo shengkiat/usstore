@@ -30,7 +30,7 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 		cat.setCode(code);
 		cat.setName(Name);
 		catDataAccess.create(cat);
-		UssCommonUtil.catPrdHMap.put(cat, null);
+
 		
 	}
 	

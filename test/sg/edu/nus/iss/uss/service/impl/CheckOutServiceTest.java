@@ -2,17 +2,11 @@ package sg.edu.nus.iss.uss.service.impl;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.service.impl.CheckOutService;
-import sg.edu.nus.iss.uss.service.impl.DiscountService;
-import sg.edu.nus.iss.uss.service.impl.MemberService;
-import sg.edu.nus.iss.uss.service.impl.ProductService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 import java.io.IOException;
@@ -20,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by yeojc on 15/3/2016.
@@ -180,8 +173,8 @@ public class CheckOutServiceTest {
 
 
     public class MockProductService extends ProductService {
-        public MockProductService(IProductDataAccess PrdDataAccess ,ICategoryDataAccess catDataAccess ) {
-        	super(PrdDataAccess, catDataAccess);
+        public MockProductService(IProductDataAccess PrdDataAccess) {
+        	super(PrdDataAccess);
         }
 
         public boolean checkIfProductIsBelowThreshold (Product product) {
