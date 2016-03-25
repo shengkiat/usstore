@@ -18,9 +18,6 @@ public class UssCommonUtil {
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
-	
-	public static HashMap<Category,ArrayList<Product>> catPrdHMap ;
-	
 
 	public static SimpleDateFormat getDefaultDateFormatter() {
 		return DEFAULT_DATE_FORMATTER;
@@ -51,22 +48,6 @@ public class UssCommonUtil {
         return startDate.compareTo(toComparedDate) <= 0 && toComparedDate.compareTo(endDate) <= 0;
     }
 	
-    public int compare(String str1, String str2) {
-
-        // extract numeric portion out of the string and convert them to int
-        // and compare them, roughly something like this
-
-        int num1 = Integer.parseInt(str1.substring(0, str1.indexOf("%") - 1));
-        int num2 = Integer.parseInt(str2.substring(0, str2.indexOf("%") - 1));
-
-        return num1 - num2;
-
-     }
-    
-    public void Clear_HM() {
-    	catPrdHMap.clear();
-    	}
-    
     
     
 }

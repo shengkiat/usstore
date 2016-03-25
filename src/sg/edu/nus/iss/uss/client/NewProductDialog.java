@@ -1,49 +1,62 @@
 package sg.edu.nus.iss.uss.client;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JDialog;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Category;
+import sg.edu.nus.iss.uss.service.ICategoryService;
+import sg.edu.nus.iss.uss.service.IProductService;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.List;
 public class NewProductDialog extends JDialog {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NewProductDialog dialog = new NewProductDialog();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	private JTextField txtProductName;
+	private JTextField txtDescription;
+	private JTextField txtQuantityAvailable;
+	private JTextField txtPrice;
+	private JTextField txtBarcode;
+	private JTextField txtReorderQuantity;
+	private JTextField txtOrderQuantity;
+	private	JComboBox cbxCategory= new JComboBox();;
+	private DefaultListModel<String> currentCategogies;
+	private ICategoryService categoryService;
+	
+	private IProductService productService;
+	
 	/**
 	 * Create the dialog.
 	 */
-	public NewProductDialog() {
-		setBounds(100, 100, 350, 350);
+	public NewProductDialog(ICategoryService categoryService, final IProductService productService) {
+		
+		this.currentCategogies = new DefaultListModel();
+
+		this.categoryService = categoryService;
+		List<Category> categories = this.categoryService.retrieveCategoryList();
+		for (int i = 0; i < categories.size(); i++) {
+			Category category = categories.get(i);
+			this.cbxCategory.addItem(category);
+		}
+		
+		this.productService = productService;
+		
+		
+		// 350
+		setBounds(100, 100, 350, 550);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -59,14 +72,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblName.gridy = 2;
 		getContentPane().add(lblName, gbc_lblName);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 2;
-		getContentPane().add(textField, gbc_textField);
-		textField.setColumns(10);
+		txtProductName = new JTextField();
+		GridBagConstraints gbc_txtProductName = new GridBagConstraints();
+		gbc_txtProductName.insets = new Insets(0, 0, 5, 0);
+		gbc_txtProductName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtProductName.gridx = 3;
+		gbc_txtProductName.gridy = 2;
+		getContentPane().add(txtProductName, gbc_txtProductName);
+		txtProductName.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Category:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -76,13 +89,13 @@ public class NewProductDialog extends JDialog {
 		gbc_lblNewLabel.gridy = 3;
 		getContentPane().add(lblNewLabel, gbc_lblNewLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 3;
-		gbc_comboBox.gridy = 3;
-		getContentPane().add(comboBox, gbc_comboBox);
+
+		GridBagConstraints gbc_cbxCategory = new GridBagConstraints();
+		gbc_cbxCategory.insets = new Insets(0, 0, 5, 0);
+		gbc_cbxCategory.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cbxCategory.gridx = 3;
+		gbc_cbxCategory.gridy = 3;
+		getContentPane().add(cbxCategory, gbc_cbxCategory);
 		
 		JLabel lblDescription = new JLabel("Description:");
 		GridBagConstraints gbc_lblDescription = new GridBagConstraints();
@@ -92,14 +105,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblDescription.gridy = 4;
 		getContentPane().add(lblDescription, gbc_lblDescription);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 4;
-		getContentPane().add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		txtDescription = new JTextField();
+		GridBagConstraints gbc_txtDescription = new GridBagConstraints();
+		gbc_txtDescription.insets = new Insets(0, 0, 5, 0);
+		gbc_txtDescription.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDescription.gridx = 3;
+		gbc_txtDescription.gridy = 4;
+		getContentPane().add(txtDescription, gbc_txtDescription);
+		txtDescription.setColumns(10);
 		
 		JLabel lblQuantityAvailable = new JLabel("Quantity Available:");
 		GridBagConstraints gbc_lblQuantityAvailable = new GridBagConstraints();
@@ -109,14 +122,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblQuantityAvailable.gridy = 5;
 		getContentPane().add(lblQuantityAvailable, gbc_lblQuantityAvailable);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 3;
-		gbc_textField_2.gridy = 5;
-		getContentPane().add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		txtQuantityAvailable = new JTextField();
+		GridBagConstraints gbc_txtQuantityAvailable = new GridBagConstraints();
+		gbc_txtQuantityAvailable.insets = new Insets(0, 0, 5, 0);
+		gbc_txtQuantityAvailable.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtQuantityAvailable.gridx = 3;
+		gbc_txtQuantityAvailable.gridy = 5;
+		getContentPane().add(txtQuantityAvailable, gbc_txtQuantityAvailable);
+		txtQuantityAvailable.setColumns(10);
 		
 		JLabel lblPrice = new JLabel("Price:");
 		GridBagConstraints gbc_lblPrice = new GridBagConstraints();
@@ -126,14 +139,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblPrice.gridy = 6;
 		getContentPane().add(lblPrice, gbc_lblPrice);
 		
-		textField_3 = new JTextField();
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.gridx = 3;
-		gbc_textField_3.gridy = 6;
-		getContentPane().add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
+		txtPrice = new JTextField();
+		GridBagConstraints gbc_txtPrice = new GridBagConstraints();
+		gbc_txtPrice.insets = new Insets(0, 0, 5, 0);
+		gbc_txtPrice.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtPrice.gridx = 3;
+		gbc_txtPrice.gridy = 6;
+		getContentPane().add(txtPrice, gbc_txtPrice);
+		txtPrice.setColumns(10);
 		
 		JLabel lblBarcodeNumber = new JLabel("Barcode Number:");
 		GridBagConstraints gbc_lblBarcodeNumber = new GridBagConstraints();
@@ -143,14 +156,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblBarcodeNumber.gridy = 7;
 		getContentPane().add(lblBarcodeNumber, gbc_lblBarcodeNumber);
 		
-		textField_4 = new JTextField();
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_4.gridx = 3;
-		gbc_textField_4.gridy = 7;
-		getContentPane().add(textField_4, gbc_textField_4);
-		textField_4.setColumns(10);
+		txtBarcode = new JTextField();
+		GridBagConstraints gbc_txtBarcode = new GridBagConstraints();
+		gbc_txtBarcode.insets = new Insets(0, 0, 5, 0);
+		gbc_txtBarcode.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtBarcode.gridx = 3;
+		gbc_txtBarcode.gridy = 7;
+		getContentPane().add(txtBarcode, gbc_txtBarcode);
+		txtBarcode.setColumns(10);
 		
 		JLabel lblReorderQuantity = new JLabel("Reorder Quantity:");
 		GridBagConstraints gbc_lblReorderQuantity = new GridBagConstraints();
@@ -160,14 +173,14 @@ public class NewProductDialog extends JDialog {
 		gbc_lblReorderQuantity.gridy = 8;
 		getContentPane().add(lblReorderQuantity, gbc_lblReorderQuantity);
 		
-		textField_5 = new JTextField();
-		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
-		gbc_textField_5.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_5.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_5.gridx = 3;
-		gbc_textField_5.gridy = 8;
-		getContentPane().add(textField_5, gbc_textField_5);
-		textField_5.setColumns(10);
+		txtReorderQuantity = new JTextField();
+		GridBagConstraints gbc_txtReorderQuantity = new GridBagConstraints();
+		gbc_txtReorderQuantity.insets = new Insets(0, 0, 5, 0);
+		gbc_txtReorderQuantity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtReorderQuantity.gridx = 3;
+		gbc_txtReorderQuantity.gridy = 8;
+		getContentPane().add(txtReorderQuantity, gbc_txtReorderQuantity);
+		txtReorderQuantity.setColumns(10);
 		
 		JLabel lblOrderQuantity = new JLabel("Order Quantity:");
 		GridBagConstraints gbc_lblOrderQuantity = new GridBagConstraints();
@@ -177,14 +190,22 @@ public class NewProductDialog extends JDialog {
 		gbc_lblOrderQuantity.gridy = 9;
 		getContentPane().add(lblOrderQuantity, gbc_lblOrderQuantity);
 		
-		textField_6 = new JTextField();
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_6.gridx = 3;
-		gbc_textField_6.gridy = 9;
-		getContentPane().add(textField_6, gbc_textField_6);
-		textField_6.setColumns(10);
+		txtOrderQuantity = new JTextField();
+		GridBagConstraints gbc_txtOrderQuantity = new GridBagConstraints();
+		gbc_txtOrderQuantity.insets = new Insets(0, 0, 5, 0);
+		gbc_txtOrderQuantity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtOrderQuantity.gridx = 3;
+		gbc_txtOrderQuantity.gridy = 9;
+		getContentPane().add(txtOrderQuantity, gbc_txtOrderQuantity);
+		txtOrderQuantity.setColumns(10);
+		
+		final JLabel lblInfo = new JLabel("");
+		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+		gbc_lblInfo.anchor = GridBagConstraints.WEST;
+		gbc_lblInfo.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInfo.gridx = 3;
+		gbc_lblInfo.gridy = 10;
+		getContentPane().add(lblInfo, gbc_lblInfo);
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -194,9 +215,48 @@ public class NewProductDialog extends JDialog {
 		getContentPane().add(panel, gbc_panel);
 		
 		JButton btnAddProduct = new JButton("Add Product");
+		btnAddProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String productName = txtProductName.getText();
+				String description =  txtDescription.getText();
+				Integer quantityAvailable =  Integer.parseInt(txtQuantityAvailable.getText());
+				double price= Double.parseDouble(txtPrice.getText());
+				Integer barcode= Integer.parseInt(txtBarcode.getText());
+				Integer reorderQuantity= Integer.parseInt(txtReorderQuantity.getText());
+				Integer orderQuantity= Integer.parseInt(txtOrderQuantity.getText());
+				
+				String categoryCode = ((Category)cbxCategory.getSelectedItem()).getCode();
+				
+				try {
+					productService.createNewProductEntry(categoryCode, productName, description, quantityAvailable, price, barcode, reorderQuantity, orderQuantity);
+				
+				
+					lblInfo.setText(productName + "is added successfully.");
+					lblInfo.setForeground(Color.black);
+				
+					txtProductName.setText("");
+					txtDescription.setText("");
+					txtQuantityAvailable.setText("");
+					txtPrice.setText("");
+					txtBarcode.setText("");
+					txtReorderQuantity.setText("");
+					txtOrderQuantity.setText("");
+				
+				} catch (UssException e1) {
+					lblInfo.setText("Fail to add product: " + productName);
+					lblInfo.setForeground(Color.RED);
+				}
+			}
+		});
 		panel.add(btnAddProduct);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Close");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		panel.add(btnCancel);
 
 	}

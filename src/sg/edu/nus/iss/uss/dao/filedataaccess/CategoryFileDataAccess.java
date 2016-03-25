@@ -41,6 +41,8 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 		
 		List<String[]> catList = readAll(); 
 		
+		categoryList = new ArrayList<Category>();
+		
 		for(String[] str: catList)
 		{
 			Category cat = new Category();
