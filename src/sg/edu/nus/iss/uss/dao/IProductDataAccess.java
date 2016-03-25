@@ -10,4 +10,5 @@ public interface IProductDataAccess {
 	public List<Product> getAll();
 	public void create(Product product) throws UssException;
 	public void update(Product product) throws UssException;
+	public Product getProductByProductID(String productID) throws UssException;
 }
