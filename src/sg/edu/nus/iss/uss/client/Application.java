@@ -188,7 +188,7 @@ public class Application {
 		mntmNewProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NewProductDialog newProductDlg = new NewProductDialog();
+				NewProductDialog newProductDlg = new NewProductDialog(categoryService, productService);
 				newProductDlg.setLocationRelativeTo(null);
 				newProductDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				newProductDlg.setVisible(true);
