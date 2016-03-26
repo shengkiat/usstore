@@ -26,6 +26,7 @@ import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
@@ -131,12 +132,15 @@ public class ProductServiceTest {
 	
 	@Test
     public void testCheckIfProductIsBelowThreshold () {
+		
+		TestProductBuilder testProductBuilder = new TestProductBuilder();
         
-		Product p = new Product("MUG/2","Classic PC","Water bottle",99,8.91,"5970030001",100,500);
-		Product p1 = new Product("MUG/2","Classic PC","Water bottle",700,8.91,"5970030001",100,500);
+		Product p = testProductBuilder.withReorderQuantity(100).withQuantityAvailable((99)).build();
+		Product p1 = testProductBuilder.withReorderQuantity(100).withQuantityAvailable((700)).build();
+		
 		// Test for Qty Below or Above Threshold
-		assertTrue(p.isBelowThreshold());		
-		assertFalse(p1.isBelowThreshold());
+		assertTrue(productservice.checkIfProductIsBelowThreshold(p));		
+		assertFalse(productservice.checkIfProductIsBelowThreshold(p1));
 		
 		//productservice.checkIfProductIsBelowThreshold
     }

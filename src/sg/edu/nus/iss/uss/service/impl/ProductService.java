@@ -15,9 +15,6 @@ public class ProductService extends UssCommonService implements IProductService 
 	private static final Object Null = null;
 
 	private IProductDataAccess prdDataAccess;
-	Product prodt;
-	ArrayList<Integer> prdNos;
-	IProductService prdService;
 
 	public ProductService(IProductDataAccess prdDataAccess) {
 		this.prdDataAccess = prdDataAccess;
@@ -45,7 +42,7 @@ public class ProductService extends UssCommonService implements IProductService 
 			String barCodeNumber, int reorderQuantity, int orderQuantity)
 			throws UssException {
 		// TODO Auto-generated method stub
-		prdNos = new ArrayList<Integer>();
+		List<Integer> prdNos = new ArrayList<>();
 		// Retrieve Product List Base on Category Code
 		for (Product Prd : retrieveProductList()) {
 			if (Prd.getProductID().toUpperCase()
@@ -99,7 +96,7 @@ public class ProductService extends UssCommonService implements IProductService 
 
 		for (Product pdt : productItems) {
 
-			Product prod = prdService.getProductByProductID(pdt.getProductID());
+			Product prod = getProductByProductID(pdt.getProductID());
 
 			if (prod == Null) {
 				// Product Item not valid
@@ -107,7 +104,7 @@ public class ProductService extends UssCommonService implements IProductService 
 				if (prod.getpurchaseQty() >= prod.getQuantityAvailable()) {
 					prod.setPurchaseQty(prod.getpurchaseQty()); // Update Qty
 
-					prdDataAccess.update(prodt); // Write to File
+					prdDataAccess.update(prod); // Write to File
 				} else {
 					// throws UssException as Purchased Quantity more than
 					// Quantity Available
