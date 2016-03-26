@@ -13,7 +13,7 @@ import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.service.IReportingService;
 
-public class ReportMemberPanel extends JPanel {
+final class ReportMemberPanel extends JPanel {
 
 	private static final long serialVersionUID = 3892049231369017101L;
 	

@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +32,7 @@ public final class ReportTransactionPanel extends JPanel {
 	
 	private ReportTransactionTable searchResult;
 	
-	public ReportTransactionPanel(JFrame frame, final IReportingService reportingService) {
+	public ReportTransactionPanel(final JDialog dialog, final IReportingService reportingService) {
 		setBounds(800, 800, 200, 100);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
@@ -52,8 +53,8 @@ public final class ReportTransactionPanel extends JPanel {
 		searchPanel.add(textFieldEndDate);
 		textFieldEndDate.setColumns(10);
 		
-		textFieldStartDate.setText("2011-01-01");
-		textFieldEndDate.setText("2016-01-01");
+		//textFieldStartDate.setText("2011-01-01");
+		//textFieldEndDate.setText("2016-01-01");
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -63,7 +64,7 @@ public final class ReportTransactionPanel extends JPanel {
 				String endDateStr = textFieldEndDate.getText();
 				
 				if ("".equals(startDateStr) || "".equals(endDateStr)) {
-					JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.REQUIRED_START_END_DATE, "",
+					JOptionPane.showMessageDialog(dialog, ErrorConstants.REQUIRED_START_END_DATE, "",
 					        JOptionPane.ERROR_MESSAGE);
 				}
 				
