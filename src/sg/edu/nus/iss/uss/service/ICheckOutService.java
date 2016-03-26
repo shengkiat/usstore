@@ -2,7 +2,6 @@ package sg.edu.nus.iss.uss.service;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
-import sg.edu.nus.iss.uss.model.PayItem;
 import sg.edu.nus.iss.uss.model.Product;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface ICheckOutService {
 	
 	public List<Product> addItemIntoCheckOutList(Product product);
 
-	public String alertIfInventoryLevelBelowThreshold(PayItem payItem);
+	public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems);
 
     public double calculateTotalPayableAfterPointsRedemption(double payAmount, int redeemPoint);
 

@@ -3,13 +3,16 @@ package sg.edu.nus.iss.uss.service.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.service.IMemberService;
+import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 import java.io.IOException;
@@ -25,17 +28,25 @@ public class CheckOutServiceTest {
 
     private CheckOutService checkOutService;
 
-    private MemberService memberService;
+    private IMemberService memberService;
+    private IProductService productService;
+    private ITransactionService transactionService;
     private MockDiscountService mockDiscountService;
+    private MockProductService mockProductService;
 
 
     @Before
     public void setUp() throws UssException, IOException {
-//        MemberDataAccess memberDataAccess = new MemberFileDataAccess();
+
         IDiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
+        mockDiscountService = new MockDiscountService(discountDataAccess);
+
+        IProductDataAccess productDataAccess = null;
+        mockProductService = new MockProductService(productDataAccess);
 
         memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
-        mockDiscountService = new MockDiscountService(discountDataAccess);
+        productService = null;
+        transactionService = null;
     }
     
     @After
@@ -47,8 +58,6 @@ public class CheckOutServiceTest {
     @Test
     public void testDetermineMemberID() {
         createCheckOutSummaryData();
-
-        checkOutService.memberService = memberService;
         assertTrue(checkOutService.determineMemberID("F42563743156"));
         assertTrue(checkOutService.determineMemberID("X437F356"));
         assertFalse(checkOutService.determineMemberID("ZZZZZZ"));
@@ -59,7 +68,7 @@ public class CheckOutServiceTest {
 
     @Test
     public void testAddItemIntoCheckOutList() {
-        checkOutService = new CheckOutService();
+        checkOutService = new CheckOutService(memberService, null, null);
         Product product1 = new Product("CLO/1", "Centenary Jumper","A really nice momento",315,21.45,"1234",10,100);
         Product product2 = new Product("STA/1", "NUS Pen","A really cute blue pen",768,5.75,"123459876",50,250);
         Product product3 = new Product("MUG/1", "Centenary Mug","A really nice mug this time",525,10.25,"9876",25,150);
@@ -159,16 +168,14 @@ public class CheckOutServiceTest {
     public void testMakePaymentWithFailedPaymentValidation() throws UssException {
         // amount paid and amount redeemed not correct
         createCheckOutSummaryData();
-        checkOutService.memberService = memberService;
         checkOutService.determineMemberID("F42563743156");
         checkOutService.calculateChargePrice(10);
         checkOutService.makePayment(100.0, 100);
     }
 
-    @Test
+    @Test(expected=RuntimeException.class)
     public void testMakePaymentDeduct100() throws UssException {
         createCheckOutSummaryData();
-        checkOutService.memberService = memberService;
         checkOutService.determineMemberID("F42563743156");
         checkOutService.calculateChargePrice(10);
         checkOutService.makePayment(31.54, 100);
@@ -184,11 +191,23 @@ public class CheckOutServiceTest {
 
 
 
+    @Test
+    public void testAlertIfInventoryLevelBelowThresholdForOneItem() {
+        createCheckOutSummaryData();
+        checkOutService.productService = mockProductService;
+        List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
+        assertEquals(1, productsBelowThreshold.size());
+    }
 
     @Test
-    public void testAlertIfInventoryLevelBelowThreshold() {
+    public void testAlertIfInventoryLevelBelowThresholdAllWithin() {
+        createCheckOutSummaryData();
+        checkOutService.productService = mockProductService;
+        checkOutService.getCheckoutSummary().getCheckoutItems().remove(1); // remove product STA/1
+        List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
+        assertEquals(0, productsBelowThreshold.size());
     }
 
 
@@ -200,20 +219,26 @@ public class CheckOutServiceTest {
 
 
     public class MockProductService extends ProductService {
-        public MockProductService(IProductDataAccess PrdDataAccess) {
-        	super(PrdDataAccess);
+        public MockProductService(IProductDataAccess prdDataAccess) {
+        	super(prdDataAccess);
         }
-
         public boolean checkIfProductIsBelowThreshold (Product product) {
-            // todo to return true false to check if product inventory has fallen below threshold
-
             if(product.getProductID().equals("STA/1")) {
-                return false;
-            }
-            else {
                 return true;
             }
+            else {
+                return false;
+            }
+        }
 
+        public void deductInventoryFromCheckout(List<Product> productItems) {
+
+        }
+    }
+
+    public class MockTransactionService extends TransactionService {
+        public MockTransactionService (ITransactionDataAccess transactionDataAccess) {
+            super(transactionDataAccess);
         }
     }
 
@@ -239,10 +264,7 @@ public class CheckOutServiceTest {
     }
 
     public void createCheckOutSummaryData() {
-        checkOutService = new CheckOutService();
-
-//        Date date= new Date();
-//        checkOutService.getCheckoutSummary().setCheckoutDate(new Timestamp(date.getTime()));
+        checkOutService = new CheckOutService(memberService, transactionService, productService);
 
         Product product1 = new Product("CLO/1", "Centenary Jumper","A really nice momento",315,21.45,"1234",10,100);
         Product product2 = new Product("STA/1", "NUS Pen","A really cute blue pen",768,5.75,"123459876",50,250);

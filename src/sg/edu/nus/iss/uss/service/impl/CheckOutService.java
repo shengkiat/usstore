@@ -3,9 +3,11 @@ package sg.edu.nus.iss.uss.service.impl;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
-import sg.edu.nus.iss.uss.model.PayItem;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.ICheckOutService;
+import sg.edu.nus.iss.uss.service.IMemberService;
+import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.service.ITransactionService;
 
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -16,14 +18,18 @@ import java.util.List;
 
 public class CheckOutService extends UssCommonService implements ICheckOutService{
 
-    public MemberService memberService;
-    public TransactionService transactionService;
-    public ProductService productService;
-    private CheckoutSummary checkoutSummary = null;
+    private IMemberService memberService;
+    private ITransactionService transactionService;
+    public IProductService productService;
+    private CheckoutSummary checkoutSummary;
     private String memberID = "";//"" means No MemberID
     private static final String PUBLIC_BUYER = "PUBLIC";
 
-    public CheckOutService() {
+    public CheckOutService(IMemberService memberService, ITransactionService transactionService, IProductService productService) {
+        this.memberService = memberService;
+        this.transactionService = transactionService;
+        this.productService = productService;
+
         checkoutSummary = new CheckoutSummary();
         Date date= new Date();
         checkoutSummary.setCheckoutDate(new Timestamp(date.getTime()));
@@ -37,8 +43,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
 
     @Override
     public boolean determineMemberID(String memberID){
-//        IMemberDataAccess memberDataAccess = null;
-//        memberService = new MemberService(memberDataAccess);
         boolean isValidMember = memberService.isValidMember(memberID);
 
         if(isValidMember) {
@@ -54,26 +58,28 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
 
     @Override
     public List<Product> addItemIntoCheckOutList(Product product, String memberID){
-
-
         checkoutSummary.getCheckoutItems().add(product);
-
         return checkoutSummary.getCheckoutItems();
     }
 
     @Override
     public List<Product> addItemIntoCheckOutList(Product product){
-
         return this.addItemIntoCheckOutList(product, this.memberID);
     }
 
     @Override
-    public String alertIfInventoryLevelBelowThreshold(PayItem payItem){
-        String alert = "";
+    public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems){
+        boolean isBelowThreshold = false;
+        List<Product> listOfProductsBelowThreshold = new ArrayList<Product>();
 
-        //TODO if below Threshold, return alert message
+        for(int i = 0; i < productItems.size(); i++) {
+            isBelowThreshold = productService.checkIfProductIsBelowThreshold(productItems.get(i));
+            if(isBelowThreshold) {
+                listOfProductsBelowThreshold.add(productItems.get(i));
+            }
+        }
 
-        return "";
+        return listOfProductsBelowThreshold;
     }
 
     // new method
@@ -99,13 +105,14 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
             memberService.addMemberLoyaltyPoint(pointsAdded, checkoutSummary.getMemberID());
 
             // create transaction for buyer
-//            transactionService = new TransactionService();
+            transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
 
 
             // deduct from inventory
-//            productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+            productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
 
             // return threshold notification
+            alertIfInventoryLevelBelowThreshold(checkoutSummary.getCheckoutItems());
 
         } else {
             throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.PAYMENT_VALIDATION_FAIL);
