@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.uss.service.impl;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
@@ -35,6 +37,12 @@ public class CheckOutServiceTest {
         memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
         mockDiscountService = new MockDiscountService(discountDataAccess);
     }
+    
+    @After
+	public void tearDown() throws Exception {
+		TestUtil.destoryMemberServiceAndFile(memberService);
+	}
+	
 
     @Test
     public void testDetermineMemberID() {
