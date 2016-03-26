@@ -124,7 +124,7 @@ public class Product implements Comparator<Product> {
 	public int getProductNo(){
 		if (this.productNo == 0)     { 
 	        Integer sPos = this.productID.indexOf('/');
-	        Integer ePos = this.productID.indexOf(',');
+	        Integer ePos = this.productID.length();
 	        this.productNo = Integer.parseInt(this.productID.substring(sPos+1, ePos));
 		}
         return this.productNo;
