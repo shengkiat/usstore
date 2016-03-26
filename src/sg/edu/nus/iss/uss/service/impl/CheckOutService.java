@@ -91,31 +91,28 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public double makePayment(double totalPayable, int redeemPoint) throws UssException{
+    public double makePayment(double amountPaid, int redeemPoint) throws UssException{
         double dollarsRedeemed = convertPointToDollar(redeemPoint);
-        boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), redeemPoint, totalPayable);
+        boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), redeemPoint, checkoutSummary.getTotalPayable(),amountPaid);
+        double returnChange = amountPaid - checkoutSummary.getTotalPayable();
 
-        if(paymentValidated) {
-            //minus points from member
-            memberService.deductMemberLoyltyPoint(redeemPoint, checkoutSummary.getMemberID());
 
-            // add points to member for purchase
-            int pointsAdded = convertDollarToPoint(totalPayable);
-            memberService.addMemberLoyaltyPoint(pointsAdded, checkoutSummary.getMemberID());
+        memberService.deductMemberLoyltyPoint(redeemPoint, checkoutSummary.getMemberID());
 
-            // create transaction for buyer
-            transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
+        int pointsAdded = convertDollarToPoint(checkoutSummary.getTotalPayable());
+        memberService.addMemberLoyaltyPoint(pointsAdded, checkoutSummary.getMemberID());
 
-            // deduct from inventory
-            productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+        // create transaction for buyer
+        transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
 
-            // return threshold notification
-            alertIfInventoryLevelBelowThreshold(checkoutSummary.getCheckoutItems());
-        } else {
-            throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.PAYMENT_VALIDATION_FAIL);
-        }
-        
-        return totalPayable;
+        // deduct from inventory
+        productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+
+        // return threshold notification
+        alertIfInventoryLevelBelowThreshold(checkoutSummary.getCheckoutItems());
+
+
+        return returnChange;
     }
 
     @Override
@@ -138,14 +135,18 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return checkoutSummary.getPayAmount();
     }
 
-    private boolean paymentValidation(double payAmount, int redeemPoint, double totalPayable){
+    private boolean paymentValidation(double payAmount, int redeemPoint, double totalPayable, double amountPaid) throws UssException {
         double dollarsRedeemed = convertPointToDollar(redeemPoint);
-        if((payAmount - dollarsRedeemed) == totalPayable) {
-            return true;
+        double returnChange = (amountPaid - totalPayable);
+
+        if(returnChange < 0.0) {
+            throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE);
         }
-        else {
-            return false;
-        }
+//        if((payAmount - dollarsRedeemed) == totalPayable) {
+//            throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.PAYMENT_VALIDATION_FAIL);
+//        }
+//
+        return true;
     }
 
     @Override

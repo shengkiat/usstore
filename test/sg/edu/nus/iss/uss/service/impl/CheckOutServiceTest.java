@@ -164,16 +164,6 @@ public class CheckOutServiceTest {
         assertEquals(amountPaid, 31.54, 0);
     }
 
-    @Test(expected=UssException.class)
-    public void testMakePaymentWithFailedPaymentValidation() throws UssException {
-        // amount paid and amount redeemed not correct
-        createCheckOutSummaryData();
-        String memberID = "F42563743156";
-        checkOutService.determineMemberID(memberID);
-        checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
-        checkOutService.makePayment(100.0, 100);
-    }
-
     @Test(expected=RuntimeException.class)
     public void testMakePaymentDeduct100() throws UssException {
         createCheckOutSummaryData();
@@ -183,7 +173,8 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
-        checkOutService.makePayment(totalPayable, 100);
+        double amountPaid = totalPayable;
+        checkOutService.makePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -192,6 +183,43 @@ public class CheckOutServiceTest {
             add back 3 points for $31.54 purchase: 53
          */
         assertEquals(member.getLoyaltyPoint(), 53);
+    }
+
+    @Test(expected=RuntimeException.class)
+    public void testMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
+        createCheckOutSummaryData();
+        String memberID = "F42563743156";
+        checkOutService.determineMemberID(memberID);
+
+        double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
+
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        double amountPaid = 50.0;
+        double changeReceived = checkOutService.makePayment(amountPaid, 100);
+
+        Member member = memberService.getMemberByMemberID("F42563743156");
+
+        /*  original points: 150
+            deduct 100 points: 150
+            add back 3 points for $31.54 purchase: 53
+         */
+        assertEquals(member.getLoyaltyPoint(), 53);
+        assertEquals(changeReceived, 19.46, 0);
+    }
+
+    @Test(expected=UssException.class)
+    public void testMakePaymentDeduct100WithLessMoneyReceived() throws UssException {
+        createCheckOutSummaryData();
+        String memberID = "F42563743156";
+        checkOutService.determineMemberID(memberID);
+
+        double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
+
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        double amountPaid = 10.0;
+
+        // exception thrown at here for Amount Received Less Than Amount Payable
+        double changeReceived = checkOutService.makePayment(amountPaid, 100);
     }
 
 

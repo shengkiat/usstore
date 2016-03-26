@@ -20,7 +20,7 @@ public interface ICheckOutService {
 
     public double calculateTotalPayable(double payAmount, int redeemPoint);
 
-    public double makePayment(double payAmount, int redeemPoint) throws UssException;
+    public double makePayment(double amountPaid, int redeemPoint) throws UssException;
 	
 	public String printoutReceipt(CheckoutSummary checkoutSummary);
 	
