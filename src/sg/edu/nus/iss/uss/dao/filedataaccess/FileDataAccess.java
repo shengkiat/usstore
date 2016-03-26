@@ -45,7 +45,14 @@ abstract class FileDataAccess {
 			throw new UssException(ErrorConstants.UssCode.DAO, "Record already exist using key, " + getPrimaryKey(arr));
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), true))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
+			
+			//Rewrite existing contents to prevent file being manually amended and no new line
+			for(String[] existingContent : existingContents) {
+				writer.write(generateWriteContent(existingContent));
+				writer.newLine();
+			}
+			
 			writer.write(generateWriteContent(arr));
 			writer.newLine();
 		} 
