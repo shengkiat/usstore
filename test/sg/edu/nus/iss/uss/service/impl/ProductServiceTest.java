@@ -2,9 +2,8 @@ package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,12 +18,8 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
-import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
@@ -116,7 +111,43 @@ public class ProductServiceTest {
 		
 	}
 	
-
+	@Test
+	public void replenishInventory() throws UssException {
+		
+		int qty =0;
+		
+        List<Product> productItems = new ArrayList<Product> ();
+		
+		Product product = productservice.getProductByProductID("CLO/1");
+		assertNotNull(product);
+				
+        TestProductBuilder testProductBuilder = new TestProductBuilder();
+        
+		Product p = testProductBuilder.withProductID("CLO/1").build();
+		Product p1 = testProductBuilder.withProductID("STA/5").build();
+		
+		productItems.add(p);
+		productItems.add(p1);
+		
+		int pQty = p.getQuantityAvailable() + p.getReorderQuantity();
+		int p1Qty = p1.getQuantityAvailable() + p1.getReorderQuantity();
+				
+		productservice.replenishInventory(productItems);
+		
+		product = productservice.getProductByProductID("CLO/1");
+	    
+	    qty = product.getQuantityAvailable();
+		
+        assertEquals(qty, pQty) ;
+		
+        product = productservice.getProductByProductID("STA/5");
+	    
+        qty = product.getQuantityAvailable();
+        
+        assertEquals(qty, p1Qty) ;
+		
+	}
+	
 	
 	@Test
 	public void testCreateNewProductEntry() throws UssException {
@@ -155,25 +186,21 @@ public class ProductServiceTest {
 		Product product = productservice.getProductByProductID("CLO/1");
 		assertNotNull(product);
 		
-		int expectedQuantityAvailable = product.getQuantityAvailable() - 2;
+		int qtyAvailable = product.getQuantityAvailable() - 2;
 		
         TestProductBuilder testProductBuilder = new TestProductBuilder();
         
 		Product p = testProductBuilder.withProductID("CLO/1").withQuantityAvailable(product.getQuantityAvailable()).build();
 		Product p1 = testProductBuilder.withProductID("CLO/1").withQuantityAvailable(product.getQuantityAvailable()).build();
-
 		
 		productItems.add(p);
 		productItems.add(p1);
 		
 		productservice.deductInventoryFromCheckout(productItems);
 		
-		
 		product = productservice.getProductByProductID("CLO/1");
      
-        assertEquals(product.getQuantityAvailable(), expectedQuantityAvailable);
-        
-        
+        assertEquals(product.getQuantityAvailable(), qtyAvailable);
             
    	}
 		

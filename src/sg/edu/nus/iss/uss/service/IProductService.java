@@ -15,6 +15,8 @@ public interface IProductService {
 
 	public List<Product> retrieveProductListByThreshold();
 
+	public void replenishInventory(List<Product> productItems);
+	
 	public void createNewProductEntry(String categoryCode, String productName, String briefDescription, int QuantityAvailable, double price, 
 			String barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException;
 

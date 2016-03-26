@@ -39,6 +39,21 @@ public class ProductService extends UssCommonService implements IProductService 
 		return prdList;
 	}
 
+	public void replenishInventory(List<Product> productItems) {
+		
+		List<Product> thresholdList;
+		
+		thresholdList = retrieveProductListByThreshold();
+		
+		for(Product p : productItems) {
+			if (thresholdList.contains(p)) {
+			int qty = p.getQuantityAvailable() + p.getReorderQuantity();
+			p.setQuantityAvailable(qty);
+		  }
+		}
+	}
+	
+	
 	@Override
 	public void createNewProductEntry(String categoryCode, String productName,
 			String briefDescription, int QuantityAvailable, double price,
