@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -147,16 +149,31 @@ public class ProductServiceTest {
 
 	@Test
     public void testdeductInventoryFromCheckout() throws UssException {
-	
-        Product p = new Product("STA/3","NUS BookMark","A thoughtful gift for loved ones",500,4.41,"8970020126",25,250);
-		
-        p.setPurchaseQty(100);
-
-        int QtyAvail = p.getQuantityAvailable();
-        // QtyAvail = 500-100 = 400        
-        assertEquals(QtyAvail, 400);
         
-        //productservice.deductInventoryFromCheckout(productItems);
+		List<Product> productItems = new ArrayList<Product> ();
+		
+		Product product = productservice.getProductByProductID("CLO/1");
+		assertNotNull(product);
+		
+		int expectedQuantityAvailable = product.getQuantityAvailable() - 2;
+		
+        TestProductBuilder testProductBuilder = new TestProductBuilder();
+        
+		Product p = testProductBuilder.withProductID("CLO/1").withQuantityAvailable(product.getQuantityAvailable()).build();
+		Product p1 = testProductBuilder.withProductID("CLO/1").withQuantityAvailable(product.getQuantityAvailable()).build();
+
+		
+		productItems.add(p);
+		productItems.add(p1);
+		
+		productservice.deductInventoryFromCheckout(productItems);
+		
+		
+		product = productservice.getProductByProductID("CLO/1");
+     
+        assertEquals(product.getQuantityAvailable(), expectedQuantityAvailable);
+        
+        
             
    	}
 		

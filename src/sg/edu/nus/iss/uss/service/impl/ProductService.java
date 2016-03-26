@@ -2,12 +2,15 @@ package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 //import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.IProductService;
 
 public class ProductService extends UssCommonService implements IProductService {
@@ -94,26 +97,48 @@ public class ProductService extends UssCommonService implements IProductService 
 	public void deductInventoryFromCheckout(List<Product> productItems)
 			throws UssException {
 
-		for (Product pdt : productItems) {
+		Map<String,Integer> productcountMap ;  //= new Map <String,Integer>();
+		
+		productcountMap = groupByProductId (productItems);
+		
+		for(String productId : productcountMap.keySet()) {
+			Product product = getProductByProductID(productId);
+			
+			int qtyPurchased = productcountMap.get(productId);
+			int qtyAvailable = product.getQuantityAvailable();
+            int qty = qtyAvailable - qtyPurchased;		
+			
+            if (qty > 0 ) {
 
-			Product prod = getProductByProductID(pdt.getProductID());
+				product.setQuantityAvailable(qty); // Update Qty
 
-			if (prod == Null) {
-				// Product Item not valid
+				prdDataAccess.update(product); // Write to File
 			} else {
-				if (prod.getpurchaseQty() >= prod.getQuantityAvailable()) {
-					prod.setPurchaseQty(prod.getpurchaseQty()); // Update Qty
-
-					prdDataAccess.update(prod); // Write to File
-				} else {
-					// throws UssException as Purchased Quantity more than
-					// Quantity Available
-				}
+				// throws UssException as Purchased Quantity more than
+				// Quantity Available
 			}
 		}
 
 	}
 
+	private Map<String, Integer> groupByProductId(List<Product> products) {
+		
+		Map<String, Integer> result = new HashMap<>();
+		
+		for(Product product : products) {
+			Integer count = result.get(product.getProductID());
+			if (count == null) {
+				count = new Integer(0);
+			}
+			
+			count++;
+			
+			result.put(product.getProductID(), count);
+		}
+		
+		return result;
+	}
+	
 	@Override
 	public Product getProductByProductID(String productID) throws UssException {
 		Product p = null;

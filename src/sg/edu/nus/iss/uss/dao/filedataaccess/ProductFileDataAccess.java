@@ -69,8 +69,15 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		strPrd[FIELD_ORDER_QUANTITY] = "" + e.getOrderQuantity();
 		overwriteLine(strPrd);
 		
-		
-		//productList.set(arg0, arg1)
+		for(int i = 0; i<productList.size(); i++)
+		{
+			Product p = productList.get(i);
+			if (p.getProductID().equalsIgnoreCase(strPrd[FIELD_PRODUCT_ID])) {
+				productList.set(i, e);
+			}
+		}
+
+
 	}
 	
 	@Override

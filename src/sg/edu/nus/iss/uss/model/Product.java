@@ -48,6 +48,7 @@ public class Product implements Comparator<Product> {
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 	}
+	/*
 	public int getpurchaseQty() {
 		return (purchaseQty);
 	}
@@ -58,7 +59,7 @@ public class Product implements Comparator<Product> {
 	
 	public void DeductQtyAvailable() {	
 		   this.quantityAvailable = this.quantityAvailable - this.purchaseQty;
-	}
+	}*/
 	public double getPrice() {
 		return price;
 	}
