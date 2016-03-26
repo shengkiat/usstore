@@ -45,7 +45,6 @@
 .\src\sg\edu\nus\iss\uss\model\IBuyer.java
 .\src\sg\edu\nus\iss\uss\model\IPrinter.java
 .\src\sg\edu\nus\iss\uss\model\IReader.java
-.\src\sg\edu\nus\iss\uss\model\IStore.java
 .\src\sg\edu\nus\iss\uss\model\IUser.java
 .\src\sg\edu\nus\iss\uss\model\Member.java
 .\src\sg\edu\nus\iss\uss\model\MemberOnlyDiscount.java
@@ -55,7 +54,6 @@
 .\src\sg\edu\nus\iss\uss\model\ReportTransaction.java
 .\src\sg\edu\nus\iss\uss\model\StoreKeeper.java
 .\src\sg\edu\nus\iss\uss\model\Transaction.java
-.\src\sg\edu\nus\iss\uss\model\UniversitySouvenirStore.java
 .\src\sg\edu\nus\iss\uss\model\Vendor.java
 .\src\sg\edu\nus\iss\uss\service\IAuthorisedService.java
 .\src\sg\edu\nus\iss\uss\service\ICategoryService.java
