@@ -12,11 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
@@ -66,7 +68,8 @@ public class ReportingServiceTest {
 				return transactions;
 			}
 		}
-		, new MockIProductService());
+		, new MockIProductService()
+		, new MockIMemberService());
 		
 		Date startDate = UssCommonUtil.convertStringToDate("2001-01-01");
 		Date endDate = UssCommonUtil.convertStringToDate("2999-12-31");
@@ -88,7 +91,7 @@ public class ReportingServiceTest {
 	
 	@Before
 	public void setUp() {
-		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService());
+		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService(), new MockIMemberService());
 	}
 
 	@After
@@ -162,4 +165,57 @@ public class ReportingServiceTest {
 			
 		}
 	}
+	
+	private class MockIMemberService implements IMemberService {
+
+		@Override
+		public List<Member> retrieveMemberList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Member getMemberByMemberID(String memberID) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void registerNewMember(String name, String idCardNumber) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void addMemberLoyaltyPoint(int point, String memberID) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deductMemberLoyltyPoint(int point, String memberID) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean isValidMember(String memberID) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isFirstPurchase(String memberID) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	}
+	
 }

@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.uss.model;
 
 
-public class Member implements IBuyer{
+public class Member implements IBuyer, Comparable<Member>{
 	private String name;
 	private String memberID;
 	private int loyaltyPoint;
@@ -36,9 +36,29 @@ public class Member implements IBuyer{
 
 	@Override
 	public String toString() {//Yan Martel,F42563743156,150
-		//TODO toString
+		StringBuffer sb = new StringBuffer();
+
+		if(null != name){
+		  sb.append(name);
+		}
 		
-		return "";
+		sb.append(",");
+		
+		if(memberID != null){
+		  sb.append(this.memberID);
+		}
+		
+		sb.append(",");
+		
+		sb.append(this.loyaltyPoint);
+		
+		return sb.toString();
+	}
+
+	@Override
+	public int compareTo(Member o) {
+		
+		return	this.memberID.compareTo(o.getMemberID());
 	}
 
 }

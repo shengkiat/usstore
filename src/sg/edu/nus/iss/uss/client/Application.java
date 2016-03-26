@@ -118,7 +118,7 @@ public class Application {
 		this.transactionDAO = new TransactionFileDataAccess();
 		this.transactionService = new TransactionService(transactionDAO);
 
-		this.reportingService = new ReportingService(transactionService, productService);
+		this.reportingService = new ReportingService(transactionService, productService, memberService);
 		
 		this.discountService = new DiscountService(new DiscountFileDataAccess());
 

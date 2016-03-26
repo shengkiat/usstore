@@ -6,9 +6,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
@@ -18,10 +20,12 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	
 	private ITransactionService transactionService;
 	private IProductService productService;
+	private IMemberService memberService;
 	
-	public ReportingService(ITransactionService transactionService, IProductService productService) {
+	public ReportingService(ITransactionService transactionService, IProductService productService, IMemberService memberService) {
 		this.transactionService = transactionService;
 		this.productService = productService;
+		this.memberService = memberService;
 	}
 	
 	@Override
@@ -65,9 +69,27 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	
 	@Override
 	public String printMembersReport(){
-		//TODO
+//		Objects.requireNonNull(startDate, "startDate cannot be null");
+//		Objects.requireNonNull(endDate, "endDate cannot be null");
+//		
+//		if (UssCommonUtil.isDateLeftGreaterThanRight(startDate, endDate)) {
+//			throw new IllegalArgumentException("startDate cannot be greater than endDate");
+//		}
 		
-		return "";
+		List<Member> result = memberService.retrieveMemberList();
+		
+//		List<Transaction> transactions = memberService.get\\\\
+//		
+//		for(Transaction transaction : transactions) {
+//			Product product = productService.getProductByProductID(transaction.getProductID());	
+//			
+//			Objects.requireNonNull(product, "product should not be null using " + transaction.getProductID());
+//			result.add(new ReportTransaction(transaction, product));
+//		}
+//		
+//		Collections.sort(result);
+		
+		return null;
 	}
 	
 }
