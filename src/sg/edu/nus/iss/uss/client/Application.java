@@ -110,7 +110,12 @@ public class Application {
 	 * @throws UssException
 	 */
 	public Application() throws UssException {
-		initialize();
+		try{
+			initialize();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.SYSTEM_ERROR, "",
+			        JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**

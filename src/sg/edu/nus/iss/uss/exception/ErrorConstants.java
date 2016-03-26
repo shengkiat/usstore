@@ -70,6 +70,8 @@ public class ErrorConstants {
 	/**
 	 ************************** OTHER ****************************************
 	 */
+	public static final String SYSTEM_ERROR = "System Error, please contact adminstrator.";
+	
 	
 	/**
 	 ************************** DAO ****************************************
