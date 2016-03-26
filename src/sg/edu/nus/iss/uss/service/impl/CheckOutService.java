@@ -3,10 +3,7 @@ package sg.edu.nus.iss.uss.service.impl;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
-import sg.edu.nus.iss.uss.model.IBuyer;
-import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.model.PublicBuyer;
 import sg.edu.nus.iss.uss.service.ICheckOutService;
 import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
@@ -55,7 +52,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         	checkoutSummary.setMemberID(PUBLIC_BUYER);
             return false; 
         }
-
     }
 
 
@@ -64,7 +60,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         checkoutSummary.getCheckoutItems().add(product);
         return checkoutSummary.getCheckoutItems();
     }
-
 
     @Override
     public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems){
@@ -106,14 +101,14 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
 
         // deduct from inventory
        // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
-
+        returnChange = roundAmount(returnChange);
         return returnChange;
     }
 
     @Override
     public double nonMemberMakePayment(double amountPaid) throws UssException{
 
-        boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), 0, checkoutSummary.getTotalPayable(),amountPaid);
+        boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), 0, checkoutSummary.getTotalPayable(), amountPaid);
         double returnChange = amountPaid - checkoutSummary.getTotalPayable();
 
         // create transaction for buyer
@@ -122,6 +117,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         // deduct from inventory
        // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
 
+        returnChange = roundAmount(returnChange);
         return returnChange;
     }
     
@@ -134,8 +130,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
 
     @Override
     public double calculatePayAmount(double discount){
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setRoundingMode(RoundingMode.HALF_EVEN);
 
         double totalProductPrice = checkoutSummary.getTotalPrice();
         double chargePrice = totalProductPrice * ((100.0 - discount) / 100.0);
@@ -143,6 +137,14 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         checkoutSummary.setPayAmount(chargePrice);
 
         return checkoutSummary.getPayAmount();
+    }
+
+    private double roundAmount(double amountToRound) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.HALF_EVEN);
+        amountToRound = Double.parseDouble(df.format(amountToRound));
+
+        return amountToRound;
     }
 
     private boolean paymentValidation(double payAmount, int redeemPoint, double totalPayable, double amountPaid) throws UssException {
