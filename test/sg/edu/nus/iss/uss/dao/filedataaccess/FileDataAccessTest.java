@@ -88,7 +88,6 @@ public class FileDataAccessTest {
 	}
 	
 	@Test
-	@Ignore("wait to test")
 	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileEvenWhenThereIsNoNewLine() throws UssException, IOException {
 		
 		File file = new File(TestUtil.getTestPath(TEST_FILE_NAME));
@@ -101,7 +100,7 @@ public class FileDataAccessTest {
 		FileWriter fw = new FileWriter(file.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(fw);
 		bw.write("tester,p12345678");
-		bw.newLine();
+		//bw.newLine(); purposely do not add new line
 		
 		bw.close();
 		
