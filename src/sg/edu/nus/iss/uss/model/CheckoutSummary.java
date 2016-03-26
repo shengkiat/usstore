@@ -35,16 +35,15 @@ public class CheckoutSummary {
         this.checkoutDate = checkoutDate;
     }
 
-    public double getTotalPrice(){
-
-        double totalPrice = 0.0;
+    public double getTotalPrice() {
+        this.totalPrice = 0.0;
 
         for(int i = 0; i < checkoutItems.size(); i++ ) {
             totalPrice = totalPrice + checkoutItems.get(i).getPrice();
         }
-		
-		return totalPrice;
-	}
+
+        return totalPrice;
+    }
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;

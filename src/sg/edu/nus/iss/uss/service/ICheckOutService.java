@@ -28,6 +28,6 @@ public interface ICheckOutService {
 
     public double calculatePayAmount(int discount);
 
-	public int convertPointToDollar(int point);
-	
+	public int convertPointToDollar(int point);	
+
 }
