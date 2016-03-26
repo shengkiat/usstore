@@ -17,28 +17,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
-import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
-
-/**
- * Created by Goh on 25/3/2016.
- */
 
 public class CategoryServiceTest {
 
 	//Test fixtures
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Category.dat";
-	CategoryService categoryService = null;
-	ICategoryDataAccess catDataAccess;
-	VendorService VendorSvc;
-	
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
+
+	private CategoryService categoryService;
 
 	@Before
 	public void setUp() throws Exception {
@@ -70,7 +60,7 @@ public class CategoryServiceTest {
 			throw new RuntimeException(e);
 		}
 		
-		//categoryService = new categoryService(VendorSvc,catDataAccess);
+		categoryService = new CategoryService(new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR));
 		
 	}
 
@@ -80,8 +70,10 @@ public class CategoryServiceTest {
 		
 		Path path = getTestPath();
 
+		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
         Files.createDirectories(path.getParent());
         Files.deleteIfExists(path);
+        
 	}
 	
 	private Path getTestPath() {
@@ -90,29 +82,24 @@ public class CategoryServiceTest {
 
 	@Test
 	public void testGetAll() {
-		assertEquals(5, catDataAccess.getAll().size());
+		assertEquals(5, categoryService.retrieveCategoryList().size());
 	}
 
 	@Test
 	public void testcreateNewCategory()  throws UssException {
 		
 		//categoryAdditionValidation(code);
-	    Category e = new Category("BEV","Beverage");
-		
-		catDataAccess.create(e);
-		assertEquals(6, catDataAccess.getAll().size());
+	    
+	    categoryService.createNewCategory("BEV","Beverage");
+		assertEquals(6, categoryService.retrieveCategoryList().size());
 		
 	}
     
-	@Test
-    private void testcategoryAdditionValidation() throws UssException  {
+	@Test(expected=UssException.class)
+    public void testcategoryAdditionValidation() throws UssException  {
 		
-        Category e = new Category("MUG","Mugs and Bottle");
+		categoryService.createNewCategory("MUG","Mugs and Bottle");
 		
-		
-		exception.expect(UssException.class);
-		exception.expectMessage(ErrorConstants.CATEGORY_EXISTS);
-		catDataAccess.create(e);
 	}
 	
 	

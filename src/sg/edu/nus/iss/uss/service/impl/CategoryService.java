@@ -12,11 +12,9 @@ import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 
 public class CategoryService extends UssCommonService implements ICategoryService{
-	private IVendorService vendorSvc;
 	private ICategoryDataAccess catDataAccess;
 		
-	public CategoryService(IVendorService vendorService,ICategoryDataAccess CatDataAccess){
-		this.vendorSvc = vendorService;
+	public CategoryService(ICategoryDataAccess CatDataAccess){
 		this.catDataAccess = CatDataAccess;
 	}
 	
@@ -29,8 +27,6 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 		categoryAdditionValidation(code);
 	    Category cat= new Category(code,Name);
 		catDataAccess.create(cat);
-
-		
 	}
 	
 	private void categoryAdditionValidation(String code) throws UssException  {
@@ -40,9 +36,5 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 		    if (cat.getCode().equals(code)) throw new UssException(ErrorConstants.UssCode.CATEGORY, ErrorConstants.CATEGORY_EXISTS);
 		}
 		
-	}
-	
-	public List<Vendor> CategoryVendor(String CategoryCode) {	
-		return(vendorSvc.getVendorsByCategoryCode(CategoryCode));		
 	}
 }

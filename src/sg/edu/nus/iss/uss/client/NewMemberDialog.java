@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.client;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.JDialog;
 import java.awt.GridBagLayout;
@@ -19,19 +18,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class NewMemberDialog extends JDialog {
+
+	private static final long serialVersionUID = -62814988236609858L;
+	
 	private JTextField txtMemberID;
 	private JTextField txtName;
-
-	private IMemberService memberService;
 
 	/**
 	 * Create the dialog.
 	 */
 	public NewMemberDialog(final IMemberService memberService) {
-		this.memberService = memberService;
-		
-		
-		
 		
 		setBounds(100, 100, 450, 180);
 		GridBagLayout gridBagLayout = new GridBagLayout();
