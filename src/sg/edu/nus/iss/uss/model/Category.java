@@ -35,7 +35,7 @@ public class Category {
 	@Override
 	public String toString() {//CLO,Clothing
 		String str = code;
-        if (name != null) {
+        if ((name != null) && (code != null)) {
         	code += "," + name;
         }
         return (str);
