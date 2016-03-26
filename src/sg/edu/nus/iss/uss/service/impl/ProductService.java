@@ -49,6 +49,12 @@ public class ProductService extends UssCommonService implements IProductService 
 			if (thresholdList.contains(p)) {
 			int qty = p.getQuantityAvailable() + p.getReorderQuantity();
 			p.setQuantityAvailable(qty);
+			try {
+				prdDataAccess.update(p);
+			} catch (UssException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		  }
 		}
 	}

@@ -1,17 +1,22 @@
 package sg.edu.nus.iss.uss.client;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.IProductService;
-
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class ReplenishInventoryDialog extends JDialog {
 
@@ -21,14 +26,16 @@ public class ReplenishInventoryDialog extends JDialog {
 	private JTable table;
 	private IProductService productService;
 
+	private List<Product> products;
+
 	/**
 	 * Create the dialog.
 	 */
-	public ReplenishInventoryDialog(IProductService productService) {
+	public ReplenishInventoryDialog(final IProductService productService) {
 
 		this.productService = productService;
 
-		List<Product> products = this.productService.retrieveProductListByThreshold();
+		this.products = this.productService.retrieveProductListByThreshold();
 
 		setBounds(100, 100, 650, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -36,38 +43,22 @@ public class ReplenishInventoryDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
-		// Object[] columnNames = { "Product Name", "Current Quantity", "Re
-		// Order Quantity", "Quantity to Order",
-		// "Boolean" };
-		// Object[][] data = { { "Buy", "IBM", new Integer(1000), new
-		// Double(80.50), false },
-		// { "Sell", "MicroSoft", new Integer(2000), new Double(6.25), false },
-		// { "Sell", "Apple", new Integer(3000), new Double(7.35), false },
-		// { "Buy", "Nortel", new Integer(4000), new Double(20.00), false } };
-		//
-		//
-		//
-		// DefaultTableModel model = new DefaultTableModel(data, columnNames);
-
-		DefaultTableModel model = new DefaultTableModel();
+		final DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Product ID");
 		model.addColumn("Product Name");
 		model.addColumn("Current Quantity");
 		model.addColumn("Re Order Quantity");
 		model.addColumn("Quantity to Order");
 		model.addColumn("Boolean");
-		
-		for (int x=0; x< products.size();x++){
+
+		for (int x = 0; x < products.size(); x++) {
 			Product product = products.get(x);
-			
-			model.insertRow(x, new Object[] { product.getName(), product.getQuantityAvailable(), 
-					product.getReorderQuantity(), product.getOrderQuantity(), false});
-			
-			
-			
+
+			model.insertRow(x, new Object[] { product.getProductID(), product.getName(), product.getQuantityAvailable(),
+					product.getReorderQuantity(), product.getOrderQuantity(), false });
+
 		}
-		
-		
-		
+
 		table = new JTable(model) {
 
 			/*
@@ -82,8 +73,10 @@ public class ReplenishInventoryDialog extends JDialog {
 				case 1:
 					return String.class;
 				case 2:
-					return Integer.class;
+					return String.class;
 				case 3:
+					return Integer.class;
+				case 4:
 					return Double.class;
 				default:
 					return Boolean.class;
@@ -101,10 +94,48 @@ public class ReplenishInventoryDialog extends JDialog {
 				JButton btnGenerateOrder = new JButton("Generate Order");
 				btnGenerateOrder.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						
-						
-						
+
+						List<Product> productsToReplenish = new ArrayList<Product>();
+
+						int nRow = model.getRowCount(), nCol = model.getColumnCount();
+						Object[][] tableData = new Object[nRow][nCol];
+						for (int i = 0; i < nRow; i++) {
+
+							boolean isChecked = (boolean) model.getValueAt(i, 5);
+							String _prodID = (String) model.getValueAt(i, 0);
+
+							if (isChecked) {
+								for (Product product : products) {
+									if (product.getProductID().equals(_prodID)) {
+										productsToReplenish.add(product);
+									}
+								}
+							}
+
+						}
+
+						productService.replenishInventory(productsToReplenish);
+
+						// Refresh Table
+
+						products = productService.retrieveProductListByThreshold();
+
+						if (model.getRowCount() > 0) {
+							for (int i = model.getRowCount() - 1; i > -1; i--) {
+								model.removeRow(i);
+							}
+						}
+
+						for (int x = 0; x < products.size(); x++) {
+							Product product = products.get(x);
+
+							model.insertRow(x,
+									new Object[] { product.getProductID(), product.getName(),
+											product.getQuantityAvailable(), product.getReorderQuantity(),
+											product.getOrderQuantity(), false });
+
+						}
+
 					}
 				});
 				btnGenerateOrder.setActionCommand("OK");
