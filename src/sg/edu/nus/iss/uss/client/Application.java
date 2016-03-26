@@ -121,7 +121,7 @@ public class Application {
 		
 		this.discountService = new DiscountService(new DiscountFileDataAccess());
 
-		// this.productDAO = new ProductFileDataAccess();
+		this.productDAO = new ProductFileDataAccess();
 		this.categoryDAO = new CategoryFileDataAccess();
 		this.productService = new ProductService(productDAO);
 
