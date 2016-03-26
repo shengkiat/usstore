@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
@@ -72,6 +73,8 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	
 	@Override
 	protected void initialLoad() {
+		
+		categoryList = new ArrayList<>();
 		
 		List<String[]> catList = readAll(); 
 		

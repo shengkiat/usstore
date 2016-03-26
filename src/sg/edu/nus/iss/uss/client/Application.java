@@ -24,6 +24,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
@@ -478,22 +479,14 @@ public class Application {
 		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnNonMemberPay);
 
-		final JPanel reportingTransactionPanel = new ReportTransactionPanel(frame, reportingService);
-		// reportingTransactionPanel.add(scrollPane);
-
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");
 		mntmTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.remove(leftPanel);
-				frame.remove(rightFinishPaymentPanel);
-				frame.remove(rightEnterAmountPanel);
-				frame.remove(rightMemberPanel);
+				ReportTransactionDialog reportTransactionDlg = new ReportTransactionDialog(frame, reportingService);
 
-				frame.getContentPane().add(reportingTransactionPanel);
-
-				frame.revalidate(); // For Java 1.7 or above.
-				// frame.getContentPane().validate(); // For Java 1.6 or below.
-				frame.repaint();
+				reportTransactionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportTransactionDlg.setLocationRelativeTo(null);
+				reportTransactionDlg.setVisible(true);
 			}
 		});
 		mnReporting.add(mntmTransactions);
