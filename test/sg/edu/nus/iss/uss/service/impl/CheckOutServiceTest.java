@@ -174,7 +174,7 @@ public class CheckOutServiceTest {
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
         double amountPaid = totalPayable;
-        checkOutService.makePayment(amountPaid, 100);
+        checkOutService.memberMakePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -195,7 +195,7 @@ public class CheckOutServiceTest {
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
         double amountPaid = 50.0;
-        double changeReceived = checkOutService.makePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -219,7 +219,7 @@ public class CheckOutServiceTest {
         double amountPaid = 10.0;
 
         // exception thrown at here for Amount Received Less Than Amount Payable
-        double changeReceived = checkOutService.makePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
     }
 
 

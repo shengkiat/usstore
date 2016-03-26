@@ -10,9 +10,8 @@ public interface ICheckOutService {
 	
 	public CheckoutSummary getCheckoutSummary();
 	
-	public boolean determineMemberID(String memberID);
-
-	public List<Product> addItemIntoCheckOutList(Product product, String memberID);
+//	public boolean determineBuyer(String memberID);
+	public boolean determineMemberID(String memberID); 
 	
 	public List<Product> addItemIntoCheckOutList(Product product);
 
@@ -20,8 +19,10 @@ public interface ICheckOutService {
 
     public double calculateTotalPayable(double payAmount, int redeemPoint);
 
-    public double makePayment(double amountPaid, int redeemPoint) throws UssException;
+    public double memberMakePayment(double amountPaid, int redeemPoint) throws UssException;
 	
+    public double nonMemberMakePayment(double amountPaid) throws UssException;
+    
 	public String printoutReceipt(CheckoutSummary checkoutSummary);
 	
     public int convertDollarToPoint(double dollar);

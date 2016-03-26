@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.uss.service.ICheckOutService;
 import sg.edu.nus.iss.uss.service.IMemberService;
 
 import javax.swing.JTextField;
@@ -25,13 +26,13 @@ public class MemberLoginDialog extends JDialog {
 
 	private boolean _isMember = false;
 	private String _memberID;
-	private IMemberService memberService;
+	private ICheckOutService checkoutService;
 
 	/**
 	 * Create the dialog.
 	 */
-	public MemberLoginDialog(final IMemberService memberService) {
-		this.memberService = memberService;
+	public MemberLoginDialog(final ICheckOutService checkoutService) {
+		this.checkoutService = checkoutService;
 		
 		setBounds(100, 100, 450, 120);
 		getContentPane().setLayout(new BorderLayout());
@@ -58,7 +59,7 @@ public class MemberLoginDialog extends JDialog {
 						// TODO
 						_memberID = txtMemberID.getText();
 						
-						if (memberService.isValidMember(_memberID)){
+						if (checkoutService.determineMemberID(_memberID)){
 							_isMember = true;
 							dispose();
 						}

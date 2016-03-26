@@ -51,7 +51,8 @@ public class CategoryDialog extends JDialog {
 		// this.currentCategogies
 
 		setBounds(100, 100, 650, 400);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+		getContentPane().setLayout(
+				new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
 		JPanel categoryPanel = new JPanel();
 		getContentPane().add(categoryPanel);
@@ -66,16 +67,19 @@ public class CategoryDialog extends JDialog {
 		categoryPanel.add(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(300, 200));
 
-		categoryPanel.setLayout(new BoxLayout(categoryPanel, BoxLayout.PAGE_AXIS));
+		categoryPanel.setLayout(new BoxLayout(categoryPanel,
+				BoxLayout.PAGE_AXIS));
 
 		JPanel addCategoryPanel = new JPanel();
 		getContentPane().add(addCategoryPanel);
 		GridBagLayout gbl_addCategoryPanel = new GridBagLayout();
 		gbl_addCategoryPanel.columnWidths = new int[] { 0, 0, 0, 0 };
-		gbl_addCategoryPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_addCategoryPanel.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_addCategoryPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+		gbl_addCategoryPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0 };
+		gbl_addCategoryPanel.columnWeights = new double[] { 0.0, 0.0, 1.0,
 				Double.MIN_VALUE };
+		gbl_addCategoryPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		addCategoryPanel.setLayout(gbl_addCategoryPanel);
 
 		JLabel lblLetterCategory = new JLabel("3 Letter Category Code:");
@@ -101,7 +105,8 @@ public class CategoryDialog extends JDialog {
 		gbc_lblCategoryDescription.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCategoryDescription.gridx = 1;
 		gbc_lblCategoryDescription.gridy = 3;
-		addCategoryPanel.add(lblCategoryDescription, gbc_lblCategoryDescription);
+		addCategoryPanel
+				.add(lblCategoryDescription, gbc_lblCategoryDescription);
 
 		txtCategoryName = new JTextField();
 		GridBagConstraints gbc_txtCategoryName = new GridBagConstraints();
@@ -126,11 +131,20 @@ public class CategoryDialog extends JDialog {
 				String categoryCode = txtCategoryCode.getText();
 				String categoryName = txtCategoryName.getText();
 
+				if (categoryCode.length() != 3) {
+					lblInfo.setText("Fail to add" + categoryCode);
+					lblInfo.setForeground(Color.RED);
+
+					return;
+				}
+
 				try {
-					categoryService.createNewCategory(categoryCode, categoryName);
-					lblInfo.setText(categoryCode + "is added successfully.");
+					categoryService.createNewCategory(categoryCode,
+							categoryName);
+					lblInfo.setText(categoryCode + " is added successfully.");
 					lblInfo.setForeground(Color.black);
-					currentCategogies.add(currentCategogies.size(), categoryName);
+					currentCategogies.add(currentCategogies.size(),
+							categoryName);
 
 				} catch (UssException e1) {
 					lblInfo.setText("Fail to add" + categoryCode);

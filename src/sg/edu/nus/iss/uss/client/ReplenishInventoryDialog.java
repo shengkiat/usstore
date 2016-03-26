@@ -30,7 +30,7 @@ public class ReplenishInventoryDialog extends JDialog {
 
 		List<Product> products = this.productService.retrieveProductListByThreshold();
 
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 650, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

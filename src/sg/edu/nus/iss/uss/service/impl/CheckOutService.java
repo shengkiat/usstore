@@ -3,7 +3,10 @@ package sg.edu.nus.iss.uss.service.impl;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.CheckoutSummary;
+import sg.edu.nus.iss.uss.model.IBuyer;
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.model.PublicBuyer;
 import sg.edu.nus.iss.uss.service.ICheckOutService;
 import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
@@ -22,7 +25,6 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     private ITransactionService transactionService;
     public IProductService productService;
     private CheckoutSummary checkoutSummary;
-    private String memberID = "";//"" means No MemberID
     private static final String PUBLIC_BUYER = "PUBLIC";
 
     public CheckOutService(IMemberService memberService, ITransactionService transactionService, IProductService productService) {
@@ -43,29 +45,26 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
 
     @Override
     public boolean determineMemberID(String memberID){
-        boolean isValidMember = memberService.isValidMember(memberID);
+    	boolean isValidMember = memberService.isValidMember(memberID);
 
         if(isValidMember) {
             checkoutSummary.setMemberID(memberID);
+            return true;
         }
         else {
-            checkoutSummary.setMemberID(PUBLIC_BUYER);
+        	checkoutSummary.setMemberID(PUBLIC_BUYER);
+            return false; 
         }
 
-        return isValidMember;
     }
 
 
     @Override
-    public List<Product> addItemIntoCheckOutList(Product product, String memberID){
+    public List<Product> addItemIntoCheckOutList(Product product){
         checkoutSummary.getCheckoutItems().add(product);
         return checkoutSummary.getCheckoutItems();
     }
 
-    @Override
-    public List<Product> addItemIntoCheckOutList(Product product){
-        return this.addItemIntoCheckOutList(product, this.memberID);
-    }
 
     @Override
     public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems){
@@ -91,7 +90,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public double makePayment(double amountPaid, int redeemPoint) throws UssException{
+    public double memberMakePayment(double amountPaid, int redeemPoint) throws UssException{
         double dollarsRedeemed = convertPointToDollar(redeemPoint);
         boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), redeemPoint, checkoutSummary.getTotalPayable(),amountPaid);
         double returnChange = amountPaid - checkoutSummary.getTotalPayable();
@@ -106,15 +105,26 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
 
         // deduct from inventory
-        productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
-
-        // return threshold notification
-        alertIfInventoryLevelBelowThreshold(checkoutSummary.getCheckoutItems());
-
+       // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
 
         return returnChange;
     }
 
+    @Override
+    public double nonMemberMakePayment(double amountPaid) throws UssException{
+
+        boolean paymentValidated = paymentValidation(checkoutSummary.getPayAmount(), 0, checkoutSummary.getTotalPayable(),amountPaid);
+        double returnChange = amountPaid - checkoutSummary.getTotalPayable();
+
+        // create transaction for buyer
+        transactionService.createTransactions(checkoutSummary.getCheckoutItems(), PUBLIC_BUYER, checkoutSummary.getCheckoutDate());
+
+        // deduct from inventory
+       // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+
+        return returnChange;
+    }
+    
     @Override
     public String printoutReceipt(CheckoutSummary checkoutSummary){
         // print the checkoutsummary

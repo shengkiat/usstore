@@ -79,7 +79,7 @@ private ICheckOutService checkoutService;
 	private JTextField txtAmountReceived;
 	private JTextField txtMemberDollarRedem;
 
-	private JLabel lbl1, lbl2, lbl3, lblsubTotal;
+	private JLabel lbl1, lbl2, lbl3, lblsubTotal, lblChange;
 	private JLabel lblMemberName, lblMemberLoyaltyPts, lblAmountReceived;
 
 	private DefaultTableModel shoppingcart;
@@ -412,11 +412,12 @@ private ICheckOutService checkoutService;
 		btnMakePayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if (member == null){
+				if (member != null){			
 					memberMakePayment();
 				}
 				else{
-					
+					notMemberMakePayment();
+								
 				}
 				
 			}
@@ -448,7 +449,7 @@ private ICheckOutService checkoutService;
 		gbc_lbl6.gridy = 14;
 		rightEnterAmountPanel.add(lbl6, gbc_lbl6);
 
-		JLabel lblChange = new JLabel("New label");
+		lblChange = new JLabel("New label");
 		GridBagConstraints gbc_lblChange = new GridBagConstraints();
 		gbc_lblChange.anchor = GridBagConstraints.WEST;
 		gbc_lblChange.gridx = 2;
@@ -481,7 +482,7 @@ private ICheckOutService checkoutService;
 		btnMemberPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				MemberLoginDialog memberLoginDlg = new MemberLoginDialog(memberService);
+				MemberLoginDialog memberLoginDlg = new MemberLoginDialog(checkoutService);
 
 				memberLoginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				memberLoginDlg.setLocationRelativeTo(null);
@@ -581,6 +582,20 @@ private ICheckOutService checkoutService;
 		// frame.getContentPane().validate(); // For Java 1.6 or below.
 		frame.repaint();
 
+		
+double discountPercent = this.discountService.getMembersTodaysHighestDiscount(false, false);
+		
+		
+		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
+			
+		this.shoppingcart.addRow(new Object[] { "Discount", "" + discountPercent + "%" });
+
+
+		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+
+		lblsubTotal.setText(currencyIntance.format(subTotal));
+		
+		
 	}
 
 	private void memberMakePayment(){
@@ -607,10 +622,20 @@ private ICheckOutService checkoutService;
 		
 		
 		 try {
-			this.checkoutService.makePayment(subTotal, loyaltyPts);
+	
+			 
+			 
+			 double amountReceived = Double.parseDouble(txtAmountReceived.getText());
+	
+			 
+			double change = this.checkoutService.memberMakePayment(amountReceived, loyaltyPts);
+			
+			lblChange.setText("$" + change);
+			
+			
+			
 		} catch (UssException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			lblChange.setText(e.getMessage());
 		}
 		
 		
@@ -619,6 +644,36 @@ private ICheckOutService checkoutService;
 		
 	}
 	
+	private void notMemberMakePayment(){
+		
+		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, 0);
+
+		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+
+		lblsubTotal.setText(currencyIntance.format(subTotal));
+		
+		
+		 try {
+			 
+			 double amountReceived = Double.parseDouble(txtAmountReceived.getText());
+	
+			 
+			double change = this.checkoutService.nonMemberMakePayment(amountReceived);
+			
+			lblChange.setText("$" + change);
+			
+			 
+			 
+			this.checkoutService.nonMemberMakePayment(amountReceived);
+		} catch (UssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		
+		
+		
+	}
 	
 	private void readBarcode() {
 
