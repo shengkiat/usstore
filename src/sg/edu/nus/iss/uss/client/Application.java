@@ -25,8 +25,8 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
-import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
@@ -269,6 +269,15 @@ private ICheckOutService checkoutService;
 		mnReporting.add(mntmProducts);
 
 		JMenuItem mntmMembers = new JMenuItem("Members");
+		mntmMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
+
+				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportMemberDialog.setLocationRelativeTo(null);
+				reportMemberDialog.setVisible(true);
+			}
+		});
 		mnReporting.add(mntmMembers);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 

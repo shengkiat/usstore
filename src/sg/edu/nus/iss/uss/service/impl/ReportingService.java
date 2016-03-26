@@ -70,27 +70,14 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	
 	@Override
 	public String printMembersReport(){
-//		Objects.requireNonNull(startDate, "startDate cannot be null");
-//		Objects.requireNonNull(endDate, "endDate cannot be null");
-//		
-//		if (UssCommonUtil.isDateLeftGreaterThanRight(startDate, endDate)) {
-//			throw new IllegalArgumentException("startDate cannot be greater than endDate");
-//		}
-		
-		List<Member> result = memberService.retrieveMemberList();
-		
-//		List<Transaction> transactions = memberService.get\\\\
-//		
-//		for(Transaction transaction : transactions) {
-//			Product product = productService.getProductByProductID(transaction.getProductID());	
-//			
-//			Objects.requireNonNull(product, "product should not be null using " + transaction.getProductID());
-//			result.add(new ReportTransaction(transaction, product));
-//		}
-//		
-//		Collections.sort(result);
 		
 		return null;
+	}
+
+	@Override
+	public List<Member> retrieveMembers() throws UssException {
+		List<Member> result = memberService.retrieveMemberList();
+		return result;
 	}
 	
 }

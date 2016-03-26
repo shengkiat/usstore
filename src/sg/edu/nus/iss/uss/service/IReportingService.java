@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 
 public interface IReportingService {
@@ -15,5 +16,7 @@ public interface IReportingService {
 	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate) throws UssException;
 	
 	public String printMembersReport();
+	
+	public List<Member> retrieveMembers() throws UssException;
 	
 }
