@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
@@ -110,7 +111,6 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	@Ignore("wait until able to mock data access with test directory in this class")
 	public void testCreateTransactionsShouldBeSave() throws UssException {
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
@@ -130,16 +130,20 @@ public class TransactionServiceTest {
 		assertEquals(3, result.size());
 	}
 	
-	private class MockTransactionFileDataAccessWithoutFileAccess extends TransactionFileDataAccess {
+	private class MockTransactionFileDataAccessWithoutFileAccess implements ITransactionDataAccess {
 		
-		public MockTransactionFileDataAccessWithoutFileAccess() throws UssException {
-			super();
+		private List<Transaction> transactions = new ArrayList<>();
+
+		@Override
+		public List<Transaction> getAll() {
+			return transactions;
 		}
 
 		@Override
-		protected void initialLoad() {
-			//do nothing
+		public void create(List<Transaction> transactions) throws UssException {
+			this.transactions.addAll(transactions);
 		}
+		
 	}
 	
 }
