@@ -112,39 +112,38 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void replenishInventory() throws UssException {
+	public void testReplenishInventory() throws UssException {
 		
 		int qty =0;
 		
         List<Product> productItems = new ArrayList<Product> ();
 		
-		Product product = productservice.getProductByProductID("CLO/1");
-		assertNotNull(product);
+		Product p1 = productservice.getProductByProductID("CLO/1");
+		assertNotNull(p1);
 				
-        TestProductBuilder testProductBuilder = new TestProductBuilder();
-        
-		Product p = testProductBuilder.withProductID("CLO/1").build();
-		Product p1 = testProductBuilder.withProductID("STA/5").build();
+        productItems.add(p1);
+
+		Product p2 = productservice.getProductByProductID("STA/5");
+		assertNotNull(p2);
 		
-		productItems.add(p);
-		productItems.add(p1);
+        productItems.add(p2);
 		
-		int pQty = p.getQuantityAvailable() + p.getReorderQuantity();
 		int p1Qty = p1.getQuantityAvailable() + p1.getReorderQuantity();
+		int p2Qty = p2.getQuantityAvailable() + p2.getReorderQuantity();
 				
 		productservice.replenishInventory(productItems);
 		
-		product = productservice.getProductByProductID("CLO/1");
+		p1 = productservice.getProductByProductID("CLO/1");
 	    
-	    qty = product.getQuantityAvailable();
+	    qty = p1.getQuantityAvailable();
 		
-        assertEquals(qty, pQty) ;
-		
-        product = productservice.getProductByProductID("STA/5");
-	    
-        qty = product.getQuantityAvailable();
-        
         assertEquals(qty, p1Qty) ;
+		
+        p2 = productservice.getProductByProductID("STA/5");
+	    
+        qty = p2.getQuantityAvailable();
+        
+        assertEquals(qty, p2Qty) ;
 		
 	}
 	
