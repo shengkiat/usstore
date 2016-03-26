@@ -31,6 +31,8 @@ import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.ConsoleIPrinter;
+import sg.edu.nus.iss.uss.model.IPrinter;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.*;
@@ -69,10 +71,10 @@ public class Application {
 	private IVendorService vendorService;
 	private IMemberService memberService;
 	private IDiscountService discountService;
-private ICheckOutService checkoutService;
-	
+	private ICheckOutService checkoutService;
+
 	private Member member;
-	
+
 	private List<Product> products;
 	private double subTotal = 0;
 
@@ -124,7 +126,7 @@ private ICheckOutService checkoutService;
 
 		this.transactionDAO = new TransactionFileDataAccess();
 		this.transactionService = new TransactionService(transactionDAO);
-		
+
 		this.discountService = new DiscountService(new DiscountFileDataAccess());
 
 		this.productDAO = new ProductFileDataAccess();
@@ -140,13 +142,13 @@ private ICheckOutService checkoutService;
 
 		this.memberDAO = new MemberFileDataAccess();
 		this.memberService = new MemberService(memberDAO);
-		
-		this.reportingService = new ReportingService(transactionService, productService, memberService);
 
-		
-		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
-		
-		
+		this.reportingService = new ReportingService(transactionService,
+				productService, memberService);
+
+		this.checkoutService = new CheckOutService(this.memberService,
+				this.transactionService, this.productService);
+
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);
 		// add header of the table
@@ -181,7 +183,8 @@ private ICheckOutService checkoutService;
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NewMemberDialog newMemberDlg = new NewMemberDialog(memberService);
+				NewMemberDialog newMemberDlg = new NewMemberDialog(
+						memberService);
 				newMemberDlg.setLocationRelativeTo(null);
 				newMemberDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				newMemberDlg.setVisible(true);
@@ -196,12 +199,13 @@ private ICheckOutService checkoutService;
 		JMenuItem mntmAddStock = new JMenuItem("Add Stock");
 		mntmAddStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ReplenishInventoryDialog addStockDlg = new ReplenishInventoryDialog(productService);
-				
+				ReplenishInventoryDialog addStockDlg = new ReplenishInventoryDialog(
+						productService);
+
 				addStockDlg.setLocationRelativeTo(null);
 				addStockDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				addStockDlg.setVisible(true);
-				
+
 			}
 		});
 		mnInventory.add(mntmAddStock);
@@ -210,7 +214,8 @@ private ICheckOutService checkoutService;
 		mntmNewProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NewProductDialog newProductDlg = new NewProductDialog(categoryService, productService);
+				NewProductDialog newProductDlg = new NewProductDialog(
+						categoryService, productService);
 				newProductDlg.setLocationRelativeTo(null);
 				newProductDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				newProductDlg.setVisible(true);
@@ -241,21 +246,23 @@ private ICheckOutService checkoutService;
 		JMenuItem mntmNewPromotion = new JMenuItem("New Promotion");
 		mntmNewPromotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NewPromotionDialog promotionDlg = new NewPromotionDialog(discountService);
+				NewPromotionDialog promotionDlg = new NewPromotionDialog(
+						discountService);
 				promotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				promotionDlg.setVisible(true);
 			}
 		});
 		mnPromotion.add(mntmNewPromotion);
-		
+
 		JMenuItem mntmUpdatePromotion = new JMenuItem("Update");
 		mntmUpdatePromotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//UpdatePromotionDialog updatePromotionDlg = new UpdatePromotionDialog();
-				
-				//updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
-				//updatePromotionDlg.setVisible(true);	
+
+				// UpdatePromotionDialog updatePromotionDlg = new
+				// UpdatePromotionDialog();
+
+				// updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				// updatePromotionDlg.setVisible(true);
 			}
 		});
 		mnPromotion.add(mntmUpdatePromotion);
@@ -271,7 +278,8 @@ private ICheckOutService checkoutService;
 		JMenuItem mntmMembers = new JMenuItem("Members");
 		mntmMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
+				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(
+						frame, reportingService);
 
 				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
 				reportMemberDialog.setLocationRelativeTo(null);
@@ -279,7 +287,8 @@ private ICheckOutService checkoutService;
 			}
 		});
 		mnReporting.add(mntmMembers);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame.getContentPane().setLayout(
+				new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 
 		leftPanel = new JPanel();
 		leftPanel.setBounds(800, 800, 200, 100);
@@ -336,10 +345,13 @@ private ICheckOutService checkoutService;
 		// BorderLayout.NORTH);
 		GridBagLayout gbl_rightEnterAmountPanel = new GridBagLayout();
 		gbl_rightEnterAmountPanel.columnWidths = new int[] { 50, 134, 86, 0 };
-		gbl_rightEnterAmountPanel.rowHeights = new int[] { 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_rightEnterAmountPanel.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_rightEnterAmountPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_rightEnterAmountPanel.rowHeights = new int[] { 29, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_rightEnterAmountPanel.columnWeights = new double[] { 0.0, 0.0, 1.0,
+				Double.MIN_VALUE };
+		gbl_rightEnterAmountPanel.rowWeights = new double[] { 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		rightEnterAmountPanel.setLayout(gbl_rightEnterAmountPanel);
 
 		lbl1 = new JLabel("Member Name:");
@@ -388,7 +400,8 @@ private ICheckOutService checkoutService;
 		gbc_txtMemberDollarRedem.insets = new Insets(0, 0, 5, 0);
 		gbc_txtMemberDollarRedem.gridx = 2;
 		gbc_txtMemberDollarRedem.gridy = 4;
-		rightEnterAmountPanel.add(txtMemberDollarRedem, gbc_txtMemberDollarRedem);
+		rightEnterAmountPanel.add(txtMemberDollarRedem,
+				gbc_txtMemberDollarRedem);
 		txtMemberDollarRedem.setColumns(10);
 
 		lblAmountReceived = new JLabel("Amount Received:");
@@ -411,18 +424,17 @@ private ICheckOutService checkoutService;
 		JButton btnMakePayment = new JButton("Make Payment");
 		btnMakePayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if (member != null){			
+
+				if (member != null) {
 					memberMakePayment();
-				}
-				else{
+				} else {
 					notMemberMakePayment();
-								
+
 				}
-				
+
 			}
 		});
-		
+
 		GridBagConstraints gbc_btnMakePayment = new GridBagConstraints();
 		gbc_btnMakePayment.insets = new Insets(0, 0, 5, 5);
 		gbc_btnMakePayment.gridx = 1;
@@ -458,21 +470,21 @@ private ICheckOutService checkoutService;
 
 		rightFinishPaymentPanel = new JPanel();
 		frame.getContentPane().add(rightFinishPaymentPanel);
-		rightFinishPaymentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		rightFinishPaymentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5,
+				5));
 
 		JButton btnFinishAndPay = new JButton("Finish and Pay");
 		btnFinishAndPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// No Items added to shopping cart
-				if (shoppingcart.getRowCount() == 0){
-					
-					JOptionPane.showMessageDialog(new JFrame(), "No Items in shopping cart.", "Shopping Cart",JOptionPane.INFORMATION_MESSAGE);
+				if (shoppingcart.getRowCount() == 0) {
+
+					JOptionPane.showMessageDialog(new JFrame(),
+							"No Items in shopping cart.", "Shopping Cart",
+							JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
-				
-				
-				
-				
+
 				// Finish buying items
 
 				frame.remove(rightFinishPaymentPanel);
@@ -492,7 +504,8 @@ private ICheckOutService checkoutService;
 		btnMemberPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				MemberLoginDialog memberLoginDlg = new MemberLoginDialog(checkoutService);
+				MemberLoginDialog memberLoginDlg = new MemberLoginDialog(
+						checkoutService);
 
 				memberLoginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				memberLoginDlg.setLocationRelativeTo(null);
@@ -501,7 +514,8 @@ private ICheckOutService checkoutService;
 				if (memberLoginDlg.isMember()) {
 					// TODO
 
-					member =  memberService.getMemberByMemberID(memberLoginDlg.getMemberID());
+					member = memberService.getMemberByMemberID(memberLoginDlg
+							.getMemberID());
 					memberWantsToMakePayment();
 				}
 
@@ -517,7 +531,6 @@ private ICheckOutService checkoutService;
 
 				// TODO
 
-				
 				nonMemberWantsToMakePayment();
 
 			}
@@ -528,9 +541,11 @@ private ICheckOutService checkoutService;
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");
 		mntmTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ReportTransactionDialog reportTransactionDlg = new ReportTransactionDialog(frame, reportingService);
+				ReportTransactionDialog reportTransactionDlg = new ReportTransactionDialog(
+						frame, reportingService);
 
-				reportTransactionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportTransactionDlg
+						.setModalityType(ModalityType.TOOLKIT_MODAL);
 				reportTransactionDlg.setLocationRelativeTo(null);
 				reportTransactionDlg.setVisible(true);
 			}
@@ -553,27 +568,25 @@ private ICheckOutService checkoutService;
 		frame.revalidate(); // For Java 1.7 or above.
 		// frame.getContentPane().validate(); // For Java 1.6 or below.
 		frame.repaint();
-		
+
 		// TODO add loyality points
 		lblMemberName.setText(this.member.getName());
-		lblMemberLoyaltyPts.setText("" + this.checkoutService.convertPointToDollar(this.member.getLoyaltyPoint()));
-		
-		
-		
-		
-		double discountPercent = this.discountService.getMembersTodaysHighestDiscount(true, this.memberService.isFirstPurchase(this.member.getMemberID()));
-		
-		
-		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
-			
-		this.shoppingcart.addRow(new Object[] { "Discount", "" + discountPercent + "%" });
+		lblMemberLoyaltyPts.setText(""
+				+ this.checkoutService.convertPointToDollar(this.member
+						.getLoyaltyPoint()));
 
+		double discountPercent = this.discountService
+				.getMembersTodaysHighestDiscount(true, this.memberService
+						.isFirstPurchase(this.member.getMemberID()));
+
+		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
+
+		this.shoppingcart.addRow(new Object[] { "Discount",
+				"" + discountPercent + "%" });
 
 		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
 		lblsubTotal.setText(currencyIntance.format(subTotal));
-		
-		
 
 	}
 
@@ -592,128 +605,140 @@ private ICheckOutService checkoutService;
 		// frame.getContentPane().validate(); // For Java 1.6 or below.
 		frame.repaint();
 
-		
-double discountPercent = this.discountService.getMembersTodaysHighestDiscount(false, false);
-		
-		
-		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
-			
-		this.shoppingcart.addRow(new Object[] { "Discount", "" + discountPercent + "%" });
+		double discountPercent = this.discountService
+				.getMembersTodaysHighestDiscount(false, false);
 
+		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
+
+		this.shoppingcart.addRow(new Object[] { "Discount",
+				"" + discountPercent + "%" });
 
 		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
 		lblsubTotal.setText(currencyIntance.format(subTotal));
-		
-		
+
 	}
 
-	private void memberMakePayment(){
+	private void memberMakePayment() {
 		// Convert Dollar to Points
 		double dollarLoyaltyPts = 0;
-		try{
-		 dollarLoyaltyPts = Double.parseDouble(txtMemberDollarRedem.getText());
+		try {
+			dollarLoyaltyPts = Double.parseDouble(txtMemberDollarRedem
+					.getText());
 		} catch (NumberFormatException e) {
 			// TODO
-			
+
 		}
-		
-		
-		int loyaltyPts = this.checkoutService.convertDollarToPoint(dollarLoyaltyPts);
-		
-		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, loyaltyPts);
-			
-		this.shoppingcart.addRow(new Object[] { "Deduct Loyalty Points", "" + loyaltyPts });
+
+		int loyaltyPts = this.checkoutService
+				.convertDollarToPoint(dollarLoyaltyPts);
+
+		this.subTotal = this.checkoutService.calculateTotalPayable(
+				this.subTotal, loyaltyPts);
+
+		this.shoppingcart.addRow(new Object[] { "Deduct Loyalty Points",
+				"" + loyaltyPts });
 
 		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
 		lblsubTotal.setText(currencyIntance.format(subTotal));
-		
-		
-		
-		 try {
-	
-			 
-			 
-			 double amountReceived = Double.parseDouble(txtAmountReceived.getText());
-	
-			 
-			double change = this.checkoutService.memberMakePayment(amountReceived, loyaltyPts);
-			
+
+		try {
+
+			double amountReceived = Double.parseDouble(txtAmountReceived
+					.getText());
+
+			double change = this.checkoutService.memberMakePayment(
+					amountReceived, loyaltyPts);
+
 			lblChange.setText("$" + change);
-			
+
 			// check threshold
-			List<Product> products = this.checkoutService.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
-			
-			
-			
-			
+			List<Product> products = this.checkoutService
+					.alertIfInventoryLevelBelowThreshold(this.checkoutService
+							.getCheckoutSummary().getCheckoutItems());
+			for (Product product : products) {
+
+				JOptionPane.showMessageDialog(new JFrame(), "Product:  "
+						+ product.getName()
+						+ " has reach its reorder quantity.", "Inventory",
+						JOptionPane.INFORMATION_MESSAGE);
+
+			}
+
 			// print receipt
-			
+			IPrinter printReceipt = new ConsoleIPrinter();
+
+			int nRow = shoppingcart.getRowCount(), nCol = shoppingcart
+					.getColumnCount();
+			Object[][] tableData = new Object[nRow][nCol];
+			for (int i = 0; i < nRow; i++) {
+
+				String row = "";
+
+				for (int j = 0; j < nCol; j++) {
+					row += shoppingcart.getValueAt(i, j) + " ";
+				}
+
+				printReceipt.print(row);
+			}
+
 		} catch (UssException e) {
 			lblChange.setText(e.getMessage());
 		}
-		
-		
-		
-		
-		
+
 	}
-	
-	private void notMemberMakePayment(){
-		
-		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, 0);
+
+	private void notMemberMakePayment() {
+
+		this.subTotal = this.checkoutService.calculateTotalPayable(
+				this.subTotal, 0);
 
 		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
 		lblsubTotal.setText(currencyIntance.format(subTotal));
-		
-		
-		 try {
-			 
-			 double amountReceived = Double.parseDouble(txtAmountReceived.getText());
-	
-			 
-			double change = this.checkoutService.nonMemberMakePayment(amountReceived);
-			
+
+		try {
+
+			double amountReceived = Double.parseDouble(txtAmountReceived
+					.getText());
+
+			double change = this.checkoutService
+					.nonMemberMakePayment(amountReceived);
+
 			lblChange.setText("$" + change);
-			
 
 		} catch (UssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
-		
-		
-		
+
 	}
-	
+
 	private void readBarcode() {
 
 		String barcode = txtBarcode.getText();
-		
+
 		try {
 			Product product = this.productService.getProductByBarcode(barcode);
-			
-			this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
+
+			this.shoppingcart.addRow(new Object[] { product.getName(),
+					product.getPrice() });
 			subTotal += product.getPrice();
 
 			NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
 			lblsubTotal.setText(currencyIntance.format(subTotal));
-				
+
 			this.checkoutService.addItemIntoCheckOutList(product);
-			
-			
+
 		} catch (UssException e) {
-			
-			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "Login",JOptionPane.INFORMATION_MESSAGE);
-			
-			
-			
+
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Cannot find product with barcode: " + barcode, "Login",
+					JOptionPane.INFORMATION_MESSAGE);
+
 		}
-		
 
 	}
 
