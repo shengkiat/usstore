@@ -31,7 +31,7 @@ public class ErrorConstants {
      */
 
     public static final String PAYMENT_VALIDATION_FAIL = "Payment Validation Fail";
-
+    public static final String AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE = "Amount Received Less Than Amount Payable";
 	
 	/**
 	 * ************************ PRODUCT *****************************************
