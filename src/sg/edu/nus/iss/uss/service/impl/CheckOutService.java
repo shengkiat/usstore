@@ -114,9 +114,8 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         } else {
             throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.PAYMENT_VALIDATION_FAIL);
         }
-
         
-        return dollarsRedeemed;
+        return totalPayable;
     }
 
     @Override
