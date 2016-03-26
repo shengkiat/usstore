@@ -12,9 +12,7 @@ import sg.edu.nus.iss.uss.service.ITransactionService;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CheckOutService extends UssCommonService implements ICheckOutService{
 
@@ -64,16 +62,19 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     @Override
     public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems){
         boolean isBelowThreshold = false;
-        List<Product> listOfProductsBelowThreshold = new ArrayList<Product>();
+        Set<Product> setOfProductsBelowThreshold = new HashSet<Product>();
 
         for(int i = 0; i < productItems.size(); i++) {
-            isBelowThreshold = productService.checkIfProductIsBelowThreshold(productItems.get(i));
+     isBelowThreshold = productService.checkIfProductIsBelowThreshold(productItems.get(i));
             if(isBelowThreshold) {
-                listOfProductsBelowThreshold.add(productItems.get(i));
+                setOfProductsBelowThreshold.add(productItems.get(i));
             }
         }
 
-        return listOfProductsBelowThreshold;
+        List<Product> productsBelowThreshold = new ArrayList<Product>();
+        productsBelowThreshold.addAll(setOfProductsBelowThreshold);
+
+        return productsBelowThreshold;
     }
 
     @Override
