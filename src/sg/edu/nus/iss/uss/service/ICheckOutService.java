@@ -26,7 +26,7 @@ public interface ICheckOutService {
 	
     public int convertDollarToPoint(double dollar);
 
-    public double calculatePayAmount(int discount);
+    public double calculatePayAmount(double discount);
 
 	public int convertPointToDollar(int point);	
 

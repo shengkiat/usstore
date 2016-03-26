@@ -126,7 +126,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public double calculatePayAmount(int discount){
+    public double calculatePayAmount(double discount){
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.HALF_EVEN);
 
