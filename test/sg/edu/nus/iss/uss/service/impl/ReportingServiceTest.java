@@ -23,7 +23,6 @@ import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
-
 import static org.junit.Assert.*;
 
 public class ReportingServiceTest {
@@ -116,6 +115,12 @@ public class ReportingServiceTest {
 
 		@Override
 		public void createTransactions(List<Transaction> transactions) throws UssException {
+			throw new RuntimeException("not expected to call");
+		}
+
+		@Override
+		public void createTransactions(List<Product> products, String memberID,
+				Date transactionDate) throws UssException {
 			throw new RuntimeException("not expected to call");
 		}
 	}

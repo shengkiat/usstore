@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.FileDataAccessTest;
+import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccessTest;
+import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionTableModelTest;
@@ -25,6 +27,8 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	VendorFileDataAccessTest.class,
 	TransactionFileDataAccessTest.class,
 	DiscountFileDataAccessTest.class,
+	MemberFileDataAccessTest.class,
+	StoreKeeperFileDataAccessTest.class,
 	TransactionServiceTest.class,
 	AuthorisedServiceTest.class,
 	UssCommonUtilTest.class,

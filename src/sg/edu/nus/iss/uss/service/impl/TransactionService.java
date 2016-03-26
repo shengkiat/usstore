@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
@@ -41,6 +42,12 @@ public class TransactionService extends UssCommonService implements ITransaction
 		}
 		
 		return result;
+	}
+
+	@Override
+	public void createTransactions(List<Product> products, String memberID,
+			Date transactionDate) throws UssException {
+		throw new RuntimeException("");
 	}
 
 }
