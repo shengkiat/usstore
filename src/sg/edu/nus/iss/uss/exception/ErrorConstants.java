@@ -38,7 +38,7 @@ public class ErrorConstants {
 	 */
 	public static final String PRODUCT_EXISTS = "Product Exists!";
 	public static final String PRODUCT_NOT_EXISTS = "Product Does Not Exists!";
-	public static final String PRODUCTFILE_EMPTY = "Product File is Empty!";
+	public static final String PRODUCTFILE_EMPTY = "Product List is Empty!";
 	
 	
 	/**
@@ -46,6 +46,7 @@ public class ErrorConstants {
 	 */
 	public static final String CATEGORY_EXISTS = "Category Exists!";
 	public static final String CATEGORY_NOT_EXISTS = "Category Does Not Exists!";
+	public static final String CATEGORYFILE_EMPTY = "Category File is Empty!";
 	
 	/**
 	 ************************** MEMBER ****************************************

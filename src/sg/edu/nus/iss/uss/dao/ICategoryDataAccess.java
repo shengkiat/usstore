@@ -10,7 +10,6 @@ public interface ICategoryDataAccess {
 	
 	public List<Category> getAll();
 	public void create(Category category) throws UssException;
-	public void update(Category category) throws UssException;
 	public Category getCategoryByCategoryCode(String discountCode);
 	
 }

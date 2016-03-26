@@ -6,6 +6,7 @@ import java.util.List;
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.exception.ErrorConstants.UssCode;
 import sg.edu.nus.iss.uss.model.Category;
 
 public class CategoryFileDataAccess extends FileDataAccess implements ICategoryDataAccess {
@@ -18,7 +19,6 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	
 	private static final int TOTAL_FIELDS = 2;
 	
-	private List<Category> catList;
 	String[] strCat;
 	
 	public CategoryFileDataAccess() throws UssException {
@@ -42,24 +42,11 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 		strCat[FIELD_NAME] = e.getName();
 		
 		writeNewLine(strCat);
+		
+		categoryList.add(e);
+		
 	}
 
-	public void update(Category e) throws UssException {
-		if(e == null)
-			throw new UssException(ErrorConstants.UssCode.CATEGORY, ErrorConstants.CATEGORY_NOT_EXISTS);
-		for(Category tmp : getAll()) {
-			if (e.getCode().equalsIgnoreCase(tmp.getCode()))
-                catList.set(catList.indexOf(tmp), e);
-		}
-		
-		strCat = new String[TOTAL_FIELDS];
-		
-		strCat[FIELD_CATEGORY_CODE] = e.getCode();
-		strCat[FIELD_NAME] = e.getName();
-		
-		overwriteLine(strCat);
-		
-	}
 	public Category getCategoryByCategoryCode(String CategoryCode) {
 		Category e = null;
 		for(Category cat:getAll()){
@@ -72,18 +59,25 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	}
 	
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
 		
 		categoryList = new ArrayList<>();
 		
 		List<String[]> catList = readAll(); 
 		
-		for(String[] str: catList)
-		{
-			Category cat = new Category();
-			cat.setCode(str[FIELD_CATEGORY_CODE]);
-			cat.setName(str[FIELD_NAME]);
-			categoryList.add(cat);
+		if (catList.isEmpty()) {
+			
+			throw new UssException(UssCode.CATEGORY, ErrorConstants.CATEGORYFILE_EMPTY);
+			
+		} else {
+		
+			for(String[] str: catList)
+			{
+			    Category cat = new Category();
+				cat.setCode(str[FIELD_CATEGORY_CODE]);
+				cat.setName(str[FIELD_NAME]);
+				categoryList.add(cat);
+			}
 		}
 	}
 	
