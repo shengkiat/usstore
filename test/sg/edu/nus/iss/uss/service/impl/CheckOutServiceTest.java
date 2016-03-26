@@ -91,42 +91,42 @@ public class CheckOutServiceTest {
     }
 
     @Test
-    public void testCalculateChargePriceNormalDiscount() {
+    public void testCalculatePayAmountNormalDiscount() {
         createCheckOutSummaryData();
         int discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1234567A");
-        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
-        assertEquals(chargePrice, 36.54, 0);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
+        assertEquals(payAmount, 36.54, 0);
     }
 
     @Test
-    public void testCalculateChargePriceDiscountZeroPercent() {
+    public void testCalculatePayAmountDiscountZeroPercent() {
         createCheckOutSummaryData();
         int discountAmount = mockDiscountService.findHighestDiscountByMemberID("S1111111B");
-        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
-        assertEquals(chargePrice, 40.60, 0);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
+        assertEquals(payAmount, 40.60, 0);
     }
 
     @Test
-    public void testCalculateChargePriceDiscountRoundDown() {
+    public void testCalculatePayAmountDiscountRoundDown() {
         createCheckOutSummaryData();
         int discountAmount = 11;
-        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
-        assertEquals(chargePrice, 36.13, 0);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
+        assertEquals(payAmount, 36.13, 0);
     }
 
     @Test
-    public void testCalculateChargePriceDiscountRoundUp() {
+    public void testCalculatePayAmountDiscountRoundUp() {
         createCheckOutSummaryData();
         int discountAmount = 12;
-        double chargePrice = checkOutService.calculateChargePrice(discountAmount);
-        assertEquals(chargePrice, 35.73, 0);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
+        assertEquals(payAmount, 35.73, 0);
     }
 
     @Test
     public void testConvertDollarToPointNormalCase() {
         createCheckOutSummaryData();
-        double chargePrice = checkOutService.calculateChargePrice(0); // no discount given
-        int pointsConverted = checkOutService.convertDollarToPoint(chargePrice);
+        double payAmount = checkOutService.calculatePayAmount(0); // no discount given
+        int pointsConverted = checkOutService.convertDollarToPoint(payAmount);
         assertEquals(pointsConverted, 4);
     }
 
@@ -135,9 +135,9 @@ public class CheckOutServiceTest {
     public void testCalculateTotalPayableAfterPointsRedemptionWithoutAnyPointsRedemption(){
         createCheckOutSummaryData();
         int discountAmount = 10;
-        double payAmount = checkOutService.calculateChargePrice(discountAmount);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
         int pointsToRedeem = 0;
-        double totalPayable = checkOutService.calculateTotalPayableAfterPointsRedemption(payAmount, pointsToRedeem);
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, pointsToRedeem);
 
         assertEquals(totalPayable, 36.54, 0);
     }
@@ -146,9 +146,9 @@ public class CheckOutServiceTest {
     public void testCalculateTotalPayableAfterPointsRedemption100Points(){
         createCheckOutSummaryData();
         int discountAmount = 10;
-        double payAmount = checkOutService.calculateChargePrice(discountAmount);
+        double payAmount = checkOutService.calculatePayAmount(discountAmount);
         int pointsToRedeem = 100;
-        double totalPayable = checkOutService.calculateTotalPayableAfterPointsRedemption(payAmount, pointsToRedeem);
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, pointsToRedeem);
 
         assertEquals(totalPayable, 31.54, 0);
     }
@@ -157,9 +157,9 @@ public class CheckOutServiceTest {
     public void testCalculateTotalPayableAfterPointsRedemption105Points(){ // this will only use 100 points
         createCheckOutSummaryData();
         int discountAmount = 10;
-        double totalPayable = checkOutService.calculateChargePrice(discountAmount);
+        double totalPayable = checkOutService.calculatePayAmount(discountAmount);
         int pointsToRedeem = 100;
-        double amountPaid = checkOutService.calculateTotalPayableAfterPointsRedemption(totalPayable, pointsToRedeem);
+        double amountPaid = checkOutService.calculateTotalPayable(totalPayable, pointsToRedeem);
 
         assertEquals(amountPaid, 31.54, 0);
     }
@@ -168,17 +168,22 @@ public class CheckOutServiceTest {
     public void testMakePaymentWithFailedPaymentValidation() throws UssException {
         // amount paid and amount redeemed not correct
         createCheckOutSummaryData();
-        checkOutService.determineMemberID("F42563743156");
-        checkOutService.calculateChargePrice(10);
+        String memberID = "F42563743156";
+        checkOutService.determineMemberID(memberID);
+        checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
         checkOutService.makePayment(100.0, 100);
     }
 
     @Test(expected=RuntimeException.class)
     public void testMakePaymentDeduct100() throws UssException {
         createCheckOutSummaryData();
-        checkOutService.determineMemberID("F42563743156");
-        checkOutService.calculateChargePrice(10);
-        checkOutService.makePayment(31.54, 100);
+        String memberID = "F42563743156";
+        checkOutService.determineMemberID(memberID);
+
+        double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
+
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        checkOutService.makePayment(totalPayable, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -209,8 +214,6 @@ public class CheckOutServiceTest {
 
         assertEquals(0, productsBelowThreshold.size());
     }
-
-
 
     @Test
     public void testPrintoutReceipt(){
@@ -248,7 +251,7 @@ public class CheckOutServiceTest {
         }
 
         public int findHighestDiscountByMemberID(String memberID){
-            if(memberID.equals("S1234567A")) {
+            if(memberID.equals("F42563743156")) {
                 return 10;
             }
             else if (memberID.equals("S1111111B")) {
@@ -256,6 +259,8 @@ public class CheckOutServiceTest {
             }
             else if (memberID.equals("S2222222C")) {
                 return 200;
+            } else if(memberID.equals("S1234567A")) {
+                return 10;
             }
             else {
                 return 30;
