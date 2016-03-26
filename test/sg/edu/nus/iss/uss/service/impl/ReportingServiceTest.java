@@ -112,12 +112,7 @@ public class ReportingServiceTest {
 			
 			return transactions;
 		}
-
-		@Override
-		public void createTransactions(List<Transaction> transactions) throws UssException {
-			throw new RuntimeException("not expected to call");
-		}
-
+		
 		@Override
 		public void createTransactions(List<Product> products, String memberID,
 				Date transactionDate) throws UssException {
