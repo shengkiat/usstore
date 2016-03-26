@@ -1,26 +1,25 @@
 package sg.edu.nus.iss.uss.client;
 
 import java.awt.Color;
-
-import javax.swing.JDialog;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.service.IMemberService;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class NewMemberDialog extends JDialog {
 
 	private static final long serialVersionUID = -62814988236609858L;
-	
+
 	private JTextField txtMemberID;
 	private JTextField txtName;
 
@@ -28,7 +27,7 @@ public class NewMemberDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public NewMemberDialog(final IMemberService memberService) {
-		
+
 		setBounds(100, 100, 450, 180);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0 };
@@ -70,7 +69,7 @@ public class NewMemberDialog extends JDialog {
 		gbc_txtName.gridy = 2;
 		getContentPane().add(txtName, gbc_txtName);
 		txtName.setColumns(10);
-		
+
 		final JLabel lblInfo = new JLabel("");
 		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
 		gbc_lblInfo.anchor = GridBagConstraints.WEST;
@@ -89,15 +88,19 @@ public class NewMemberDialog extends JDialog {
 		JButton btnAddMember = new JButton("Add Member");
 		btnAddMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String memberID = txtMemberID.getText();
 				String memberName = txtName.getText();
-				
+
 				try {
 					memberService.registerNewMember(memberName, memberID);
-					
+
 					lblInfo.setText(memberName + "is added successfully.");
 					lblInfo.setForeground(Color.black);
+
+					txtMemberID.setText("");
+					txtName.setText("");
+
 				} catch (UssException e1) {
 					lblInfo.setText("Fail to add member: " + memberName);
 					lblInfo.setForeground(Color.RED);
