@@ -136,7 +136,7 @@ private ICheckOutService checkoutService;
 
 		this.vendorDAO = new VendorFileDataAccess();
 		this.vendorService = new VendorService(vendorDAO);
-		this.categoryService = new CategoryService(vendorService, categoryDAO);
+		this.categoryService = new CategoryService(categoryDAO);
 
 		this.memberDAO = new MemberFileDataAccess();
 		this.memberService = new MemberService(memberDAO);
