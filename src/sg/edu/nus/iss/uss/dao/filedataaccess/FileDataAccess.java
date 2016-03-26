@@ -149,22 +149,15 @@ abstract class FileDataAccess {
 		return readAll(getPathForFile());
 	}
 	
-	//TODO should throw custom exception?
 	protected List<String[]> readAll(Path pathForFile){
 		List<String[]> result = new ArrayList<>();
 
 		try (BufferedReader reader = Files.newBufferedReader(pathForFile, getCharsetForFile())) {
 		    String line = null;
-		    int lineNo = 1;
+
 		    while ((line = reader.readLine()) != null) {
 		    	String[] arr = line.split(getContentDelimiter());
-		    	
-		    	//TODO should have validation?
-		    	//if (arr.length != getTotalNumberOfFields()) {
-					//throw new IllegalArgumentException(fileName + ", Line " + lineNo + ", Expected total number of fields: " + getTotalNumberOfFields() + " but: " + arr.length);
-				//}
 		    	result.add(arr);
-		    	lineNo++;
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
