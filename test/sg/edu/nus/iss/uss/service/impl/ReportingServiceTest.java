@@ -164,6 +164,12 @@ public class ReportingServiceTest {
 			throw new RuntimeException("not expected to call");
 			
 		}
+
+		@Override
+		public Product getProductByBarcode(String barcode) throws UssException {
+			// TODO Auto-generated method stub
+			throw new RuntimeException("not expected to call");
+		}
 	}
 	
 	private class MockIMemberService implements IMemberService {

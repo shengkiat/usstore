@@ -82,13 +82,12 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return listOfProductsBelowThreshold;
     }
 
-    // new method
     @Override
-    public double calculateTotalPayableAfterPointsRedemption(double payAmount, int redeemPoint) {
+    public double calculateTotalPayable(double payAmount, int redeemPoint) {
         double dollarsRedeemed = convertPointToDollar(redeemPoint);
-        checkoutSummary.setPayAmount(payAmount - dollarsRedeemed);
+        checkoutSummary.setTotalPayable(payAmount - dollarsRedeemed);
 
-        return checkoutSummary.getPayAmount();
+        return checkoutSummary.getTotalPayable();
     }
 
     @Override
@@ -107,19 +106,16 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
             // create transaction for buyer
             transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
 
-
             // deduct from inventory
             productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
 
             // return threshold notification
             alertIfInventoryLevelBelowThreshold(checkoutSummary.getCheckoutItems());
-
         } else {
             throw new UssException(ErrorConstants.UssCode.CHECKOUT, ErrorConstants.PAYMENT_VALIDATION_FAIL);
         }
-
         
-        return dollarsRedeemed;
+        return totalPayable;
     }
 
     @Override
@@ -130,7 +126,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public double calculateChargePrice(int discount){
+    public double calculatePayAmount(int discount){
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.HALF_EVEN);
 
@@ -160,8 +156,8 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         return pointsConverted;
     }
 
-//    @Override
-    private int convertPointToDollar(int point){
+    @Override
+    public int convertPointToDollar(int point){
         int pointsToDollar = 20;
         int dollarsConverted = point / 20;
 

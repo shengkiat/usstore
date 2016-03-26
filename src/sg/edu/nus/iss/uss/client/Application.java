@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -28,7 +29,9 @@ import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionPanel;
 import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.*;
 import sg.edu.nus.iss.uss.service.impl.*;
@@ -66,7 +69,10 @@ public class Application {
 	private IVendorService vendorService;
 	private IMemberService memberService;
 	private IDiscountService discountService;
-
+private ICheckOutService checkoutService;
+	
+	private Member member;
+	
 	private List<Product> products;
 	private double subTotal = 0;
 
@@ -126,7 +132,7 @@ public class Application {
 		this.productService = new ProductService(productDAO);
 
 		// Get the list of products
-		// this.products = this.productService.retrieveProductList();
+		this.products = this.productService.retrieveProductList();
 
 		this.vendorDAO = new VendorFileDataAccess();
 		this.vendorService = new VendorService(vendorDAO);
@@ -137,6 +143,10 @@ public class Application {
 		
 		this.reportingService = new ReportingService(transactionService, productService, memberService);
 
+		
+		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
+		
+		
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);
 		// add header of the table
@@ -458,7 +468,8 @@ public class Application {
 				if (memberLoginDlg.isMember()) {
 					// TODO
 
-					memberMakePayment();
+					member =  memberService.getMemberByMemberID(memberLoginDlg.getMemberID());
+					memberMakePayment(memberLoginDlg.getMemberID());
 				}
 
 			}
@@ -472,6 +483,8 @@ public class Application {
 			public void actionPerformed(ActionEvent e) {
 
 				// TODO
+
+				
 				nonMemberMakePayment();
 
 			}
@@ -493,7 +506,7 @@ public class Application {
 
 	}
 
-	private void memberMakePayment() {
+	private void memberMakePayment(String memberID) {
 
 		lbl1.setVisible(true);
 		lblMemberName.setVisible(true);
@@ -507,6 +520,16 @@ public class Application {
 		frame.revalidate(); // For Java 1.7 or above.
 		// frame.getContentPane().validate(); // For Java 1.6 or below.
 		frame.repaint();
+		
+		// TODO add loyality points
+		lblMemberName.setText(this.member.getName());
+		lblMemberLoyaltyPts.setText("" + this.checkoutService.convertPointToDollar(this.member.getLoyaltyPoint()));
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -530,21 +553,28 @@ public class Application {
 	private void readBarcode() {
 
 		String barcode = txtBarcode.getText();
+		
+		try {
+			Product product = this.productService.getProductByBarcode(barcode);
+			
+			this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
+			subTotal += product.getPrice();
 
-		for (Product product : this.products) {
-			if (product.getBarCodeNumber().equals(barcode)) {
+			NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
-				this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
-				subTotal += product.getPrice();
-
-				NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
-
-				lblsubTotal.setText(currencyIntance.format(subTotal));
-
-				break;
-
-			}
+			lblsubTotal.setText(currencyIntance.format(subTotal));
+				
+			
+		} catch (UssException e) {
+			
+			JOptionPane.showMessageDialog(new JFrame(), "Invalid: " + barcode, "Login",JOptionPane.INFORMATION_MESSAGE);
+			
+			JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.REQUIRED_START_END_DATE, "",
+			        JOptionPane.ERROR_MESSAGE);
+			
+			
 		}
+		
 
 	}
 

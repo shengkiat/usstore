@@ -9,6 +9,8 @@ public interface IProductService {
 
 	public Product getProductByProductID(String productID) throws UssException;
 
+	public Product getProductByBarcode(String barcode) throws UssException;
+	
 	public List<Product> retrieveProductList();
 
 	public List<Product> retrieveProductListByThreshold();

@@ -18,7 +18,7 @@ public interface ICheckOutService {
 
 	public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems);
 
-    public double calculateTotalPayableAfterPointsRedemption(double payAmount, int redeemPoint);
+    public double calculateTotalPayable(double payAmount, int redeemPoint);
 
     public double makePayment(double payAmount, int redeemPoint) throws UssException;
 	
@@ -26,8 +26,8 @@ public interface ICheckOutService {
 	
     public int convertDollarToPoint(double dollar);
 
-    public double calculateChargePrice(int discount);
+    public double calculatePayAmount(int discount);
 
-//	public int convertPointToDollar(int point);
+	public int convertPointToDollar(int point);
 	
 }

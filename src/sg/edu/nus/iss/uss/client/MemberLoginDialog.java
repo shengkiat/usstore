@@ -24,6 +24,7 @@ public class MemberLoginDialog extends JDialog {
 	private JTextField txtMemberID;
 
 	private boolean _isMember = false;
+	private String _memberID;
 	private IMemberService memberService;
 
 	/**
@@ -55,9 +56,9 @@ public class MemberLoginDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						// TODO
-						String memberID = txtMemberID.getText();
+						_memberID = txtMemberID.getText();
 						
-						if (memberService.isValidMember(memberID)){
+						if (memberService.isValidMember(_memberID)){
 							_isMember = true;
 							dispose();
 						}
@@ -94,5 +95,9 @@ public class MemberLoginDialog extends JDialog {
 
 	public boolean isMember() {
 		return _isMember;
+	}
+	
+	public String getMemberID() {
+		return _memberID;
 	}
 }
