@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
+import sg.edu.nus.iss.uss.client.reporting.ReportProductDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
 import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
@@ -291,6 +292,15 @@ public class Application {
 		mnReporting.add(mntmCategories);
 
 		JMenuItem mntmProducts = new JMenuItem("Products");
+		mntmProducts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportProductDialog reportProductDialog = new ReportProductDialog(frame, productService);
+
+				reportProductDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportProductDialog.setLocationRelativeTo(null);
+				reportProductDialog.setVisible(true);
+			}
+		});
 		mnReporting.add(mntmProducts);
 
 		JMenuItem mntmMembers = new JMenuItem("Members");

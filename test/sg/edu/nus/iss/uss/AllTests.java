@@ -10,7 +10,9 @@ import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDatAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccessTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.VendorFileDataAccessTest;
+import sg.edu.nus.iss.uss.client.reporting.ReportCategoryTableModelTest;
 import sg.edu.nus.iss.uss.client.reporting.ReportMemberTableModelTest;
+import sg.edu.nus.iss.uss.client.reporting.ReportProductTableModelTest;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionTableModelTest;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccessTest;
 import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
@@ -49,7 +51,9 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	MemberServiceTest.class,
 	CategoryServiceTest.class,
 	ReportTransactionTableModelTest.class,
-	ReportMemberTableModelTest.class
+	ReportMemberTableModelTest.class,
+	ReportProductTableModelTest.class,
+	ReportCategoryTableModelTest.class
 })
 public class AllTests {
 
