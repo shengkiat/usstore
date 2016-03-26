@@ -27,6 +27,10 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		super(FILE_NAME);
 	}
 
+	public ProductFileDataAccess(String fileName, String directory) throws UssException {
+		super(fileName, directory);
+	}
+	
 	@Override
 	public List<Product> getAll() {
 		return productList;
@@ -70,7 +74,7 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
   
 		Integer iQtyAvailable;
 		Double dblPrice;
-		Integer iBarCodeNo;
+		String sBarCodeNo;
 		Integer iQtyReOrder;
 		Integer iOrderQty;
 		
@@ -80,11 +84,11 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		{
 			iQtyAvailable = Integer.parseInt(str[FIELD_QUANTITY_AVAILABLE]);
 			dblPrice = Double.parseDouble(str[FIELD_PRICE]);
-			iBarCodeNo = Integer.parseInt(str[FIELD_BARCODENUMBER]);
+			sBarCodeNo = str[FIELD_BARCODENUMBER];
 			iQtyReOrder = Integer.parseInt(str[FIELD_REORDER_QUANTITY]);
 			iOrderQty = Integer.parseInt(str[FIELD_ORDER_QUANTITY]);
 			
-			prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty);
+			prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,sBarCodeNo,iQtyReOrder,iOrderQty);
 			prdt.setProductNo(prdt.getProductNo());
 			productList.add(prdt);
 				
@@ -103,5 +107,5 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 	protected int getTotalNumberOfFields() {
 		return TOTAL_FIELDS;
 	}
-	
+
 }

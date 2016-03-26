@@ -159,7 +159,7 @@ public class ReportingServiceTest {
 
 		@Override
 		public void createNewProductEntry(String categoryCode, String productName, String briefDescription,
-				int QuantityAvailable, double price, int barCodeNumber, int reorderQuantity, int orderQuantity)
+				int QuantityAvailable, double price, String barCodeNumber, int reorderQuantity, int orderQuantity)
 				throws UssException {
 			throw new RuntimeException("not expected to call");
 			

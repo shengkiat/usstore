@@ -27,9 +27,7 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 	public void createNewCategory(String code, String Name)  throws UssException {
 		
 		categoryAdditionValidation(code);
-	    Category cat= new Category();
-		cat.setCode(code);
-		cat.setName(Name);
+	    Category cat= new Category(code,Name);
 		catDataAccess.create(cat);
 
 		

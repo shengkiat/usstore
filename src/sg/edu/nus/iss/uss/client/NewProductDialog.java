@@ -222,7 +222,7 @@ public class NewProductDialog extends JDialog {
 				String description =  txtDescription.getText();
 				Integer quantityAvailable =  Integer.parseInt(txtQuantityAvailable.getText());
 				double price= Double.parseDouble(txtPrice.getText());
-				Integer barcode= Integer.parseInt(txtBarcode.getText());
+				String barcode= txtBarcode.getText();
 				Integer reorderQuantity= Integer.parseInt(txtReorderQuantity.getText());
 				Integer orderQuantity= Integer.parseInt(txtOrderQuantity.getText());
 				

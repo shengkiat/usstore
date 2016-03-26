@@ -15,23 +15,23 @@ import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
+import sg.edu.nus.iss.uss.exception.UssException;
 
 public class ReportingService extends UssCommonService implements IReportingService {
 	
 	private ITransactionService transactionService;
-	private IProductService productService;
+    private IProductService productservice;
 	private IMemberService memberService;
 	
 	public ReportingService(ITransactionService transactionService, IProductService productService, IMemberService memberService) {
 		this.transactionService = transactionService;
-		this.productService = productService;
+		this.productservice = productService;
 		this.memberService = memberService;
 	}
 	
 	@Override
 	public String printCategoriesReport(){
 		//TODO
-		
 		return "";
 	}
 	
@@ -43,7 +43,7 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	}
 	
 	@Override
-	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate){
+	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate) throws UssException{
 		Objects.requireNonNull(startDate, "startDate cannot be null");
 		Objects.requireNonNull(endDate, "endDate cannot be null");
 		
@@ -56,7 +56,8 @@ public class ReportingService extends UssCommonService implements IReportingServ
 		List<Transaction> transactions = transactionService.retrieveTransactionListByDate(startDate, endDate);
 		
 		for(Transaction transaction : transactions) {
-			Product product = productService.getProductByProductID(transaction.getProductID());	
+		    
+			Product product = productservice.getProductByProductID(transaction.getProductID());	
 			
 			Objects.requireNonNull(product, "product should not be null using " + transaction.getProductID());
 			result.add(new ReportTransaction(transaction, product));

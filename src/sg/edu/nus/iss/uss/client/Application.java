@@ -539,7 +539,7 @@ public class Application {
 		String barcode = txtBarcode.getText();
 
 		for (Product product : this.products) {
-			if (Integer.toString(product.getBarCodeNumber()).equals(barcode)) {
+			if (product.getBarCodeNumber().equals(barcode)) {
 
 				this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
 				subTotal += product.getPrice();

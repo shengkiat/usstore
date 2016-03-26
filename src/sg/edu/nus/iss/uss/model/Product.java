@@ -13,7 +13,7 @@ public class Product implements Comparator<Product> {
 	private String briefDescription;
 	private int quantityAvailable;
 	private double price;
-	private int barCodeNumber;
+	private String barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
 	//Added
@@ -65,10 +65,10 @@ public class Product implements Comparator<Product> {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public int getBarCodeNumber() {
+	public String getBarCodeNumber() {
 		return barCodeNumber;
 	}
-	public void setBarCodeNumber(int barCodeNumber) {
+	public void setBarCodeNumber(String barCodeNumber) {
 		this.barCodeNumber = barCodeNumber;
 	}
 	public int getReorderQuantity() {
@@ -85,7 +85,7 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public Product(String productID, String name, String briefDescription, int quantityAvailable, double price,
-			int barCodeNumber, int reorderQuantity, int orderQuantity) {
+			String barCodeNumber, int reorderQuantity, int orderQuantity) {
 		super();
 		this.productID = productID;
 		this.name = name;

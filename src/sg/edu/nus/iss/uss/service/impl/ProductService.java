@@ -17,29 +17,18 @@ public class ProductService extends UssCommonService implements IProductService{
 	private IProductDataAccess prdDataAccess;
 	Product prodt;
     ArrayList<Integer> prdNos;
-    
+    IProductService prdService;
     
 	public ProductService(IProductDataAccess prdDataAccess){
 		this.prdDataAccess = prdDataAccess;
 	}
 	
-
-	public Product getProductByProductID(String productID){
-		Product product = null;
-		for(Product prd:retrieveProductList()){
-		     if (prd.getProductID().equals(productID)) {
-		    	 product = prd;
-		     }
-		}
-		return product;
-	}
 	
 	
 	public List<Product> retrieveProductList(){
 		return prdDataAccess.getAll();
 	}
-	
-	
+
 	public List<Product> retrieveProductListByThreshold(){
 		
 		List<Product> prdList = new ArrayList<Product> ();
@@ -52,10 +41,10 @@ public class ProductService extends UssCommonService implements IProductService{
 		return prdList;
 	}
 	
-	
-	public void createNewProductEntry(String categoryCode, String productName, String briefDescription,int QuantityAvailable,  double price,
-			int barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException {
-    	
+	@Override
+	public void createNewProductEntry(String categoryCode, String productName, String briefDescription, int QuantityAvailable, double price, 
+			String barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException {
+		// TODO Auto-generated method stub
 		prdNos =  new ArrayList<Integer> ();
 	    // Retrieve Product List Base on Category Code
 	    for(Product Prd:retrieveProductList())
@@ -78,10 +67,37 @@ public class ProductService extends UssCommonService implements IProductService{
 
         // Create Product and Write to File      
 	    prdDataAccess.create(new Product(categoryCode,productName,briefDescription,QuantityAvailable,price,barCodeNumber,reorderQuantity,orderQuantity));
-
+		
 	}
-    
 
+	/*
+	@Override
+	public void updateProductEntry(String productID, String productName, String briefDescription, int QuantityAvailable, double price, 
+			String barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException {
+		
+		Product p = prdService.getProductByProductID(productID);
+		
+		if (p.equals(null)) {
+			// throws Product cannot be found
+		}
+		else
+		{
+			p.setName(productName);
+			p.setBriefDescription(briefDescription); 
+			p.setQuantityAvailable(QuantityAvailable); 
+			p.setPrice(price); 
+			p.setBarCodeNumber(barCodeNumber);
+			p.setReorderQuantity(reorderQuantity); 
+			p.setOrderQuantity(orderQuantity);
+			
+		}
+
+        // Update to File      
+        prdDataAccess.update(p);		
+	}
+	*/
+	
+	
     public boolean checkIfProductIsBelowThreshold (Product product) {
         return product.isBelowThreshold();
     }
@@ -91,7 +107,7 @@ public class ProductService extends UssCommonService implements IProductService{
         for(Product pdt : productItems)
     	{
         	        	
-        	Product prod = getProductByProductID(pdt.getProductID());
+        	Product prod = prdService.getProductByProductID(pdt.getProductID());
         	
     	    if (prod == Null) {
     	    	// Product Item not valid
@@ -99,6 +115,7 @@ public class ProductService extends UssCommonService implements IProductService{
     	    else {
 	        	if (prod.getpurchaseQty() >= prod.getQuantityAvailable()) {
 	        	        prod.setpurchaseQty(prod.getpurchaseQty());  //Update Qty
+	        	        
 	        	        prdDataAccess.update(prodt); // Write to File
 	        	}
 		        else {
@@ -108,6 +125,17 @@ public class ProductService extends UssCommonService implements IProductService{
     	}
             
    	}
+
+	@Override
+	public Product getProductByProductID(String productID) throws UssException{
+			Product p = null;
+			for(Product prd:retrieveProductList()){
+			     if (prd.getProductID().equals(productID)) {
+			    	 p = prd;
+			     }
+			}
+			return p;
+		}
     
 
 }

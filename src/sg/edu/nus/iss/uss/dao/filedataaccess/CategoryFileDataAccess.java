@@ -1,9 +1,9 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 
@@ -17,18 +17,25 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	
 	private static final int TOTAL_FIELDS = 2;
 	
+	private List<Category> catList;
+	String[] strCat;
+	
 	public CategoryFileDataAccess() throws UssException {
 		super(FILE_NAME);
 	}
 
+	public CategoryFileDataAccess(String fileName, String directory) throws UssException {
+		super(fileName, directory);
+	}
+	
 	@Override
 	public List<Category> getAll() {
 		return categoryList;
 	}
 
 	@Override
-	public void create(Category e) throws UssException {
-		String[] strCat = new String[TOTAL_FIELDS];
+	public void create(Category e) throws UssException {	
+		strCat = new String[TOTAL_FIELDS];
 		
 		strCat[FIELD_CATEGORY_CODE] = e.getCode();
 		strCat[FIELD_NAME] = e.getName();
@@ -36,12 +43,37 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 		writeNewLine(strCat);
 	}
 
+	public void update(Category e) throws UssException {
+		if(e == null)
+			throw new UssException(ErrorConstants.UssCode.CATEGORY, ErrorConstants.CATEGORY_NOT_EXISTS);
+		for(Category tmp : getAll()) {
+			if (e.getCode().equalsIgnoreCase(tmp.getCode()))
+                catList.set(catList.indexOf(tmp), e);
+		}
+		
+		strCat = new String[TOTAL_FIELDS];
+		
+		strCat[FIELD_CATEGORY_CODE] = e.getCode();
+		strCat[FIELD_NAME] = e.getName();
+		
+		overwriteLine(strCat);
+		
+	}
+	public Category getCategoryByCategoryCode(String CategoryCode) {
+		Category e = null;
+		for(Category cat:getAll()){
+		     if (e.getCode().equals(CategoryCode)) {
+		    	 e = cat;
+		     }
+		}
+		return e;
+		
+	}
+	
 	@Override
 	protected void initialLoad() {
 		
 		List<String[]> catList = readAll(); 
-		
-		categoryList = new ArrayList<Category>();
 		
 		for(String[] str: catList)
 		{
@@ -51,6 +83,9 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 			categoryList.add(cat);
 		}
 	}
+	
+
+	
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {
