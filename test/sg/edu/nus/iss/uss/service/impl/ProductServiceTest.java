@@ -132,22 +132,6 @@ public class ProductServiceTest {
 	    assertEquals(11, prdDataAccess.getAll().size());
 	    
 	}
-/*
-	@Test
-	public void testupdateProductEntry() throws UssException {
-		
-		Product p = new Product("MUG/1","Centenary Mug","A Nice Mug",525,10.00,"9876",25,150);
-		
-		prdDataAccess.update(p);
-		
-		Product p1 = prdDataAccess.getProductByProductID("MUG/1");
-		
-		//Test for Value After Update
-		assertEquals(p1.getBriefDescription(), "A Nice Mug");
-		assertEquals(String.valueOf(p1.getPrice()),"10.00");
-		assertSame(p,p1);
-	}
-	*/
 	
 	@Test
     public void testcheckIfProductIsBelowThreshold () {

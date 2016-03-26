@@ -136,7 +136,7 @@ private ICheckOutService checkoutService;
 
 		this.vendorDAO = new VendorFileDataAccess();
 		this.vendorService = new VendorService(vendorDAO);
-		this.categoryService = new CategoryService(vendorService, categoryDAO);
+		this.categoryService = new CategoryService(categoryDAO);
 
 		this.memberDAO = new MemberFileDataAccess();
 		this.memberService = new MemberService(memberDAO);
@@ -409,6 +409,19 @@ private ICheckOutService checkoutService;
 		txtAmountReceived.setColumns(10);
 
 		JButton btnMakePayment = new JButton("Make Payment");
+		btnMakePayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (member == null){
+					memberMakePayment();
+				}
+				else{
+					
+				}
+				
+			}
+		});
+		
 		GridBagConstraints gbc_btnMakePayment = new GridBagConstraints();
 		gbc_btnMakePayment.insets = new Insets(0, 0, 5, 5);
 		gbc_btnMakePayment.gridx = 1;
@@ -478,7 +491,7 @@ private ICheckOutService checkoutService;
 					// TODO
 
 					member =  memberService.getMemberByMemberID(memberLoginDlg.getMemberID());
-					memberMakePayment(memberLoginDlg.getMemberID());
+					memberWantsToMakePayment();
 				}
 
 			}
@@ -494,7 +507,7 @@ private ICheckOutService checkoutService;
 				// TODO
 
 				
-				nonMemberMakePayment();
+				nonMemberWantsToMakePayment();
 
 			}
 		});
@@ -515,7 +528,7 @@ private ICheckOutService checkoutService;
 
 	}
 
-	private void memberMakePayment(String memberID) {
+	private void memberWantsToMakePayment() {
 
 		lbl1.setVisible(true);
 		lblMemberName.setVisible(true);
@@ -537,12 +550,23 @@ private ICheckOutService checkoutService;
 		
 		
 		
+		double discountPercent = this.discountService.getMembersTodaysHighestDiscount(true, this.memberService.isFirstPurchase(this.member.getMemberID()));
+		
+		
+		subTotal = this.checkoutService.calculatePayAmount(discountPercent);
+			
+		this.shoppingcart.addRow(new Object[] { "Discount", "" + discountPercent + "%" });
+
+
+		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+
+		lblsubTotal.setText(currencyIntance.format(subTotal));
 		
 		
 
 	}
 
-	private void nonMemberMakePayment() {
+	private void nonMemberWantsToMakePayment() {
 
 		lbl1.setVisible(false);
 		lblMemberName.setVisible(false);
@@ -559,6 +583,43 @@ private ICheckOutService checkoutService;
 
 	}
 
+	private void memberMakePayment(){
+		// Convert Dollar to Points
+		double dollarLoyaltyPts = 0;
+		try{
+		 dollarLoyaltyPts = Double.parseDouble(txtMemberDollarRedem.getText());
+		} catch (NumberFormatException e) {
+			// TODO
+			
+		}
+		
+		
+		int loyaltyPts = this.checkoutService.convertDollarToPoint(dollarLoyaltyPts);
+		
+		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, loyaltyPts);
+			
+		this.shoppingcart.addRow(new Object[] { "Deduct Loyalty Points", "" + loyaltyPts });
+
+		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+
+		lblsubTotal.setText(currencyIntance.format(subTotal));
+		
+		
+		
+		 try {
+			this.checkoutService.makePayment(subTotal, loyaltyPts);
+		} catch (UssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+	}
+	
+	
 	private void readBarcode() {
 
 		String barcode = txtBarcode.getText();
@@ -573,6 +634,8 @@ private ICheckOutService checkoutService;
 
 			lblsubTotal.setText(currencyIntance.format(subTotal));
 				
+			this.checkoutService.addItemIntoCheckOutList(product);
+			
 			
 		} catch (UssException e) {
 			
