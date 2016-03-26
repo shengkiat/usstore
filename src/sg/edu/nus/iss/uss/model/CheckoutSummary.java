@@ -4,10 +4,22 @@ import java.util.Date;
 import java.util.List;
 
 public class CheckoutSummary {
+    private String memberID;
 	private List<Product> checkoutItems;
 	private Date checkoutDate;
-	
-	public List<Product> getCheckoutItems() {
+    private double totalPrice;
+    private double payAmount;
+    private double totalPayable;
+
+    public String getMemberID() {
+        return memberID;
+    }
+
+    public void setMemberID(String memberID) {
+        this.memberID = memberID;
+    }
+
+    public List<Product> getCheckoutItems() {
 		return checkoutItems;
 	}
 
@@ -19,7 +31,11 @@ public class CheckoutSummary {
 		return checkoutDate;
 	}
 
-	public double getTotalPrice(){
+    public void setCheckoutDate(Date checkoutDate) {
+        this.checkoutDate = checkoutDate;
+    }
+
+    public double getTotalPrice(){
 
         double totalPrice = 0.0;
 
@@ -30,4 +46,23 @@ public class CheckoutSummary {
 		return totalPrice;
 	}
 
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public double getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(double payAmount) {
+        this.payAmount = payAmount;
+    }
+
+    public double getTotalPayable() {
+        return totalPayable;
+    }
+
+    public void setTotalPayable(double totalPayable) {
+        this.totalPayable = totalPayable;
+    }
 }

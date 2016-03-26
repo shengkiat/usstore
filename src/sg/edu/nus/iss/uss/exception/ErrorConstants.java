@@ -25,12 +25,17 @@ public class ErrorConstants {
 	    return number;
 	  }
 	}
-	
-	
-	
-	/**
-	 ************************** CATEGORY ****************************************
-	 */
+
+    /**
+     ************************** CHECKOUT ****************************************
+     */
+
+    public static final String PAYMENT_VALIDATION_FAIL = "Payment Validation Fail";
+
+
+    /**
+     ************************** CATEGORY ****************************************
+     */
 	
 	
 	/**
