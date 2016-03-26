@@ -463,6 +463,16 @@ private ICheckOutService checkoutService;
 		JButton btnFinishAndPay = new JButton("Finish and Pay");
 		btnFinishAndPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// No Items added to shopping cart
+				if (shoppingcart.getRowCount() == 0){
+					
+					JOptionPane.showMessageDialog(new JFrame(), "No Items in shopping cart.", "Shopping Cart",JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				
+				
+				
+				
 				// Finish buying items
 
 				frame.remove(rightFinishPaymentPanel);
@@ -632,7 +642,13 @@ double discountPercent = this.discountService.getMembersTodaysHighestDiscount(fa
 			
 			lblChange.setText("$" + change);
 			
+			// check threshold
+			List<Product> products = this.checkoutService.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
 			
+			
+			
+			
+			// print receipt
 			
 		} catch (UssException e) {
 			lblChange.setText(e.getMessage());
@@ -662,9 +678,7 @@ double discountPercent = this.discountService.getMembersTodaysHighestDiscount(fa
 			
 			lblChange.setText("$" + change);
 			
-			 
-			 
-			this.checkoutService.nonMemberMakePayment(amountReceived);
+
 		} catch (UssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -694,10 +708,8 @@ double discountPercent = this.discountService.getMembersTodaysHighestDiscount(fa
 			
 		} catch (UssException e) {
 			
-			JOptionPane.showMessageDialog(new JFrame(), "Invalid: " + barcode, "Login",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "Login",JOptionPane.INFORMATION_MESSAGE);
 			
-			JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.REQUIRED_START_END_DATE, "",
-			        JOptionPane.ERROR_MESSAGE);
 			
 			
 		}

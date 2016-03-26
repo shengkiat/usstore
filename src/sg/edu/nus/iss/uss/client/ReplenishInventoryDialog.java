@@ -101,6 +101,10 @@ public class ReplenishInventoryDialog extends JDialog {
 				JButton btnGenerateOrder = new JButton("Generate Order");
 				btnGenerateOrder.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						
+						
+						
 					}
 				});
 				btnGenerateOrder.setActionCommand("OK");

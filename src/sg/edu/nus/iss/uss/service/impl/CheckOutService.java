@@ -100,7 +100,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         transactionService.createTransactions(checkoutSummary.getCheckoutItems(), checkoutSummary.getMemberID(), checkoutSummary.getCheckoutDate());
 
         // deduct from inventory
-       // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+       productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
         returnChange = roundAmount(returnChange);
         return returnChange;
     }
@@ -115,7 +115,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         transactionService.createTransactions(checkoutSummary.getCheckoutItems(), PUBLIC_BUYER, checkoutSummary.getCheckoutDate());
 
         // deduct from inventory
-       // productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
+       productService.deductInventoryFromCheckout(checkoutSummary.getCheckoutItems());
 
         returnChange = roundAmount(returnChange);
         return returnChange;
