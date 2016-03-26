@@ -13,4 +13,5 @@ public interface IMemberDataAccess {
 	public void update(Member member) throws UssException;
 	public void createMembers(List<Member> members) throws UssException;
 	public boolean isMemberExist(String memberID);
+	public boolean isFirstPurchase(String memberID);
 }

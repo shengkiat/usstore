@@ -99,10 +99,9 @@ public class MemberService extends UssCommonService implements IMemberService{
     }
     
 	@Override
-    public boolean isFirstPurpose(String memberID){
+    public boolean isFirstPurchase(String memberID){
     	
-    	//TODO 
-    	return false;
+    	return getMemberDataAccess().isFirstPurchase(memberID);
     }
 
 }

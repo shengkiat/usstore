@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
@@ -65,6 +64,7 @@ public class Application {
 	private ICategoryService categoryService;
 	private IVendorService vendorService;
 	private IMemberService memberService;
+	private IDiscountService discountService;
 
 	private List<Product> products;
 	private double subTotal = 0;
@@ -120,7 +120,7 @@ public class Application {
 
 		this.reportingService = new ReportingService(transactionService, productService);
 		
-		IDiscountService discountService = new DiscountService(new DiscountFileDataAccess());
+		this.discountService = new DiscountService(new DiscountFileDataAccess());
 
 		// this.productDAO = new ProductFileDataAccess();
 		this.categoryDAO = new CategoryFileDataAccess();

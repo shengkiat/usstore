@@ -136,6 +136,18 @@ public class MemberFileDataAccess extends FileDataAccess implements IMemberDataA
 	}
 	
 	@Override
+	public boolean isFirstPurchase(String memberID){
+		
+		for(Member m : getAll()){
+			if(memberID.equalsIgnoreCase(m.getMemberID())){
+				return (m.getLoyaltyPoint() == -1); 
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
 	protected String getPrimaryKey(String[] arr) {
 		return arr[1];
 	}
