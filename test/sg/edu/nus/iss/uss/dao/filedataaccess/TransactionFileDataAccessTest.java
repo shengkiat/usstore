@@ -1,9 +1,8 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
@@ -59,7 +57,6 @@ public class TransactionFileDataAccessTest {
 	public void testCreateAndGetAllWhenThereIsNoDataForTwoTransaction() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		
-		Date currentDate = new Date();
 		List<Transaction> firstTransactions = new ArrayList<>();
 		
 		firstTransactions.add(new TestTransactionBuilder().build());
@@ -91,8 +88,7 @@ public class TransactionFileDataAccessTest {
 	@Test
 	public void testCreateShouldWriteContentIntoFile() throws UssException {
 		testDataAccess = new TransactionFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-		
-		Date currentDate = new Date();
+
 		List<Transaction> transactions = new ArrayList<>();
 		
 		transactions.add(new TestTransactionBuilder().build());

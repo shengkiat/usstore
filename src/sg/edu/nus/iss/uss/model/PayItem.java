@@ -5,14 +5,14 @@ public class PayItem extends Product {
 	private double chargePrice;
 
 	public PayItem(String productID, String name, String briefDescription, int quantityAvailable, double price,
-			int barCodeNumber, int reorderQuantity, int orderQuantity) {
+			String barCodeNumber, int reorderQuantity, int orderQuantity) {
 		super(productID, name, briefDescription, quantityAvailable, price, barCodeNumber, reorderQuantity,
 				orderQuantity);
 
 	}
 
 	public PayItem(String productID, String name, String briefDescription, int quantityAvailable, int price,
-			int barCodeNumber, int reorderQuantity, int orderQuantity, double chargePrice) {
+			String barCodeNumber, int reorderQuantity, int orderQuantity, double chargePrice) {
 		super(productID, name, briefDescription, quantityAvailable, price, barCodeNumber, reorderQuantity,
 				orderQuantity);
 

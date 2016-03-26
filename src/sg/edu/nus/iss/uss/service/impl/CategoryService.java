@@ -5,17 +5,16 @@ import java.util.List;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.ICategoryService;
+import sg.edu.nus.iss.uss.service.IVendorService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 
 public class CategoryService extends UssCommonService implements ICategoryService{
-	private VendorService vendorSvc;
 	private ICategoryDataAccess catDataAccess;
 		
-	public CategoryService(VendorService VendorSvc,ICategoryDataAccess CatDataAccess){
-		this.vendorSvc = VendorSvc;
+	public CategoryService(ICategoryDataAccess CatDataAccess){
 		this.catDataAccess = CatDataAccess;
 	}
 	
@@ -26,12 +25,8 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 	public void createNewCategory(String code, String Name)  throws UssException {
 		
 		categoryAdditionValidation(code);
-	    Category cat= new Category();
-		cat.setCode(code);
-		cat.setName(Name);
+	    Category cat= new Category(code,Name);
 		catDataAccess.create(cat);
-
-		
 	}
 	
 	private void categoryAdditionValidation(String code) throws UssException  {
@@ -41,9 +36,5 @@ public class CategoryService extends UssCommonService implements ICategoryServic
 		    if (cat.getCode().equals(code)) throw new UssException(ErrorConstants.UssCode.CATEGORY, ErrorConstants.CATEGORY_EXISTS);
 		}
 		
-	}
-	
-	public List<Vendor> CategoryVendor(String CategoryCode) {	
-		return(vendorSvc.getVendorsByCategoryCode(CategoryCode));		
 	}
 }

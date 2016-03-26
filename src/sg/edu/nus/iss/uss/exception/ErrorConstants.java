@@ -25,20 +25,35 @@ public class ErrorConstants {
 	    return number;
 	  }
 	}
+	  /**
+     ************************** CHECKOUT ****************************************
+     */
+
+    public static final String PAYMENT_VALIDATION_FAIL = "Payment Validation Fail";
+    public static final String AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE = "Amount Received Less Than Amount Payable";
 	
+	
+	/**
+	 * ************************ PRODUCT *****************************************
+	 */
+	public static final String PRODUCT_EXISTS = "Product Exists!";
+	public static final String PRODUCT_NOT_EXISTS = "Product Does Not Exists!";
+	public static final String PRODUCTFILE_EMPTY = "Product List is Empty!";
 	
 	
 	/**
 	 ************************** CATEGORY ****************************************
 	 */
-	
-	
+	public static final String CATEGORY_EXISTS = "Category Exists!";
+	public static final String CATEGORY_NOT_EXISTS = "Category Does Not Exists!";
+	public static final String CATEGORYFILE_EMPTY = "Category File is Empty!";
+		
 	/**
 	 ************************** MEMBER ****************************************
 	 */
 	public static final String MEMBER_NOT_EXISTS = "Member does not exist!";
 	public static final String NOT_ENOUGH_POINTS = "Not enough points!";
-	public static final String CATEGORY_EXISTS = "Category Exists!";
+
 	
 	
 	/**

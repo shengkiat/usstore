@@ -37,7 +37,7 @@ abstract class FileDataAccess {
 	}
 	
 	protected void writeNewLine(String[] arr) throws UssException {
-		validateInput(arr);
+validateInput(arr);
 		
 		List<String[]> existingContents = readAll();
 		
@@ -45,7 +45,14 @@ abstract class FileDataAccess {
 			throw new UssException(ErrorConstants.UssCode.DAO, "Record already exist using key, " + getPrimaryKey(arr));
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), true))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathForFile().toAbsolutePath().toString(), false))) {
+			
+			//Rewrite existing contents to prevent file being manually amended and no new line
+			for(String[] existingContent : existingContents) {
+				writer.write(generateWriteContent(existingContent));
+				writer.newLine();
+			}
+			
 			writer.write(generateWriteContent(arr));
 			writer.newLine();
 		} 
@@ -155,16 +162,10 @@ abstract class FileDataAccess {
 
 		try (BufferedReader reader = Files.newBufferedReader(pathForFile, getCharsetForFile())) {
 		    String line = null;
-		    int lineNo = 1;
+
 		    while ((line = reader.readLine()) != null) {
 		    	String[] arr = line.split(getContentDelimiter());
-		    	
-		    	//TODO should have validation?
-		    	//if (arr.length != getTotalNumberOfFields()) {
-					//throw new IllegalArgumentException(fileName + ", Line " + lineNo + ", Expected total number of fields: " + getTotalNumberOfFields() + " but: " + arr.length);
-				//}
 		    	result.add(arr);
-		    	lineNo++;
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();

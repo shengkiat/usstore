@@ -126,12 +126,12 @@ public class ReportingServiceTest {
 			products.put("STA/1", new TestProductBuilder().build());
 			products.put("STA/2", new TestProductBuilder().build());
 		}
-
+/*
 		@Override
 		public Product getProductByProductID(String productID) {
 			return products.get(productID);
 		}
-
+*/
 		@Override
 		public List<Product> retrieveProductList() {
 			throw new RuntimeException("not expected to call");
@@ -156,9 +156,18 @@ public class ReportingServiceTest {
 
 		@Override
 		public void createNewProductEntry(String categoryCode, String productName, String briefDescription,
-				int QuantityAvailable, double price, int barCodeNumber, int reorderQuantity, int orderQuantity)
+				int QuantityAvailable, double price, String barCodeNumber, int reorderQuantity, int orderQuantity)
 				throws UssException {
 			throw new RuntimeException("not expected to call");
+			
+		}
+
+
+		@Override
+		public void updateProductEntry(String categoryCode, String productName, String briefDescription,
+				int QuantityAvailable, double price, String barCodeNumber, int reorderQuantity, int orderQuantity)
+				throws UssException {
+			// TODO Auto-generated method stub
 			
 		}
 	}

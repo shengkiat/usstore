@@ -80,6 +80,11 @@ public class MemberService extends UssCommonService implements IMemberService{
 	@Override
 	public void deductMemberLoyltyPoint(int point, String memberID) throws UssException{
 		
+		if (point == 0){
+			return;
+		}
+		
+		
 		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
 		int existingPoint = member.getLoyaltyPoint();
 		
@@ -99,10 +104,9 @@ public class MemberService extends UssCommonService implements IMemberService{
     }
     
 	@Override
-    public boolean isFirstPurpose(String memberID){
+    public boolean isFirstPurchase(String memberID){
     	
-    	//TODO 
-    	return false;
+    	return getMemberDataAccess().isFirstPurchase(memberID);
     }
 
 }

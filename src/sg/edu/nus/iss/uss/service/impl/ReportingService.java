@@ -6,28 +6,32 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
+import sg.edu.nus.iss.uss.exception.UssException;
 
 public class ReportingService extends UssCommonService implements IReportingService {
 	
 	private ITransactionService transactionService;
-	private IProductService productService;
+    private IProductService productservice;
+	private IMemberService memberService;
 	
-	public ReportingService(ITransactionService transactionService, IProductService productService) {
+	public ReportingService(ITransactionService transactionService, IProductService productService, IMemberService memberService) {
 		this.transactionService = transactionService;
-		this.productService = productService;
+		this.productservice = productService;
+		this.memberService = memberService;
 	}
 	
 	@Override
 	public String printCategoriesReport(){
 		//TODO
-		
 		return "";
 	}
 	
@@ -39,7 +43,7 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	}
 	
 	@Override
-	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate){
+	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate) throws UssException{
 		Objects.requireNonNull(startDate, "startDate cannot be null");
 		Objects.requireNonNull(endDate, "endDate cannot be null");
 		
@@ -52,7 +56,8 @@ public class ReportingService extends UssCommonService implements IReportingServ
 		List<Transaction> transactions = transactionService.retrieveTransactionListByDate(startDate, endDate);
 		
 		for(Transaction transaction : transactions) {
-			Product product = productService.getProductByProductID(transaction.getProductID());	
+		    
+			Product product = productservice.getProductByProductID(transaction.getProductID());	
 			
 			Objects.requireNonNull(product, "product should not be null using " + transaction.getProductID());
 			result.add(new ReportTransaction(transaction, product));
@@ -65,9 +70,14 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	
 	@Override
 	public String printMembersReport(){
-		//TODO
 		
-		return "";
+		return null;
+	}
+
+	@Override
+	public List<Member> retrieveMembers() throws UssException {
+		List<Member> result = memberService.retrieveMemberList();
+		return result;
 	}
 	
 }

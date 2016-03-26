@@ -13,7 +13,7 @@ public class Product implements Comparator<Product> {
 	private String briefDescription;
 	private int quantityAvailable;
 	private double price;
-	private int barCodeNumber;
+	private String barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
 	//Added
@@ -48,27 +48,28 @@ public class Product implements Comparator<Product> {
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 	}
+	/*
 	public int getpurchaseQty() {
 		return (purchaseQty);
 	}
-	public void setpurchaseQty(int qtyPurchased) throws UssException {
+	public void setPurchaseQty(int qtyPurchased) throws UssException {
 		this.purchaseQty = qtyPurchased;
 		DeductQtyAvailable();
 	}
 	
 	public void DeductQtyAvailable() {	
 		   this.quantityAvailable = this.quantityAvailable - this.purchaseQty;
-	}
+	}*/
 	public double getPrice() {
 		return price;
 	}
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public int getBarCodeNumber() {
+	public String getBarCodeNumber() {
 		return barCodeNumber;
 	}
-	public void setBarCodeNumber(int barCodeNumber) {
+	public void setBarCodeNumber(String barCodeNumber) {
 		this.barCodeNumber = barCodeNumber;
 	}
 	public int getReorderQuantity() {
@@ -85,7 +86,7 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public Product(String productID, String name, String briefDescription, int quantityAvailable, double price,
-			int barCodeNumber, int reorderQuantity, int orderQuantity) {
+			String barCodeNumber, int reorderQuantity, int orderQuantity) {
 		super();
 		this.productID = productID;
 		this.name = name;
@@ -110,7 +111,7 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public boolean isBelowThreshold(){
-		boolean blnThreshold = ((this.quantityAvailable >= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
+		boolean blnThreshold = ((this.quantityAvailable <= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
 	    return blnThreshold ;	    
 	}
 	
@@ -124,7 +125,7 @@ public class Product implements Comparator<Product> {
 	public int getProductNo(){
 		if (this.productNo == 0)     { 
 	        Integer sPos = this.productID.indexOf('/');
-	        Integer ePos = this.productID.indexOf(',');
+	        Integer ePos = this.productID.length();
 	        this.productNo = Integer.parseInt(this.productID.substring(sPos+1, ePos));
 		}
         return this.productNo;

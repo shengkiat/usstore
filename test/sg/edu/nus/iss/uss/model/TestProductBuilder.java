@@ -7,7 +7,7 @@ public class TestProductBuilder {
 	private String briefDescription = "A really nice momento";
 	private int quantityAvailable = 315;
 	private double price = 21.45;
-	private int barCodeNumber = 1234;
+	private String barCodeNumber = "1234";
 	private int reorderQuantity = 10;
 	private int orderQuantity = 100;
 	
@@ -31,7 +31,7 @@ public class TestProductBuilder {
 		this.price = price;
 		return this;
 	}
-	public TestProductBuilder withBarCodeNumber(int barCodeNumber) {
+	public TestProductBuilder withBarCodeNumber(String barCodeNumber) {
 		this.barCodeNumber = barCodeNumber;
 		return this;
 	}

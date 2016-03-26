@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.exception.ErrorConstants.UssCode;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Product;
 
@@ -27,6 +29,10 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		super(FILE_NAME);
 	}
 
+	public ProductFileDataAccess(String fileName, String directory) throws UssException {
+		super(fileName, directory);
+	}
+	
 	@Override
 	public List<Product> getAll() {
 		return productList;
@@ -46,6 +52,8 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		strPrd[FIELD_ORDER_QUANTITY] = "" + e.getOrderQuantity();
 		
 		writeNewLine(strPrd);
+		
+		productList.add(e);
 	}
 
 	@Override
@@ -60,37 +68,52 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 		strPrd[FIELD_REORDER_QUANTITY] = "" + e.getReorderQuantity();
 		strPrd[FIELD_ORDER_QUANTITY] = "" + e.getOrderQuantity();
 		overwriteLine(strPrd);
+		
+		for(int i = 0; i<productList.size(); i++)
+		{
+			Product p = productList.get(i);
+			if (p.getProductID().equalsIgnoreCase(strPrd[FIELD_PRODUCT_ID])) {
+				productList.set(i, e);
+			}
+		}
+
+
 	}
 	
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
+		
 		productList = new ArrayList<>();
 		
 		List<String[]> prdList = readAll(); 
-  
-		Integer iQtyAvailable;
-		Double dblPrice;
-		Integer iBarCodeNo;
-		Integer iQtyReOrder;
-		Integer iOrderQty;
-		
-		Product prdt;
-		
-		for(String[] str: prdList)
-		{
-			iQtyAvailable = Integer.parseInt(str[FIELD_QUANTITY_AVAILABLE]);
-			dblPrice = Double.parseDouble(str[FIELD_PRICE]);
-			iBarCodeNo = Integer.parseInt(str[FIELD_BARCODENUMBER]);
-			iQtyReOrder = Integer.parseInt(str[FIELD_REORDER_QUANTITY]);
-			iOrderQty = Integer.parseInt(str[FIELD_ORDER_QUANTITY]);
+        
+		if (prdList.isEmpty()) {
+			throw new UssException(UssCode.PRODUCT,ErrorConstants.PRODUCTFILE_EMPTY);
 			
-			prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,iBarCodeNo,iQtyReOrder,iOrderQty);
-			prdt.setProductNo(prdt.getProductNo());
-			productList.add(prdt);
+		} else {
+			Integer iQtyAvailable;
+			Double dblPrice;
+			String sBarCodeNo;
+			Integer iQtyReOrder;
+			Integer iOrderQty;
+			
+			Product prdt;
+			
+			for(String[] str: prdList)
+			{
+				iQtyAvailable = Integer.parseInt(str[FIELD_QUANTITY_AVAILABLE]);
+				dblPrice = Double.parseDouble(str[FIELD_PRICE]);
+				sBarCodeNo = str[FIELD_BARCODENUMBER];
+				iQtyReOrder = Integer.parseInt(str[FIELD_REORDER_QUANTITY]);
+				iOrderQty = Integer.parseInt(str[FIELD_ORDER_QUANTITY]);
 				
+				prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,sBarCodeNo,iQtyReOrder,iOrderQty);
+				prdt.setProductNo(prdt.getProductNo());
+				productList.add(prdt);
+					
+			}
+		
 		}
-		
-		
 		
 	}
 	
@@ -103,5 +126,5 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 	protected int getTotalNumberOfFields() {
 		return TOTAL_FIELDS;
 	}
-	
+
 }
