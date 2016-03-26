@@ -118,8 +118,6 @@ public class Application {
 
 		this.transactionDAO = new TransactionFileDataAccess();
 		this.transactionService = new TransactionService(transactionDAO);
-
-		this.reportingService = new ReportingService(transactionService, productService, memberService);
 		
 		this.discountService = new DiscountService(new DiscountFileDataAccess());
 
@@ -136,6 +134,8 @@ public class Application {
 
 		this.memberDAO = new MemberFileDataAccess();
 		this.memberService = new MemberService(memberDAO);
+		
+		this.reportingService = new ReportingService(transactionService, productService, memberService);
 
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0, 0);
