@@ -2,11 +2,9 @@ package sg.edu.nus.iss.uss.model;
 
 public class TestMemberBuilder {
 	
-	private String name;
-	private String memberID ;
-	private int loyaltyPoint;
-	
-	
+	private String name = "Yan Martel";
+	private String memberID = "F42563743156";
+	private int loyaltyPoint = 100;
 	
 	public TestMemberBuilder withName(String name) {
 		this.name = name;
