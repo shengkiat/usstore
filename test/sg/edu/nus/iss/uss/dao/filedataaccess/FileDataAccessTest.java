@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -52,15 +55,7 @@ public class FileDataAccessTest {
 		
 		String expectedFileContent = "tester,p12345678";
 		
-		List<String> result = new ArrayList<>();
-		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
-		    String line = null;
-		    while ((line = reader.readLine()) != null) {
-		    	result.add(line);
-		    }
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		List<String> result = getLinesFromFile();
 		
 		assertEquals(1, result.size());
 		assertEquals(expectedFileContent, result.get(0));
@@ -85,19 +80,42 @@ public class FileDataAccessTest {
 		String expectedFileContentOne = "tester,p12345678";
 		String expectedFileContentTwo = "tester2,this is for testing";
 		
-		List<String> result = new ArrayList<>();
-		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
-		    String line = null;
-		    while ((line = reader.readLine()) != null) {
-		    	result.add(line);
-		    }
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		List<String> result = getLinesFromFile();
 		
 		assertEquals(2, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
 		assertEquals(expectedFileContentTwo, result.get(1));
+	}
+	
+	@Test
+	@Ignore("wait to test")
+	public void testWriteNewLineShouldWriteCorrectlyIntoTheFileEvenWhenThereIsNoNewLine() throws UssException, IOException {
+		
+		File file = new File(TestUtil.getTestPath(TEST_FILE_NAME));
+		
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write("tester,p12345678");
+		bw.newLine();
+		
+		bw.close();
+		
+		testDataAccess = new FileDataAccessImpl();
+		
+		String[] arrOne = new String[2];
+		arrOne[0] = "tester2";
+		arrOne[1] = "p12345678";
+		
+		testDataAccess.writeNewLine(arrOne);
+		
+		List<String> result = getLinesFromFile();
+		
+		assertEquals(2, result.size());
 	}
 	
 	@Test(expected=UssException.class)
@@ -170,15 +188,7 @@ public class FileDataAccessTest {
 		
 		testDataAccess.overwriteLine(modifiedArr);
 		
-		List<String> result = new ArrayList<>();
-		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
-		    String line = null;
-		    while ((line = reader.readLine()) != null) {
-		    	result.add(line);
-		    }
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		List<String> result = getLinesFromFile();
 		
 		assertEquals(2, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
@@ -237,15 +247,7 @@ public class FileDataAccessTest {
 		
 		testDataAccess.removeLine(modifiedArr);
 		
-		List<String> result = new ArrayList<>();
-		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
-		    String line = null;
-		    while ((line = reader.readLine()) != null) {
-		    	result.add(line);
-		    }
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		List<String> result = getLinesFromFile();
 		
 		assertEquals(1, result.size());
 		assertEquals(expectedFileContentOne, result.get(0));
@@ -280,6 +282,19 @@ public class FileDataAccessTest {
 	
 	private Charset getCharsetForFile() {
 		return Charset.forName("utf-8");
+	}
+	
+	private List<String> getLinesFromFile() {
+		List<String> result = new ArrayList<>();
+		try (BufferedReader reader = Files.newBufferedReader(getTestPath(), getCharsetForFile())) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		    	result.add(line);
+		    }
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return result;
 	}
 	
 	private class FileDataAccessImpl extends FileDataAccess {
