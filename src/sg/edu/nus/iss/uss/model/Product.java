@@ -51,7 +51,7 @@ public class Product implements Comparator<Product> {
 	public int getpurchaseQty() {
 		return (purchaseQty);
 	}
-	public void setpurchaseQty(int qtyPurchased) throws UssException {
+	public void setPurchaseQty(int qtyPurchased) throws UssException {
 		this.purchaseQty = qtyPurchased;
 		DeductQtyAvailable();
 	}
@@ -110,7 +110,7 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public boolean isBelowThreshold(){
-		boolean blnThreshold = ((this.quantityAvailable >= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
+		boolean blnThreshold = ((this.quantityAvailable <= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
 	    return blnThreshold ;	    
 	}
 	

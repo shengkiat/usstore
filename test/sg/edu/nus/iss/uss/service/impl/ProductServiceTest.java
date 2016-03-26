@@ -23,26 +23,20 @@ import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
-/**
- * Created by Goh on 25/3/2016.
- */
 
 public class ProductServiceTest {
 
 	//Test fixtures
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Products.dat";
-	CategoryService categoryService = null;
-	ProductService productservice = null;
-	ICategoryDataAccess catDataAccess;
-	IProductDataAccess prdDataAccess;
 	
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	private IProductService productservice; 
 
 	@Before
 	public void setUp() throws Exception {
@@ -84,13 +78,12 @@ public class ProductServiceTest {
 			throw new RuntimeException(e);
 		}
 		
-		//categoryService = new categoryService(VendorSvc,catDataAccess);
-		
+	    productservice = new ProductService(new ProductFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR));
+	    		
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		productservice = null;
 		
 		Path path = getTestPath();
 
@@ -103,12 +96,12 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void testGetAll() {
-		assertEquals(10, prdDataAccess.getAll().size());
+	public void testRetrieveProductList() {
+		assertEquals(10, productservice.retrieveProductList().size());
 	}
 	
 	@Test
-	public void testretrieveProductListByThreshold(){
+	public void testRetrieveProductListByThreshold(){
 		
 		List<Product> prdList = productservice.retrieveProductListByThreshold();
 		
@@ -120,27 +113,32 @@ public class ProductServiceTest {
 		
 	}
 	
+
+	
 	@Test
-	public void createNewProductEntry(String categoryCode, String productName, String briefDescription, int QuantityAvailable, double price, 
-			String barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException {
+	public void testCreateNewProductEntry() throws UssException {
 		
 	    Product p = new Product("BEV/1","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
 
-        // Create Product and Write to File      
-	    prdDataAccess.create(p);
-		
-	    assertEquals(11, prdDataAccess.getAll().size());
+        // Create Product and Write to File
+	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
+	    
+	    assertEquals(11, productservice.retrieveProductList().size());
 	    
 	}
 	
+	
+	
 	@Test
-    public void testcheckIfProductIsBelowThreshold () {
+    public void testCheckIfProductIsBelowThreshold () {
         
 		Product p = new Product("MUG/2","Classic PC","Water bottle",99,8.91,"5970030001",100,500);
 		Product p1 = new Product("MUG/2","Classic PC","Water bottle",700,8.91,"5970030001",100,500);
 		// Test for Qty Below or Above Threshold
 		assertTrue(p.isBelowThreshold());		
 		assertFalse(p1.isBelowThreshold());
+		
+		//productservice.checkIfProductIsBelowThreshold
     }
 
 	@Test
@@ -148,11 +146,13 @@ public class ProductServiceTest {
 	
         Product p = new Product("STA/3","NUS BookMark","A thoughtful gift for loved ones",500,4.41,"8970020126",25,250);
 		
-        p.setpurchaseQty(100);
+        p.setPurchaseQty(100);
 
         int QtyAvail = p.getQuantityAvailable();
         // QtyAvail = 500-100 = 400        
         assertEquals(QtyAvail, 400);
+        
+        //productservice.deductInventoryFromCheckout(productItems);
             
    	}
 		

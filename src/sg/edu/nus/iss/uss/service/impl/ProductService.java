@@ -54,7 +54,7 @@ public class ProductService extends UssCommonService implements IProductService 
 			}
 		}
 
-		if (prdNos == Null) {
+		if (prdNos.isEmpty()) {
 			categoryCode = categoryCode + "/1";
 		} else {
 			categoryCode = categoryCode + "/"
@@ -105,7 +105,7 @@ public class ProductService extends UssCommonService implements IProductService 
 				// Product Item not valid
 			} else {
 				if (prod.getpurchaseQty() >= prod.getQuantityAvailable()) {
-					prod.setpurchaseQty(prod.getpurchaseQty()); // Update Qty
+					prod.setPurchaseQty(prod.getpurchaseQty()); // Update Qty
 
 					prdDataAccess.update(prodt); // Write to File
 				} else {
