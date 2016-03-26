@@ -25,6 +25,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
 import sg.edu.nus.iss.uss.dao.*;
@@ -147,12 +148,19 @@ public class Application {
 		this.memberDAO = new MemberFileDataAccess();
 		this.memberService = new MemberService(memberDAO);
 
-		this.reportingService = new ReportingService(transactionService, productService, memberService);
+		this.reportingService = new ReportingService(transactionService, productService, memberService, categoryService);
 
 		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
 
 		// Initialize Table Model use for shopping cart
-		shoppingcart = new DefaultTableModel(0, 0);
+		shoppingcart = new DefaultTableModel(0,0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		// add header of the table
 		String header[] = new String[] { "Product", "Price" };
 
@@ -268,6 +276,18 @@ public class Application {
 		menuBar.add(mnReporting);
 
 		JMenuItem mntmCategories = new JMenuItem("Categories");
+		mntmCategories.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ReportCategoryDialog reportCategoryDialog = new ReportCategoryDialog(frame, reportingService);
+
+				reportCategoryDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportCategoryDialog.setLocationRelativeTo(null);
+				reportCategoryDialog.setVisible(true);
+				
+				
+			}
+		});
 		mnReporting.add(mntmCategories);
 
 		JMenuItem mntmProducts = new JMenuItem("Products");

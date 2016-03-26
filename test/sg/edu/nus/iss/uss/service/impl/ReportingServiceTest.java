@@ -68,7 +68,7 @@ public class ReportingServiceTest {
 			}
 		}
 		, new MockIProductService()
-		, new MockIMemberService());
+		, new MockIMemberService(), null);
 		
 		Date startDate = UssCommonUtil.convertStringToDate("2001-01-01");
 		Date endDate = UssCommonUtil.convertStringToDate("2999-12-31");
@@ -90,7 +90,7 @@ public class ReportingServiceTest {
 	
 	@Before
 	public void setUp() {
-		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService(), new MockIMemberService());
+		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService(), new MockIMemberService(), null);
 	}
 
 	@After

@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.ICategoryService;
 import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
@@ -22,11 +24,13 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	private ITransactionService transactionService;
     private IProductService productservice;
 	private IMemberService memberService;
+	private ICategoryService categoryService;
 	
-	public ReportingService(ITransactionService transactionService, IProductService productService, IMemberService memberService) {
+	public ReportingService(ITransactionService transactionService, IProductService productService, IMemberService memberService, ICategoryService categoryService) {
 		this.transactionService = transactionService;
 		this.productservice = productService;
 		this.memberService = memberService;
+		this.categoryService = categoryService;
 	}
 	
 	@Override
@@ -77,6 +81,12 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	@Override
 	public List<Member> retrieveMembers() throws UssException {
 		List<Member> result = memberService.retrieveMemberList();
+		return result;
+	}
+
+	@Override
+	public List<Category> retrieveCategories() throws UssException {
+		List<Category> result = categoryService.retrieveCategoryList();
 		return result;
 	}
 	
