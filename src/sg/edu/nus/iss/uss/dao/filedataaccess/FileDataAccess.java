@@ -156,7 +156,6 @@ validateInput(arr);
 		return readAll(getPathForFile());
 	}
 	
-	//TODO should throw custom exception?
 	protected List<String[]> readAll(Path pathForFile){
 		List<String[]> result = new ArrayList<>();
 

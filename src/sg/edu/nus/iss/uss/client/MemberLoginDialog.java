@@ -7,8 +7,14 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import sg.edu.nus.iss.uss.service.ICheckOutService;
+import sg.edu.nus.iss.uss.service.IMemberService;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
@@ -19,23 +25,15 @@ public class MemberLoginDialog extends JDialog {
 	private JTextField txtMemberID;
 
 	private boolean _isMember = false;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			MemberLoginDialog dialog = new MemberLoginDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private String _memberID;
+	private ICheckOutService checkoutService;
 
 	/**
 	 * Create the dialog.
 	 */
-	public MemberLoginDialog() {
+	public MemberLoginDialog(final ICheckOutService checkoutService) {
+		this.checkoutService = checkoutService;
+		
 		setBounds(100, 100, 450, 120);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -59,10 +57,20 @@ public class MemberLoginDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						// TODO
+						_memberID = txtMemberID.getText();
 						
-						
-						_isMember = true;
-						dispose();
+						if (checkoutService.determineMemberID(_memberID)){
+							_isMember = true;
+							dispose();
+						}
+						else{
+							JOptionPane.showMessageDialog(MemberLoginDialog.this,
+									"Invalid Member ID", "Member ID",
+									JOptionPane.ERROR_MESSAGE);
+						}
+							
+
+
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -70,7 +78,7 @@ public class MemberLoginDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Close");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						MemberLoginDialog.this.setVisible(false);
@@ -88,5 +96,9 @@ public class MemberLoginDialog extends JDialog {
 
 	public boolean isMember() {
 		return _isMember;
+	}
+	
+	public String getMemberID() {
+		return _memberID;
 	}
 }

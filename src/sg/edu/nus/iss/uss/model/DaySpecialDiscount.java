@@ -10,7 +10,7 @@ import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class DaySpecialDiscount extends Discount{
 	private Date startDate;
-	private int discountDays;//Period of discount in days (where applicable or “ALWAYS”)
+	private int discountDays;//Period of discount in days (where applicable or "ALWAYS")
 
 	public DaySpecialDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
 		super(discountCode, description, discountPercentage);

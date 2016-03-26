@@ -21,6 +21,6 @@ public interface IMemberService {
 
 	public boolean isValidMember(String memberID);
 
-	public boolean isFirstPurpose(String memberID);
+	public boolean isFirstPurchase(String memberID);
 
 }

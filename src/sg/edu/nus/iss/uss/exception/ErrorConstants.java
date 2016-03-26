@@ -32,7 +32,8 @@ public class ErrorConstants {
     public static final String PAYMENT_VALIDATION_FAIL = "Payment Validation Fail";
     public static final String AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE = "Amount Received Less Than Amount Payable";
 	
-	
+
+
 	/**
 	 * ************************ PRODUCT *****************************************
 	 */
@@ -47,7 +48,7 @@ public class ErrorConstants {
 	public static final String CATEGORY_EXISTS = "Category Exists!";
 	public static final String CATEGORY_NOT_EXISTS = "Category Does Not Exists!";
 	public static final String CATEGORYFILE_EMPTY = "Category File is Empty!";
-		
+
 	/**
 	 ************************** MEMBER ****************************************
 	 */
@@ -70,6 +71,8 @@ public class ErrorConstants {
 	/**
 	 ************************** OTHER ****************************************
 	 */
+	public static final String SYSTEM_ERROR = "System Error, please contact adminstrator.";
+	
 	
 	/**
 	 ************************** DAO ****************************************

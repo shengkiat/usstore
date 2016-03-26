@@ -1,49 +1,41 @@
 package sg.edu.nus.iss.uss.client;
 
-import java.awt.EventQueue;
-
-import javax.swing.JDialog;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.service.IMemberService;
 
 public class NewMemberDialog extends JDialog {
-	private JTextField textField;
-	private JTextField textField_1;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NewMemberDialog dialog = new NewMemberDialog();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private static final long serialVersionUID = -62814988236609858L;
+
+	private JTextField txtMemberID;
+	private JTextField txtName;
 
 	/**
 	 * Create the dialog.
 	 */
-	public NewMemberDialog() {
-		setBounds(100, 100, 450, 300);
+	public NewMemberDialog(final IMemberService memberService) {
+
+		setBounds(100, 100, 450, 180);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
-		
+
 		JLabel lblStudentstaffId = new JLabel("Student/Staff ID:");
 		GridBagConstraints gbc_lblStudentstaffId = new GridBagConstraints();
 		gbc_lblStudentstaffId.anchor = GridBagConstraints.EAST;
@@ -51,16 +43,16 @@ public class NewMemberDialog extends JDialog {
 		gbc_lblStudentstaffId.gridx = 2;
 		gbc_lblStudentstaffId.gridy = 1;
 		getContentPane().add(lblStudentstaffId, gbc_lblStudentstaffId);
-		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 1;
-		getContentPane().add(textField, gbc_textField);
-		textField.setColumns(10);
-		
+
+		txtMemberID = new JTextField();
+		GridBagConstraints gbc_txtMemberID = new GridBagConstraints();
+		gbc_txtMemberID.insets = new Insets(0, 0, 5, 0);
+		gbc_txtMemberID.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtMemberID.gridx = 3;
+		gbc_txtMemberID.gridy = 1;
+		getContentPane().add(txtMemberID, gbc_txtMemberID);
+		txtMemberID.setColumns(10);
+
 		JLabel lblName = new JLabel("Name:");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.EAST;
@@ -68,27 +60,61 @@ public class NewMemberDialog extends JDialog {
 		gbc_lblName.gridx = 2;
 		gbc_lblName.gridy = 2;
 		getContentPane().add(lblName, gbc_lblName);
-		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 2;
-		getContentPane().add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
+
+		txtName = new JTextField();
+		GridBagConstraints gbc_txtName = new GridBagConstraints();
+		gbc_txtName.insets = new Insets(0, 0, 5, 0);
+		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtName.gridx = 3;
+		gbc_txtName.gridy = 2;
+		getContentPane().add(txtName, gbc_txtName);
+		txtName.setColumns(10);
+
+		final JLabel lblInfo = new JLabel("");
+		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+		gbc_lblInfo.anchor = GridBagConstraints.WEST;
+		gbc_lblInfo.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInfo.gridx = 3;
+		gbc_lblInfo.gridy = 3;
+		getContentPane().add(lblInfo, gbc_lblInfo);
+
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 3;
 		gbc_panel.gridy = 4;
 		getContentPane().add(panel, gbc_panel);
-		
+
 		JButton btnAddMember = new JButton("Add Member");
+		btnAddMember.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String memberID = txtMemberID.getText();
+				String memberName = txtName.getText();
+
+				try {
+					memberService.registerNewMember(memberName, memberID);
+
+					lblInfo.setText(memberName + "is added successfully.");
+					lblInfo.setForeground(Color.black);
+
+					txtMemberID.setText("");
+					txtName.setText("");
+
+				} catch (UssException e1) {
+					lblInfo.setText("Fail to add member: " + memberName);
+					lblInfo.setForeground(Color.RED);
+				}
+			}
+		});
 		panel.add(btnAddMember);
-		
-		JButton btnCancel = new JButton("Cancel");
+
+		JButton btnCancel = new JButton("Close");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		panel.add(btnCancel);
 
 	}

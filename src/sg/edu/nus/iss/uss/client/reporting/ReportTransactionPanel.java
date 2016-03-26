@@ -52,8 +52,8 @@ public final class ReportTransactionPanel extends JPanel {
 		searchPanel.add(textFieldEndDate);
 		textFieldEndDate.setColumns(10);
 		
-		//textFieldStartDate.setText("2011-01-01");
-		//textFieldEndDate.setText("2016-01-01");
+		textFieldStartDate.setText("2011-01-01");
+		textFieldEndDate.setText("2016-01-01");
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {

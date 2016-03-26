@@ -7,7 +7,7 @@ public abstract class Discount {
 	
 	private String discountCode;
 	private String description;
-	private double discountPercentage;//Percentage discount without the percentage symbol e.g. “10” for 10% discount
+	private double discountPercentage;//Percentage discount without the percentage symbol e.g. "10" for 10% discount
 	
 	public Discount(String discountCode, String description, double discountPercentage) throws UssException {
 		if(discountCode == null)

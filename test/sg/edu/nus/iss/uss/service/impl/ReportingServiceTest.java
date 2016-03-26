@@ -12,16 +12,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
+import sg.edu.nus.iss.uss.service.IMemberService;
 import sg.edu.nus.iss.uss.service.IProductService;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.service.ITransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
-
 import static org.junit.Assert.*;
 
 public class ReportingServiceTest {
@@ -66,7 +67,8 @@ public class ReportingServiceTest {
 				return transactions;
 			}
 		}
-		, new MockIProductService());
+		, new MockIProductService()
+		, new MockIMemberService());
 		
 		Date startDate = UssCommonUtil.convertStringToDate("2001-01-01");
 		Date endDate = UssCommonUtil.convertStringToDate("2999-12-31");
@@ -88,7 +90,7 @@ public class ReportingServiceTest {
 	
 	@Before
 	public void setUp() {
-		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService());
+		reportingService = new ReportingService(new MockITransactionService(), new MockIProductService(), new MockIMemberService());
 	}
 
 	@After
@@ -110,9 +112,10 @@ public class ReportingServiceTest {
 			
 			return transactions;
 		}
-
+		
 		@Override
-		public void createTransactions(List<Transaction> transactions) throws UssException {
+		public void createTransactions(List<Product> products, String memberID,
+				Date transactionDate) throws UssException {
 			throw new RuntimeException("not expected to call");
 		}
 	}
@@ -126,12 +129,12 @@ public class ReportingServiceTest {
 			products.put("STA/1", new TestProductBuilder().build());
 			products.put("STA/2", new TestProductBuilder().build());
 		}
-/*
+
 		@Override
 		public Product getProductByProductID(String productID) {
 			return products.get(productID);
 		}
-*/
+
 		@Override
 		public List<Product> retrieveProductList() {
 			throw new RuntimeException("not expected to call");
@@ -162,13 +165,68 @@ public class ReportingServiceTest {
 			
 		}
 
+		@Override
+		public Product getProductByBarcode(String barcode) throws UssException {
+			// TODO Auto-generated method stub
+			throw new RuntimeException("not expected to call");
+		}
 
 		@Override
-		public void updateProductEntry(String categoryCode, String productName, String briefDescription,
-				int QuantityAvailable, double price, String barCodeNumber, int reorderQuantity, int orderQuantity)
-				throws UssException {
+		public void replenishInventory(List<Product> productItems) {
+			throw new RuntimeException("not expected to call");
+		}
+	}
+	
+	private class MockIMemberService implements IMemberService {
+
+		@Override
+		public List<Member> retrieveMemberList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Member getMemberByMemberID(String memberID) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void registerNewMember(String name, String idCardNumber) throws UssException {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void addMemberLoyaltyPoint(int point, String memberID) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deductMemberLoyltyPoint(int point, String memberID) throws UssException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean isValidMember(String memberID) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isFirstPurchase(String memberID) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
 	}
+	
 }

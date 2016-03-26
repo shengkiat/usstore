@@ -3,12 +3,20 @@ package sg.edu.nus.iss.uss.client;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.service.IDiscountService;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 public class NewPromotionDialog extends JDialog {
 	
@@ -22,7 +30,7 @@ public class NewPromotionDialog extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		//EventQueue.invokeLater(new Runnable() {
 			//public void run() {
 				try {
@@ -34,12 +42,12 @@ public class NewPromotionDialog extends JDialog {
 				}
 			//}
 		//});
-	}
+	}*/
 
 	/**
 	 * Create the dialog.
 	 */
-	public NewPromotionDialog() {
+	public NewPromotionDialog(final IDiscountService discountService) {
 		setBounds(100, 100, 450, 300);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
@@ -140,9 +148,24 @@ public class NewPromotionDialog extends JDialog {
 		getContentPane().add(panel, gbc_panel);
 		
 		JButton btnAddProduct = new JButton("Add Promotion");
+		btnAddProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					discountService.addNewDiscount(textField.getText(), textField_1.getText(), Double.parseDouble(textField_4.getText()), UssCommonUtil.convertStringToDate(textField_2.getText()), Integer.parseInt(textField_3.getText()));
+				}catch(UssException e1) {
+					JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "",
+					        JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		panel.add(btnAddProduct);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		panel.add(btnCancel);
 	}
 

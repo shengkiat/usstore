@@ -7,8 +7,12 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.model.PublicBuyer;
+import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.ITransactionService;
@@ -110,18 +114,19 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	@Ignore("wait until able to mock data access with test directory in this class")
 	public void testCreateTransactionsShouldBeSave() throws UssException {
 		ITransactionService service = new TransactionService(new MockTransactionFileDataAccessWithoutFileAccess());
 		
-		List<Transaction> transactions = new ArrayList<>();
-		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-01-01")).build());
-		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-02-01")).build());
-		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-03-01")).build());
-		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-04-01")).build());
-		transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-05-01")).build());
+		List<Product> products = new ArrayList<>();
 		
-		service.createTransactions(transactions);
+		TestProductBuilder testProductBuilder = new TestProductBuilder();
+		
+		products.add(testProductBuilder.withProductID("CLO/1").build());
+		products.add(testProductBuilder.withProductID("CLO/1").build());
+		products.add(testProductBuilder.withProductID("CLO/2").build());
+		products.add(testProductBuilder.withProductID("CLO/3").build());
+		
+		service.createTransactions(products, PublicBuyer.PUBLIC_NAME, UssCommonUtil.convertStringToDate("2016-02-01"));
 		
 		Date startDate = UssCommonUtil.convertStringToDate("2016-02-01");
 		Date endDate = UssCommonUtil.convertStringToDate("2016-04-01");
@@ -130,16 +135,20 @@ public class TransactionServiceTest {
 		assertEquals(3, result.size());
 	}
 	
-	private class MockTransactionFileDataAccessWithoutFileAccess extends TransactionFileDataAccess {
+	private class MockTransactionFileDataAccessWithoutFileAccess implements ITransactionDataAccess {
 		
-		public MockTransactionFileDataAccessWithoutFileAccess() throws UssException {
-			super();
+		private List<Transaction> transactions = new ArrayList<>();
+
+		@Override
+		public List<Transaction> getAll() {
+			return transactions;
 		}
 
 		@Override
-		protected void initialLoad() {
-			//do nothing
+		public void create(List<Transaction> transactions) throws UssException {
+			this.transactions.addAll(transactions);
 		}
+		
 	}
 	
 }

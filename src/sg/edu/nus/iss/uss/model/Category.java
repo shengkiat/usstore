@@ -34,11 +34,8 @@ public class Category {
 	
 	@Override
 	public String toString() {//CLO,Clothing
-		//String str = code;
-//      if ((code != null)) {
-//      	code = code + "," + name;
-//      }
-      return (code);
+        return code;
+
 	}
 	
 	
