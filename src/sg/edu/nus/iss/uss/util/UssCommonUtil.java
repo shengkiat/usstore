@@ -2,16 +2,11 @@ package sg.edu.nus.iss.uss.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.model.Category;
-import sg.edu.nus.iss.uss.model.Product;
 
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
-import sg.edu.nus.iss.uss.exception.UssException;
 
 public class UssCommonUtil {
 

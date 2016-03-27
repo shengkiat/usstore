@@ -62,7 +62,6 @@ public class Application {
 	private IProductDataAccess productDAO;
 	private ICategoryDataAccess categoryDAO;
 	private ITransactionDataAccess transactionDAO;
-	private IVendorDataAccess vendorDAO;
 	private IMemberDataAccess memberDAO;
 
 	private IAuthorisedService authService;
@@ -70,14 +69,12 @@ public class Application {
 	private IProductService productService;
 	private ITransactionService transactionService;
 	private ICategoryService categoryService;
-	private IVendorService vendorService;
 	private IMemberService memberService;
 	private IDiscountService discountService;
 	private ICheckOutService checkoutService;
 
 	private Member member;
 
-	private List<Product> products;
 	private double subTotal = 0;
 
 	private JTextField txtAmountReceived;
@@ -139,11 +136,6 @@ public class Application {
 		this.categoryDAO = new CategoryFileDataAccess();
 		this.productService = new ProductService(productDAO);
 
-		// Get the list of products
-		this.products = this.productService.retrieveProductList();
-
-		this.vendorDAO = new VendorFileDataAccess();
-		this.vendorService = new VendorService(vendorDAO);
 		this.categoryService = new CategoryService(categoryDAO);
 
 		this.memberDAO = new MemberFileDataAccess();
@@ -156,7 +148,9 @@ public class Application {
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0,0) {
 
-		    @Override
+			private static final long serialVersionUID = -4809733128016120842L;
+
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
@@ -693,7 +687,6 @@ public class Application {
 			IPrinter printReceipt = new ConsoleIPrinter();
 
 			int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
-			Object[][] tableData = new Object[nRow][nCol];
 			for (int i = 0; i < nRow; i++) {
 
 				String row = "";
@@ -737,7 +730,6 @@ public class Application {
 			IPrinter printReceipt = new ConsoleIPrinter();
 
 			int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
-			Object[][] tableData = new Object[nRow][nCol];
 			for (int i = 0; i < nRow; i++) {
 
 				String row = "";
