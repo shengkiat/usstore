@@ -25,7 +25,7 @@ public class CheckOutSummaryTest {
         Product product3 = new Product("MUG/1", "Centenary Mug","A really nice mug this time",525,10.25,"9876",25,150);
         Product product4 = new Product("STA/2", "NUS Notepad" ,"Great notepad for those lectures",1000,3.15,"6789",25,75);
 
-        List<Product> productItems = new ArrayList<Product>();
+        List<Product> productItems = new ArrayList<>();
 
         productItems.add(product1);
         productItems.add(product2);

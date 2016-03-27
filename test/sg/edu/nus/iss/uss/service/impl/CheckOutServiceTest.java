@@ -9,6 +9,8 @@ import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
@@ -20,6 +22,7 @@ import sg.edu.nus.iss.uss.util.TestUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -36,6 +39,7 @@ public class CheckOutServiceTest {
     private ITransactionService transactionService;
     private MockDiscountService mockDiscountService;
     private MockProductService mockProductService;
+    private MockTransactionService mockTransactionService;
 
 
     @Before
@@ -44,12 +48,15 @@ public class CheckOutServiceTest {
         IDiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
         mockDiscountService = new MockDiscountService(discountDataAccess);
 
-        IProductDataAccess productDataAccess = null;
+        IProductDataAccess productDataAccess = new ProductFileDataAccess();
         mockProductService = new MockProductService(productDataAccess);
 
-        memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
-        productService = null;
-        transactionService = null;
+        ITransactionDataAccess transactionDataAccess = new TransactionFileDataAccess();
+        mockTransactionService = new MockTransactionService(transactionDataAccess);
+
+        memberService = TestUtil.setUpMemberServiceWithThreeMember();
+        productService = mockProductService;
+        transactionService = mockTransactionService;
     }
     
     @After
@@ -79,7 +86,7 @@ public class CheckOutServiceTest {
         Product product3 = new Product("MUG/1", "Centenary Mug","A really nice mug this time",525,10.25,"9876",25,150);
         Product product4 = new Product("STA/2", "NUS Notepad" ,"Great notepad for those lectures",1000,3.15,"6789",25,75);
 
-        List<Product> productItems = new ArrayList<Product>();
+        List<Product> productItems = new ArrayList<>();
         assertEquals(productItems.size(), 0);
 
         productItems = checkOutService.addItemIntoCheckOutList(product1);
@@ -169,8 +176,8 @@ public class CheckOutServiceTest {
         assertEquals(amountPaid, 31.54, 0);
     }
 
-    @Test(expected=RuntimeException.class)
-    public void testMakePaymentDeduct100() throws UssException {
+    @Test
+    public void testMakePaymentDeduct100NoChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
         checkOutService.determineMemberID(memberID);
@@ -178,8 +185,10 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
-        double amountPaid = totalPayable;
-        checkOutService.memberMakePayment(amountPaid, 100);
+        assertEquals(31.54, totalPayable, 0);
+        double amountPaid = 31.54;
+        assertEquals(31.54, amountPaid, 0);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -187,10 +196,11 @@ public class CheckOutServiceTest {
             deduct 100 points: 150
             add back 3 points for $31.54 purchase: 53
          */
-        assertEquals(member.getLoyaltyPoint(), 53);
+        assertEquals(53, member.getLoyaltyPoint());
+        assertEquals(0, changeReceived, 0);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test
     public void testMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
@@ -199,6 +209,7 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        assertEquals(31.54, totalPayable, 0);
         double amountPaid = 50.0;
         double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
@@ -208,8 +219,8 @@ public class CheckOutServiceTest {
             deduct 100 points: 150
             add back 3 points for $31.54 purchase: 53
          */
-        assertEquals(member.getLoyaltyPoint(), 53);
-        assertEquals(changeReceived, 19.46, 0);
+        assertEquals(53, member.getLoyaltyPoint());
+        assertEquals(18.46, changeReceived, 0);
     }
 
     @Test(expected=UssException.class)
@@ -221,10 +232,12 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        assertEquals(31.54, totalPayable, 0);
         double amountPaid = 10.0;
 
         // exception thrown at here for Amount Received Less Than Amount Payable
         double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
+        assertNull(changeReceived);
     }
 
 
@@ -232,7 +245,6 @@ public class CheckOutServiceTest {
     @Test
     public void testAlertIfInventoryLevelBelowThresholdForOneItem() {
         createCheckOutSummaryData();
-        checkOutService.productService = mockProductService;
         List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
         assertEquals(1, productsBelowThreshold.size());
@@ -241,7 +253,6 @@ public class CheckOutServiceTest {
     @Test
     public void testAlertIfInventoryLevelBelowThresholdAllWithin() {
         createCheckOutSummaryData();
-        checkOutService.productService = mockProductService;
         checkOutService.getCheckoutSummary().getCheckoutItems().remove(1); // remove product STA/1
         List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
@@ -260,12 +271,7 @@ public class CheckOutServiceTest {
         	super(PrdDataAccess);
         }
         public boolean checkIfProductIsBelowThreshold (Product product) {
-            if(product.getProductID().equals("STA/1")) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return product.getProductID().equals("STA/1");
         }
 
         public void deductInventoryFromCheckout(List<Product> productItems) {
@@ -277,6 +283,10 @@ public class CheckOutServiceTest {
         public MockTransactionService (ITransactionDataAccess transactionDataAccess) {
             super(transactionDataAccess);
         }
+
+        public void createTransactions(List<Product> products, String memberID, Date transactionDate) throws UssException {
+
+        }
     }
 
     public class MockDiscountService extends DiscountService {
@@ -285,19 +295,12 @@ public class CheckOutServiceTest {
         }
 
         public int findHighestDiscountByMemberID(String memberID){
-            if(memberID.equals("F42563743156")) {
-                return 10;
-            }
-            else if (memberID.equals("S1111111B")) {
-                return 0;
-            }
-            else if (memberID.equals("S2222222C")) {
-                return 200;
-            } else if(memberID.equals("S1234567A")) {
-                return 10;
-            }
-            else {
-                return 30;
+            switch(memberID) {
+                case("F42563743156"): return  10;
+                case("S1111111B"): return 0;
+                case("S2222222C"): return 200;
+                case("S1234567A"): return 10;
+                default: return  30;
             }
         }
     }

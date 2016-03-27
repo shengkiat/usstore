@@ -26,9 +26,15 @@ public class Category {
 		return name;
 	}
 	public void setName(String name) {
+<<<<<<< HEAD
 		if (name.equals(null) ) {
 
 		}
+=======
+		//if (name.equals(null) ) {
+			// throws Category description should not be empty
+		//}
+>>>>>>> refs/remotes/origin/master
 		this.name = name;
 	}
 	

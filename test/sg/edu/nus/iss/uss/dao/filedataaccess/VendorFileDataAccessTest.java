@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -24,22 +23,21 @@ import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class VendorFileDataAccessTest {
 
-	private static final String TEST_DATA_DIR = TestUtil
-			.getTestDirectoryForFile();
+	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Vendors%s.dat";
 
 	private VendorFileDataAccess testDataAccess;
 
 	private String testCategoryCode = "MUG";
-
+	
+	@Test
 	public void testCreateShouldExistAfterExecute() throws UssException {
+		Path path = getTestPath();
+		assertTrue(Files.exists(path));
+		
 		Category category = new Category();
 		category.setCode(testCategoryCode);
 		category.setName("Mug");
-
-		Path path = getTestPath();
-
-		assertFalse(Files.exists(path));
 
 		testDataAccess = new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 
@@ -47,8 +45,6 @@ public class VendorFileDataAccessTest {
 		vendor.setCategory(category);
 
 		testDataAccess.create(vendor);
-
-		assertTrue(Files.exists(path));
 	}
 
 	@Test
@@ -72,7 +68,7 @@ public class VendorFileDataAccessTest {
 
 		VendorService vendorService = new VendorService(testDataAccess);
 
-		int p = vendorService.getVendorsByCategoryCode("MUG").size();
+		//int p = vendorService.getVendorsByCategoryCode("MUG").size();
 
 		assertEquals(0, vendorService.getVendorsByCategoryCode("mug").size());
 		assertEquals(4, vendorService.getVendorsByCategoryCode("MUG").size());
@@ -80,30 +76,7 @@ public class VendorFileDataAccessTest {
 
 		assertEquals(0, vendorService.getVendorsByCategoryCode("Shirt").size());
 	}
-
-	@After
-	public void tearDown() throws IOException {
-		testDataAccess = null;
-
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(
-				Paths.get(TEST_DATA_DIR), "Vendors*.dat")) {
-			for (Path file : stream) {
-
-				Files.deleteIfExists(file);
-			}
-		}
-
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private Path getTestPath() {
-		return Paths.get(TEST_DATA_DIR);
-	}
-
+	
 	@Before
 	public void setUp() throws IOException {
 
@@ -131,6 +104,29 @@ public class VendorFileDataAccessTest {
 			throw new RuntimeException("Test data file already exists: "
 					+ e.getMessage());
 		}
+	}
+
+	@After
+	public void tearDown() throws IOException {
+		testDataAccess = null;
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(
+				Paths.get(TEST_DATA_DIR), "Vendors*.dat")) {
+			for (Path file : stream) {
+
+				Files.deleteIfExists(file);
+			}
+		}
+
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private Path getTestPath() {
+		return Paths.get(TEST_DATA_DIR);
 	}
 
 }

@@ -29,7 +29,7 @@ public class ErrorConstants {
      ************************** CHECKOUT ****************************************
      */
 
-    public static final String PAYMENT_VALIDATION_FAIL = "Payment Validation Fail";
+    public static final String DEDUCT_AMOUNT_FOR_TOTAL_PAYABLE_ERROR = "Amount Deducted For Redeemed Points Error";
     public static final String AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE = "Amount Received Less Than Amount Payable";
 	
 

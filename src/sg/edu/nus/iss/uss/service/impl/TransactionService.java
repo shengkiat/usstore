@@ -61,7 +61,7 @@ public class TransactionService extends UssCommonService implements ITransaction
 			transactions.add(transaction);
 		}
 		
-		createTransactions(transactions);
+		transactionDataAccess.create(transactions);
 	}
 
 	private Map<String, Integer> groupByProductId(List<Product> products) {
@@ -81,10 +81,4 @@ public class TransactionService extends UssCommonService implements ITransaction
 		
 		return result;
 	}
-	
-	
-	private void createTransactions(List<Transaction> transactions) throws UssException{
-		transactionDataAccess.create(transactions);
-	}
-
 }

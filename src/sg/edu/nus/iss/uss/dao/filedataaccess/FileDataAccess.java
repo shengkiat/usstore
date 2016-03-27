@@ -37,7 +37,7 @@ abstract class FileDataAccess {
 	}
 	
 	protected void writeNewLine(String[] arr) throws UssException {
-validateInput(arr);
+		validateInput(arr);
 		
 		List<String[]> existingContents = readAll();
 		

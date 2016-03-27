@@ -13,7 +13,7 @@ import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.service.IReportingService;
 
-public class ReportCategoryPanel extends JPanel {
+final class ReportCategoryPanel extends JPanel {
 
 	private static final long serialVersionUID = -3922465380762345397L;
 	private ReportCategoryTable rmTable;

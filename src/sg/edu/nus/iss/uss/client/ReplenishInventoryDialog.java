@@ -98,7 +98,7 @@ public class ReplenishInventoryDialog extends JDialog {
 						List<Product> productsToReplenish = new ArrayList<Product>();
 
 						int nRow = model.getRowCount(), nCol = model.getColumnCount();
-						Object[][] tableData = new Object[nRow][nCol];
+						//Object[][] tableData = new Object[nRow][nCol];
 						for (int i = 0; i < nRow; i++) {
 
 							boolean isChecked = (boolean) model.getValueAt(i, 5);

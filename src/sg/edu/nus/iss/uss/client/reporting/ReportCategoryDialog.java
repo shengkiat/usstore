@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import sg.edu.nus.iss.uss.service.IReportingService;
 
-public class ReportCategoryDialog extends JDialog {
+public final class ReportCategoryDialog extends JDialog {
 
 	private static final long serialVersionUID = 3305057073596106961L;
 
