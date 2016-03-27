@@ -23,6 +23,7 @@ import sg.edu.nus.iss.uss.service.impl.CategoryServiceTest;
 import sg.edu.nus.iss.uss.service.impl.CheckOutServiceTest;
 import sg.edu.nus.iss.uss.service.impl.DiscountServiceTest;
 import sg.edu.nus.iss.uss.service.impl.MemberServiceTest;
+import sg.edu.nus.iss.uss.service.impl.ProductServiceTest;
 import sg.edu.nus.iss.uss.service.impl.ReportingServiceTest;
 import sg.edu.nus.iss.uss.service.impl.TransactionServiceTest;
 import sg.edu.nus.iss.uss.service.impl.VendorServiceTest;
@@ -48,6 +49,7 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	CheckOutServiceTest.class,
 	DiscountServiceTest.class,
 	ReportingServiceTest.class,
+	ProductServiceTest.class,
 	MemberServiceTest.class,
 	CategoryServiceTest.class,
 	ReportTransactionTableModelTest.class,
