@@ -9,6 +9,7 @@ import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
@@ -20,6 +21,7 @@ import sg.edu.nus.iss.uss.util.TestUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -36,6 +38,7 @@ public class CheckOutServiceTest {
     private ITransactionService transactionService;
     private MockDiscountService mockDiscountService;
     private MockProductService mockProductService;
+    private MockTransactionService mockTransactionService;
 
 
     @Before
@@ -47,9 +50,12 @@ public class CheckOutServiceTest {
         IProductDataAccess productDataAccess = null;
         mockProductService = new MockProductService(productDataAccess);
 
+        ITransactionDataAccess transactionDataAccess = new TransactionFileDataAccess();
+        mockTransactionService = new MockTransactionService(transactionDataAccess);
+
         memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
-        productService = null;
-        transactionService = null;
+        productService = mockProductService;
+        transactionService = mockTransactionService;
     }
     
     @After
@@ -169,8 +175,8 @@ public class CheckOutServiceTest {
         assertEquals(amountPaid, 31.54, 0);
     }
 
-    @Test(expected=RuntimeException.class)
-    public void testMakePaymentDeduct100() throws UssException {
+    @Test
+    public void testMakePaymentDeduct100NoChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
         checkOutService.determineMemberID(memberID);
@@ -179,7 +185,7 @@ public class CheckOutServiceTest {
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
         double amountPaid = totalPayable;
-        checkOutService.memberMakePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -187,10 +193,11 @@ public class CheckOutServiceTest {
             deduct 100 points: 150
             add back 3 points for $31.54 purchase: 53
          */
-        assertEquals(member.getLoyaltyPoint(), 53);
+        assertEquals(53, member.getLoyaltyPoint());
+        assertEquals(0, changeReceived, 0);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test
     public void testMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
@@ -208,8 +215,8 @@ public class CheckOutServiceTest {
             deduct 100 points: 150
             add back 3 points for $31.54 purchase: 53
          */
-        assertEquals(member.getLoyaltyPoint(), 53);
-        assertEquals(changeReceived, 19.46, 0);
+        assertEquals(53, member.getLoyaltyPoint());
+        assertEquals(18.46, changeReceived, 0);
     }
 
     @Test(expected=UssException.class)
@@ -232,7 +239,6 @@ public class CheckOutServiceTest {
     @Test
     public void testAlertIfInventoryLevelBelowThresholdForOneItem() {
         createCheckOutSummaryData();
-        checkOutService.productService = mockProductService;
         List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
         assertEquals(1, productsBelowThreshold.size());
@@ -241,7 +247,6 @@ public class CheckOutServiceTest {
     @Test
     public void testAlertIfInventoryLevelBelowThresholdAllWithin() {
         createCheckOutSummaryData();
-        checkOutService.productService = mockProductService;
         checkOutService.getCheckoutSummary().getCheckoutItems().remove(1); // remove product STA/1
         List<Product> productsBelowThreshold = checkOutService.alertIfInventoryLevelBelowThreshold(checkOutService.getCheckoutSummary().getCheckoutItems());
 
@@ -276,6 +281,10 @@ public class CheckOutServiceTest {
     public class MockTransactionService extends TransactionService {
         public MockTransactionService (ITransactionDataAccess transactionDataAccess) {
             super(transactionDataAccess);
+        }
+
+        public void createTransactions(List<Product> products, String memberID, Date transactionDate) throws UssException {
+
         }
     }
 
