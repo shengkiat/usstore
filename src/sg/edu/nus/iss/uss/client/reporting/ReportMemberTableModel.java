@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import sg.edu.nus.iss.uss.model.Member;
 
-public class ReportMemberTableModel extends AbstractTableModel {
+final class ReportMemberTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 5292609863882879785L;
 

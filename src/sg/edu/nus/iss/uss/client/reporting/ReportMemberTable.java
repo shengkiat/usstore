@@ -3,7 +3,7 @@ package sg.edu.nus.iss.uss.client.reporting;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-public class ReportMemberTable extends JTable {
+final class ReportMemberTable extends JTable {
 
 	private static final long serialVersionUID = 3054802726436260964L;
 	

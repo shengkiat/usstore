@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import sg.edu.nus.iss.uss.model.Product;
 
-public class ReportProductTableModel extends AbstractTableModel {
+final class ReportProductTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = -1504901092289179223L;
 

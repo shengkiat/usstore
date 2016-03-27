@@ -23,7 +23,7 @@ import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.service.IReportingService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-public final class ReportTransactionPanel extends JPanel {
+final class ReportTransactionPanel extends JPanel {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
