@@ -50,7 +50,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	public Category getCategoryByCategoryCode(String CategoryCode) {
 		Category e = null;
 		for(Category cat:getAll()){
-		     if (e.getCode().equals(CategoryCode)) {
+		     if (cat.getCode().equals(CategoryCode)) {
 		    	 e = cat;
 		     }
 		}

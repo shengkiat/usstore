@@ -26,9 +26,9 @@ public class Category {
 		return name;
 	}
 	public void setName(String name) {
-		if (name.equals(null) ) {
+		//if (name.equals(null) ) {
 			// throws Category description should not be empty
-		}
+		//}
 		this.name = name;
 	}
 	
