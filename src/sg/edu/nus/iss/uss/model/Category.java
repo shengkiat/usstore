@@ -4,6 +4,8 @@ public class Category {
 	private String code;
 	private String name;
 	
+	private volatile int hashcode;
+	
 	public Category() {}
 	
 	public Category (String code, String name) {
@@ -26,40 +28,41 @@ public class Category {
 		return name;
 	}
 	public void setName(String name) {
-<<<<<<< HEAD
 		if (name.equals(null) ) {
 
 		}
-=======
 		//if (name.equals(null) ) {
 			// throws Category description should not be empty
 		//}
->>>>>>> refs/remotes/origin/master
+
 		this.name = name;
 	}
 	
 	@Override
 	public String toString() {//CLO,Clothing
-        /*if (this.code == null) {
-        	if (this.name != null) {
-            	this.code = this.code + " , " + this.name;        		
-        	}
-        }*/
-		//System.out.println(code);
+        //System.out.println(code);
 		StringBuilder sb = new StringBuilder();
-		if (this.code == null) {
-			sb.append(this.code);
-			if (this.name == null) {
-				this.name = "";}
-			else {
-				sb.append(",");
-				sb.append(this.name);}
-			
-		}
+		sb.append(this.code);
+		sb.append(",");
+		sb.append(this.name);
 		
+		/*System.out.println("");
+		System.out.println(sb.toString());*/
 		return sb.toString();
 
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		int result = hashcode;
+		if (result ==0 ) {
+		    result = 17;	
+			result = 31 * result + this.code.hashCode();
+			result = 31 * result + this.name.hashCode();
+			hashcode = result;
+		}
+		return result;
+	}
 	
 }
