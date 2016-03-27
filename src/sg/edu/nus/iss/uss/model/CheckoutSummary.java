@@ -41,8 +41,8 @@ public class CheckoutSummary {
     public double getTotalPrice() {
         this.totalPrice = 0.0;
 
-        for(int i = 0; i < checkoutItems.size(); i++ ) {
-            totalPrice = totalPrice + checkoutItems.get(i).getPrice();
+        for(Product checkoutItem: checkoutItems) {
+            this.totalPrice = totalPrice + checkoutItem.getPrice();
         }
 
         return totalPrice;

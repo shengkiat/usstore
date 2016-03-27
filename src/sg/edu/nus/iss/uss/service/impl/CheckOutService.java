@@ -64,10 +64,10 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         boolean isBelowThreshold;
         Set<Product> setOfProductsBelowThreshold = new HashSet<>();
 
-        for(int i = 0; i < productItems.size(); i++) {
-     isBelowThreshold = productService.checkIfProductIsBelowThreshold(productItems.get(i));
+        for(Product product: productItems) {
+            isBelowThreshold = productService.checkIfProductIsBelowThreshold(product);
             if(isBelowThreshold) {
-                setOfProductsBelowThreshold.add(productItems.get(i));
+                setOfProductsBelowThreshold.add(product);
             }
         }
 

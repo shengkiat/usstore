@@ -9,6 +9,7 @@ import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Member;
@@ -47,13 +48,13 @@ public class CheckOutServiceTest {
         IDiscountDataAccess discountDataAccess = new DiscountFileDataAccess();
         mockDiscountService = new MockDiscountService(discountDataAccess);
 
-        IProductDataAccess productDataAccess = null;
+        IProductDataAccess productDataAccess = new ProductFileDataAccess();
         mockProductService = new MockProductService(productDataAccess);
 
         ITransactionDataAccess transactionDataAccess = new TransactionFileDataAccess();
         mockTransactionService = new MockTransactionService(transactionDataAccess);
 
-        memberService = (MemberService) TestUtil.setUpMemberServiceWithThreeMember();
+        memberService = TestUtil.setUpMemberServiceWithThreeMember();
         productService = mockProductService;
         transactionService = mockTransactionService;
     }
@@ -85,7 +86,7 @@ public class CheckOutServiceTest {
         Product product3 = new Product("MUG/1", "Centenary Mug","A really nice mug this time",525,10.25,"9876",25,150);
         Product product4 = new Product("STA/2", "NUS Notepad" ,"Great notepad for those lectures",1000,3.15,"6789",25,75);
 
-        List<Product> productItems = new ArrayList<Product>();
+        List<Product> productItems = new ArrayList<>();
         assertEquals(productItems.size(), 0);
 
         productItems = checkOutService.addItemIntoCheckOutList(product1);
@@ -184,7 +185,9 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
-        double amountPaid = totalPayable;
+        assertEquals(31.54, totalPayable, 0);
+        double amountPaid = 31.54;
+        assertEquals(31.54, amountPaid, 0);
         double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
@@ -206,6 +209,7 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        assertEquals(31.54, totalPayable, 0);
         double amountPaid = 50.0;
         double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
 
@@ -228,10 +232,12 @@ public class CheckOutServiceTest {
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
         double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        assertEquals(31.54, totalPayable, 0);
         double amountPaid = 10.0;
 
         // exception thrown at here for Amount Received Less Than Amount Payable
         double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
+        assertNull(changeReceived);
     }
 
 
@@ -265,12 +271,7 @@ public class CheckOutServiceTest {
         	super(PrdDataAccess);
         }
         public boolean checkIfProductIsBelowThreshold (Product product) {
-            if(product.getProductID().equals("STA/1")) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return product.getProductID().equals("STA/1");
         }
 
         public void deductInventoryFromCheckout(List<Product> productItems) {
@@ -294,19 +295,12 @@ public class CheckOutServiceTest {
         }
 
         public int findHighestDiscountByMemberID(String memberID){
-            if(memberID.equals("F42563743156")) {
-                return 10;
-            }
-            else if (memberID.equals("S1111111B")) {
-                return 0;
-            }
-            else if (memberID.equals("S2222222C")) {
-                return 200;
-            } else if(memberID.equals("S1234567A")) {
-                return 10;
-            }
-            else {
-                return 30;
+            switch(memberID) {
+                case("F42563743156"): return  10;
+                case("S1111111B"): return 0;
+                case("S2222222C"): return 200;
+                case("S1234567A"): return 10;
+                default: return  30;
             }
         }
     }
