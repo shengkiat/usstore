@@ -259,6 +259,12 @@ public class Application {
 		mntmUpdatePromotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				UpdateDiscountDialog updatePromotionDlg = new UpdateDiscountDialog(discountService);
+				
+				updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+				updatePromotionDlg.setVisible(true);
+				
 				// UpdatePromotionDialog updatePromotionDlg = new
 				// UpdatePromotionDialog();
 
