@@ -1,8 +1,5 @@
 package sg.edu.nus.iss.uss.client.reporting;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sg.edu.nus.iss.uss.model.Product;
 
 final class ReportProductTableModel extends ReportTableModel<Product> {
@@ -11,32 +8,15 @@ final class ReportProductTableModel extends ReportTableModel<Product> {
 
 	private static final String[] COLUMN_NAMES = { "Product ID", "Name", "Brief Description", "Quantity Available",
 			"Price", "BarCode Number", "Reorder Quantity", "OrderQuantity", "Product Number"};
-	
-	private List<Product> products;
-	
-	public ReportProductTableModel() {
-		this.products = new ArrayList<Product>();
-	}
 
 	@Override
 	public int getColumnCount() {
 		return COLUMN_NAMES.length;
 	}
-
-	@Override
-	public int getRowCount() {
-		return products.size();
-	}
 	
 	@Override
 	public String getColumnName(int column) {
 		return COLUMN_NAMES[column];
-	}
-
-	@Override
-	public Object getValueAt(int row, int column) {
-		Product product = products.get(row);
-		return toArray(product)[column];
 	}
 	
 	@Override
@@ -56,9 +36,4 @@ final class ReportProductTableModel extends ReportTableModel<Product> {
 		return result;
 	}
 	
-	@Override
-	protected void updateData(List<Product> products) {
-		this.products = products;
-		fireTableDataChanged();
-	}
 }
