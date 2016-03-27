@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.model;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Transaction {
 	

@@ -1,14 +1,15 @@
 package sg.edu.nus.iss.uss.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.PublicBuyer;
@@ -16,9 +17,7 @@ import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.ITransactionService;
-import sg.edu.nus.iss.uss.service.impl.TransactionService;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
-import static org.junit.Assert.*;
 
 public class TransactionServiceTest {
 	
