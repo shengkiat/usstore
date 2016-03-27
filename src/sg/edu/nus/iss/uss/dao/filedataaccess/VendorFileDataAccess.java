@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 import sg.edu.nus.iss.uss.dao.IVendorDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Vendor;
 
 public class VendorFileDataAccess extends FileDataAccess implements IVendorDataAccess {
 
-	private Map<String, List<Vendor>> vendorMap;
+	private Map<String, List<Vendor>> vendors;
 
 	public VendorFileDataAccess() throws UssException {
 		super("Vendors%s.dat");
@@ -30,29 +31,36 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 
 	@Override
 	public Map<String, List<Vendor>> getAll() {
-	
-			return vendorMap;
-		
+		return vendors;
 	}
 
 	@Override
-	public void create(Vendor vendor) {
+	public void create(Vendor vendor) throws UssException {
 		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
 
 		try {
-			Files.createDirectories(path.getParent());
-			Files.createFile(path);
+			
+			if (!Files.exists(path.getParent())) {
+				Files.createDirectories(path.getParent());
+				Files.createFile(path);
+			}
+			
+			String categoryCode = vendor.getCategory().getCode();
+			
+			addIntoVendors(vendor, categoryCode);
+			
+			
 		} catch (FileAlreadyExistsException e) {
 			throw new RuntimeException("file already exists: " + e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new UssException(ErrorConstants.UssCode.DAO, e);
 		}
 	}
 
 	@Override
 	protected void initialLoad() {
 		
-		this.vendorMap = new HashMap<String, List<Vendor>>();
+		this.vendors = new HashMap<String, List<Vendor>>();
 		
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(getDirectory()), "Vendors*.dat")) {
 			for (Path file : stream) {
@@ -75,15 +83,8 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 					vendor.setName(line[0]);
 					vendor.setDescription(line[1]);
 
-					if (this.vendorMap.containsKey(categoryCode)) {
-						this.vendorMap.get(categoryCode).add(vendor);
-					} else {
-						this.vendorMap.put(categoryCode, new ArrayList<Vendor>());
-						this.vendorMap.get(categoryCode).add(vendor);
-					}
-
+					addIntoVendors(vendor, categoryCode);
 				}
-
 			}
 		}
 
@@ -101,5 +102,14 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 	@Override
 	protected int getTotalNumberOfFields() {
 		return 0;
+	}
+	
+	private void addIntoVendors(Vendor vendor, String categoryCode) {
+		if (this.vendors.containsKey(categoryCode)) {
+			this.vendors.get(categoryCode).add(vendor);
+		} else {
+			this.vendors.put(categoryCode, new ArrayList<Vendor>());
+			this.vendors.get(categoryCode).add(vendor);
+		}
 	}
 }
