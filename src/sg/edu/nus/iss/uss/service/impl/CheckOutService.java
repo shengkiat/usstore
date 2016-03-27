@@ -30,7 +30,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
         checkoutSummary = new CheckoutSummary();
         Date date= new Date();
         checkoutSummary.setCheckoutDate(new Timestamp(date.getTime()));
-        checkoutSummary.setCheckoutItems(new ArrayList<>());
+        checkoutSummary.setCheckoutItems(new ArrayList<Product>());
     }
 
     @Override
