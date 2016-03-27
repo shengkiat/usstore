@@ -15,30 +15,37 @@ public class TestProductBuilder {
 		this.productID = productID;
 		return this;
 	}
+	
 	public TestProductBuilder withName(String name) {
 		this.name = name;
 		return this;
 	}
+	
 	public TestProductBuilder withBriefDescription(String briefDescription) {
 		this.briefDescription = briefDescription;
 		return this;
 	}
+	
 	public TestProductBuilder withQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 		return this;
 	}
+	
 	public TestProductBuilder withPrice(double price) {
 		this.price = price;
 		return this;
 	}
+	
 	public TestProductBuilder withBarCodeNumber(String barCodeNumber) {
 		this.barCodeNumber = barCodeNumber;
 		return this;
 	}
+	
 	public TestProductBuilder withReorderQuantity(int reorderQuantity) {
 		this.reorderQuantity = reorderQuantity;
 		return this;
 	}
+	
 	public TestProductBuilder withOrderQuantity(int orderQuantity) {
 		this.orderQuantity = orderQuantity;
 		return this;
