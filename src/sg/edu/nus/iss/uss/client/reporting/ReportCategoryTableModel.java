@@ -3,11 +3,9 @@ package sg.edu.nus.iss.uss.client.reporting;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
-
 import sg.edu.nus.iss.uss.model.Category;
 
-final class ReportCategoryTableModel extends AbstractTableModel {
+final class ReportCategoryTableModel extends ReportTableModel<Category> {
 	
 	private static final long serialVersionUID = 5292609863882879785L;
 
@@ -18,11 +16,6 @@ final class ReportCategoryTableModel extends AbstractTableModel {
 	public ReportCategoryTableModel() {
 		this.categorys = new ArrayList<Category>();
 	}
-	
-	@Override
-	public boolean isCellEditable(int row, int column){  
-        return false;  
-    }
 
 	@Override
 	public int getColumnCount() {
@@ -45,8 +38,8 @@ final class ReportCategoryTableModel extends AbstractTableModel {
 		return toArray(category)[column];
 	}
 	
-	
-	private String[] toArray(Category category) {
+	@Override
+	protected String[] toArray(Category category) {
 		String[] result = new String[getColumnCount()];
 		
 		result[ReportCategoryColumn.COLUMN_CATEGORY_ID.getIndex()] = "" + category.getCode();
@@ -56,7 +49,8 @@ final class ReportCategoryTableModel extends AbstractTableModel {
 		return result;
 	}
 	
-	void updateData(List<Category> categorys) {
+	@Override
+	protected void updateData(List<Category> categorys) {
 		this.categorys = categorys;
 		fireTableDataChanged();
 	}

@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.table.AbstractTableModel;
-
 import sg.edu.nus.iss.uss.model.ReportTransaction;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
-final class ReportTransactionTableModel extends AbstractTableModel {
+final class ReportTransactionTableModel extends ReportTableModel<ReportTransaction> {
 	
 	private static final long serialVersionUID = -3360812732250813553L;
 	
@@ -22,11 +20,6 @@ final class ReportTransactionTableModel extends AbstractTableModel {
 	public ReportTransactionTableModel() {
 		this.reportTransactionMap = new HashMap<>();
 	}
-	
-	@Override
-	public boolean isCellEditable(int row, int column){  
-        return false;  
-    }
 
 	@Override
 	public int getColumnCount() {
@@ -49,7 +42,8 @@ final class ReportTransactionTableModel extends AbstractTableModel {
 		return toArray(reportTransaction)[column];
 	}
 	
-	private String[] toArray(ReportTransaction reportTransaction) {
+	@Override
+	protected String[] toArray(ReportTransaction reportTransaction) {
 		String[] result = new String[getColumnCount()];
 		
 		result[ReportTransactionColumn.COLUMN_TRANSACTION_ID.getIndex()] = "" + reportTransaction.getTransactionID();
@@ -63,7 +57,8 @@ final class ReportTransactionTableModel extends AbstractTableModel {
 		return result;
 	}
 	
-	void updateData(List<ReportTransaction> reportTransactions) {
+	@Override
+	protected void updateData(List<ReportTransaction> reportTransactions) {
 		reportTransactionMap.clear();
 		addIntoMap(reportTransactions);
 		fireTableDataChanged();
