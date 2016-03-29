@@ -65,4 +65,16 @@ public class Category {
 		return result;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Category)) return false;
+		Category c = (Category) o;
+		
+	    return c.code == this.code
+	    && c.name == this.name;
+	    
+	}
+	
+	
 }

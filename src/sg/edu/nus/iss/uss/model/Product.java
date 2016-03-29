@@ -194,4 +194,25 @@ public class Product implements Comparator<Product> {
 	     
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Product)) return false;
+		Product p = (Product) o;
+		
+	    return p.productID == this.productID
+	    && p.name == this.name
+	    && p.briefDescription == this.briefDescription
+	    && p.quantityAvailable == this.quantityAvailable
+	    && p.price == this.price
+	    && p.barCodeNumber == this.barCodeNumber
+	    && p.reorderQuantity == this.reorderQuantity
+	    && p.orderQuantity == this.orderQuantity
+		&& p.productNo == this.productNo;
+		
+	}
+	
+	
+	
+	
 }
