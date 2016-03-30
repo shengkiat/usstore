@@ -26,20 +26,12 @@ public class Category {
 		return name;
 	}
 	public void setName(String name) {
-		//if (name.equals(null) ) {
-			// throws Category description should not be empty
-		//}
+	
 		this.name = name;
 	}
 	
 	@Override
 	public String toString() {//CLO,Clothing
-        /*if (this.code == null) {
-        	if (this.name != null) {
-            	this.code = this.code + " , " + this.name;        		
-        	}
-        }*/
-		//System.out.println(code);
 		StringBuilder sb = new StringBuilder();
 		if (this.code == null) {
 			sb.append(this.code);
@@ -48,7 +40,6 @@ public class Category {
 			else {
 				sb.append(",");
 				sb.append(this.name);}
-			
 		}
 		
 		return sb.toString();

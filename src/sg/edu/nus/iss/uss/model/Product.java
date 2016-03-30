@@ -18,7 +18,9 @@ public class Product implements Comparator<Product> {
 	private int orderQuantity;
 	//Added
 	private int productNo;
-	private int purchaseQty;
+	//private int purchaseQty;
+	
+	private volatile int hashcode;
 	
 	public Product() {}
 	
@@ -97,7 +99,7 @@ public class Product implements Comparator<Product> {
 		this.reorderQuantity = reorderQuantity;
 		this.orderQuantity = orderQuantity;
 	}
-	@Override
+	/*@Override
 	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
 		//TODO toString
 		String sQtyAvail = "" + this.quantityAvailable;
@@ -108,7 +110,51 @@ public class Product implements Comparator<Product> {
 		
 		return 	(productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty);  
 	     
+	}*/
+	
+	@Override
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+		sb.append(this.productID);
+		sb.append(this.name);
+		sb.append(this.briefDescription);
+		sb.append("" + this.quantityAvailable);
+		sb.append("" + this.price);
+		sb.append("" + this.barCodeNumber);
+		sb.append("" + this.reorderQuantity);
+		sb.append("" + this.orderQuantity);
+		
+		/*System.out.println("");
+		System.out.println(sb.toString());*/
+		return sb.toString();
+
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		int result = hashcode;
+		String str;
+		if (result ==0 ) {
+		    result = 17;	
+			result = 31 * result + this.productID.hashCode();
+			result = 31 * result + this.name.hashCode();
+			result = 31 * result + this.briefDescription.hashCode();
+			str = "" + this.quantityAvailable;
+			result = 31 * result + str.hashCode();
+			str = "" + this.price;
+			result = 31 * result + str.hashCode();
+			result = 31 * result + this.barCodeNumber.hashCode();
+			str = "" + this.reorderQuantity;
+			result = 31 * result + str.hashCode();
+			str = "" + this.orderQuantity;
+			result = 31 * result + str.hashCode();
+			
+			hashcode = result;
+		}
+		return result;
+	}
+	
 	
 	public boolean isBelowThreshold(){
 		boolean blnThreshold = ((this.quantityAvailable <= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
@@ -148,4 +194,25 @@ public class Product implements Comparator<Product> {
 	     
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Product)) return false;
+		Product p = (Product) o;
+		
+	    return p.productID == this.productID
+	    && p.name == this.name
+	    && p.briefDescription == this.briefDescription
+	    && p.quantityAvailable == this.quantityAvailable
+	    && p.price == this.price
+	    && p.barCodeNumber == this.barCodeNumber
+	    && p.reorderQuantity == this.reorderQuantity
+	    && p.orderQuantity == this.orderQuantity
+		&& p.productNo == this.productNo;
+		
+	}
+	
+	
+	
+	
 }
