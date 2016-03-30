@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -92,6 +93,18 @@ public class NewMemberDialog extends JDialog {
 				String memberID = txtMemberID.getText();
 				String memberName = txtName.getText();
 
+				if (memberID.equals("")){
+					JOptionPane.showMessageDialog(NewMemberDialog.this, "Please enter Member ID" , "New Member",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				else if(memberName.equals("")){
+					JOptionPane.showMessageDialog(NewMemberDialog.this, "Please enter Member Name" , "New Member",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				
+				
 				try {
 					memberService.registerNewMember(memberName, memberID);
 
