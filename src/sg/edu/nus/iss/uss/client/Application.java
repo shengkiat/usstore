@@ -344,7 +344,7 @@ public class Application {
 		barcodePanel.add(txtBarcode);
 		txtBarcode.setColumns(10);
 
-		JButton btnAdd = new JButton("Add");
+		final JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
@@ -492,7 +492,7 @@ public class Application {
 				txtAmountReceived.setText("");
 				txtMemberDollarRedem.setText("");
 			
-				
+				btnAdd.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -510,7 +510,7 @@ public class Application {
 		gbc_lbl6.gridy = 14;
 		rightEnterAmountPanel.add(lbl6, gbc_lbl6);
 
-		lblChange = new JLabel("New label");
+		lblChange = new JLabel("");
 		GridBagConstraints gbc_lblChange = new GridBagConstraints();
 		gbc_lblChange.anchor = GridBagConstraints.WEST;
 		gbc_lblChange.gridx = 2;
@@ -540,6 +540,8 @@ public class Application {
 				// frame.getContentPane().validate(); // For Java 1.6 or below.
 				frame.repaint();
 
+				btnAdd.setEnabled(false);
+				
 			}
 		});
 		btnFinishAndPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
