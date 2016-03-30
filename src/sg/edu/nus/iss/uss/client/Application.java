@@ -776,7 +776,7 @@ public class Application {
 
 		} catch (UssException e) {
 
-			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "Login",
+			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "",
 					JOptionPane.INFORMATION_MESSAGE);
 
 		}
