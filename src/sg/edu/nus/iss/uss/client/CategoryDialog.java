@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -126,8 +127,22 @@ public class CategoryDialog extends JDialog {
 				String categoryCode = txtCategoryCode.getText();
 				String categoryName = txtCategoryName.getText();
 
+				if (categoryCode.equals("")){
+					JOptionPane.showMessageDialog(CategoryDialog.this, "Please enter the category code" , "New Category",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				else if(categoryName.equals("")){
+					JOptionPane.showMessageDialog(CategoryDialog.this, "Please enter the category description" , "New Category",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				
+				
+				
+				
 				if (categoryCode.length() != 3) {
-					lblInfo.setText("Fail to add" + categoryCode);
+					lblInfo.setText("Fail to add: " + categoryCode);
 					lblInfo.setForeground(Color.RED);
 
 					return;

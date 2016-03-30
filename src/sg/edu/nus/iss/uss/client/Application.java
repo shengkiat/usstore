@@ -488,6 +488,11 @@ public class Application {
 				frame.revalidate(); // For Java 1.7 or above.
 				// frame.getContentPane().validate(); // For Java 1.6 or below.
 				frame.repaint();
+				
+				txtAmountReceived.setText("");
+				txtMemberDollarRedem.setText("");
+			
+				
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -776,7 +781,7 @@ public class Application {
 
 		} catch (UssException e) {
 
-			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "Login",
+			JOptionPane.showMessageDialog(new JFrame(), "Cannot find product with barcode: " + barcode, "",
 					JOptionPane.INFORMATION_MESSAGE);
 
 		}
