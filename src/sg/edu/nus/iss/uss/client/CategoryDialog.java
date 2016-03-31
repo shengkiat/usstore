@@ -158,7 +158,7 @@ public class CategoryDialog extends JDialog {
 					txtCategoryName.setText("");
 
 				} catch (UssException e1) {
-					lblInfo.setText("Fail to add" + categoryCode);
+					lblInfo.setText("Fail to add " + categoryCode);
 					lblInfo.setForeground(Color.RED);
 				}
 
