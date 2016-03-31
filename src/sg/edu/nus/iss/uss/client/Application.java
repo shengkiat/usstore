@@ -83,6 +83,8 @@ public class Application {
 	private JLabel lbl1, lbl2, lbl3, lblsubTotal, lblChange;
 	private JLabel lblMemberName, lblMemberLoyaltyPts, lblAmountReceived;
 
+	private JButton btnMakePayment;
+	
 	private DefaultTableModel shoppingcart;
 
 	/**
@@ -353,7 +355,7 @@ public class Application {
 		barcodePanel.add(txtBarcode);
 		txtBarcode.setColumns(10);
 
-		JButton btnAdd = new JButton("Add");
+		final JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
@@ -452,7 +454,7 @@ public class Application {
 		rightEnterAmountPanel.add(txtAmountReceived, gbc_txtAmountReceived);
 		txtAmountReceived.setColumns(10);
 
-		JButton btnMakePayment = new JButton("Make Payment");
+		 btnMakePayment = new JButton("Make Payment");
 		btnMakePayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -462,10 +464,9 @@ public class Application {
 					notMemberMakePayment();
 
 				}
-
 			}
 		});
-
+		
 		GridBagConstraints gbc_btnMakePayment = new GridBagConstraints();
 		gbc_btnMakePayment.insets = new Insets(0, 0, 5, 5);
 		gbc_btnMakePayment.gridx = 1;
@@ -497,6 +498,12 @@ public class Application {
 				frame.revalidate(); // For Java 1.7 or above.
 				// frame.getContentPane().validate(); // For Java 1.6 or below.
 				frame.repaint();
+				
+				txtAmountReceived.setText("");
+				txtMemberDollarRedem.setText("");
+			
+				btnAdd.setEnabled(true);
+				btnMakePayment.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -514,7 +521,7 @@ public class Application {
 		gbc_lbl6.gridy = 14;
 		rightEnterAmountPanel.add(lbl6, gbc_lbl6);
 
-		lblChange = new JLabel("New label");
+		lblChange = new JLabel("");
 		GridBagConstraints gbc_lblChange = new GridBagConstraints();
 		gbc_lblChange.anchor = GridBagConstraints.WEST;
 		gbc_lblChange.gridx = 2;
@@ -544,6 +551,8 @@ public class Application {
 				// frame.getContentPane().validate(); // For Java 1.6 or below.
 				frame.repaint();
 
+				btnAdd.setEnabled(false);
+				
 			}
 		});
 		btnFinishAndPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -688,15 +697,7 @@ public class Application {
 			lblChange.setText("$" + change);
 
 			// check threshold
-			List<Product> products = this.checkoutService
-					.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
-			for (Product product : products) {
-
-				JOptionPane.showMessageDialog(new JFrame(),
-						"Product:  " + product.getName() + " has reach its reorder quantity.", "Inventory",
-						JOptionPane.INFORMATION_MESSAGE);
-
-			}
+			checkIfRequiredReplenishStocks();
 
 			// print receipt
 			IPrinter printReceipt = new ConsoleIPrinter();
@@ -718,11 +719,29 @@ public class Application {
 			printReceipt.print("Loyalty Points Remaining " + this.member.getLoyaltyPoint());
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
+			
+			btnMakePayment.setEnabled(false);
 
 		} catch (UssException e) {
 			lblChange.setText(e.getMessage());
+		}catch (NumberFormatException err){
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Invalid Amount Entered", "Amount",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
+	}
+
+	private void checkIfRequiredReplenishStocks() {
+		List<Product> products = this.checkoutService
+				.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
+		for (Product product : products) {
+
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Product:  " + product.getName() + " has reach its reorder quantity.", "Inventory",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		}
 	}
 
 	private void notMemberMakePayment() {
@@ -740,6 +759,9 @@ public class Application {
 			double change = this.checkoutService.nonMemberMakePayment(amountReceived);
 
 			lblChange.setText("$" + change);
+			
+			// check threshold
+			checkIfRequiredReplenishStocks();
 
 			// print receipt
 			IPrinter printReceipt = new ConsoleIPrinter();
@@ -759,10 +781,17 @@ public class Application {
 			printReceipt.print("Total $" + this.subTotal);
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
+			
+			btnMakePayment.setEnabled(false);
+			
 
 		} catch (UssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch (NumberFormatException err){
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Invalid Amount Entered", "Amount",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -773,15 +802,24 @@ public class Application {
 
 		try {
 			Product product = this.productService.getProductByBarcode(barcode);
+			
+			if (product.getQuantityAvailable() <= 0) {
+				JOptionPane.showMessageDialog(new JFrame(), "No more stock for " + barcode + " (or " +product.getName() + ")", "",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			else {
+				this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
+				subTotal += product.getPrice();
 
-			this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
-			subTotal += product.getPrice();
+				NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
-			NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+				lblsubTotal.setText(currencyIntance.format(subTotal));
 
-			lblsubTotal.setText(currencyIntance.format(subTotal));
+				this.checkoutService.addItemIntoCheckOutList(product);
+			}
 
-			this.checkoutService.addItemIntoCheckOutList(product);
+			
 
 		} catch (UssException e) {
 
