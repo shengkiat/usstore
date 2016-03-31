@@ -793,15 +793,24 @@ public class Application {
 
 		try {
 			Product product = this.productService.getProductByBarcode(barcode);
+			
+			if (product.getQuantityAvailable() <= 0) {
+				JOptionPane.showMessageDialog(new JFrame(), "No more stock for " + barcode + " (or " +product.getName() + ")", "",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			else {
+				this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
+				subTotal += product.getPrice();
 
-			this.shoppingcart.addRow(new Object[] { product.getName(), product.getPrice() });
-			subTotal += product.getPrice();
+				NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
-			NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
+				lblsubTotal.setText(currencyIntance.format(subTotal));
 
-			lblsubTotal.setText(currencyIntance.format(subTotal));
+				this.checkoutService.addItemIntoCheckOutList(product);
+			}
 
-			this.checkoutService.addItemIntoCheckOutList(product);
+			
 
 		} catch (UssException e) {
 
