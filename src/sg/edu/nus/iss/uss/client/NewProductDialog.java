@@ -13,10 +13,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.service.ICategoryService;
 import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.service.impl.ProductService;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -24,6 +28,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import java.util.*;
+
+
 public class NewProductDialog extends JDialog {
 	private JTextField txtProductName;
 	private JTextField txtDescription;
@@ -35,13 +44,14 @@ public class NewProductDialog extends JDialog {
 	private	JComboBox cbxCategory= new JComboBox();;
 	private DefaultListModel<String> currentCategogies;
 	private ICategoryService categoryService;
-	
+	private IProductDataAccess productDAO;
 	private IProductService productService;
 	
 	/**
 	 * Create the dialog.
+	 * @throws UssException 
 	 */
-	public NewProductDialog(ICategoryService categoryService, final IProductService productService) {
+	public NewProductDialog(ICategoryService categoryService, final IProductService productService) throws UssException {
 		
 		this.currentCategogies = new DefaultListModel();
 
@@ -49,6 +59,7 @@ public class NewProductDialog extends JDialog {
 		List<Category> categories = this.categoryService.retrieveCategoryList();
 		for (int i = 0; i < categories.size(); i++) {
 			Category category = categories.get(i);
+			System.out.println(category);
 			this.cbxCategory.addItem(category);
 		}
 		
@@ -59,9 +70,9 @@ public class NewProductDialog extends JDialog {
 		setBounds(100, 100, 350, 550);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblName = new JLabel("Name:");
@@ -209,6 +220,7 @@ public class NewProductDialog extends JDialog {
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 3;
 		gbc_panel.gridy = 11;
@@ -218,13 +230,28 @@ public class NewProductDialog extends JDialog {
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				String str;
+				
 				String productName = txtProductName.getText();
 				String description =  txtDescription.getText();
-				Integer quantityAvailable =  Integer.parseInt(txtQuantityAvailable.getText());
-				double price= Double.parseDouble(txtPrice.getText());
+				
+				str = txtQuantityAvailable.getText();
+				if (str.isEmpty()){	str = "0";}
+				Integer quantityAvailable = Integer.parseInt(str);
+				
+				str = txtPrice.getText();
+				if (str.isEmpty()){ str = "0.00";}
+				double price= Double.parseDouble(str);
+				
+				str = txtReorderQuantity.getText();
+				if (str.isEmpty()){str = "0";}
+				Integer reorderQuantity= Integer.parseInt(str);
+				
 				String barcode= txtBarcode.getText();
-				Integer reorderQuantity= Integer.parseInt(txtReorderQuantity.getText());
-				Integer orderQuantity= Integer.parseInt(txtOrderQuantity.getText());
+				
+				str = txtOrderQuantity.getText();
+				if (str.isEmpty()){str = "0";}
+				Integer orderQuantity= Integer.parseInt(str);
 				
 				String categoryCode = ((Category)cbxCategory.getSelectedItem()).getCode();
 				
@@ -258,7 +285,30 @@ public class NewProductDialog extends JDialog {
 			}
 		});
 		panel.add(btnCancel);
+		
+		JPanel ReplenishPanel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) ReplenishPanel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		GridBagConstraints gbc_ReplenishPanel = new GridBagConstraints();
+		gbc_ReplenishPanel.insets = new Insets(0, 0, 0, 5);
+		gbc_ReplenishPanel.fill = GridBagConstraints.BOTH;
+		gbc_ReplenishPanel.gridx = 3;
+		gbc_ReplenishPanel.gridy = 12;
+		getContentPane().add(ReplenishPanel, gbc_ReplenishPanel);
 
+		/*	ReplenishPanel.setVisible(true);
+		
+		this.productDAO = new ProductFileDataAccess();
+		this.productService = new ProductService(productDAO);
+		
+		ReplenishInventoryDialog ReplenishInvDlg = new ReplenishInventoryDialog(productService);
+        ReplenishInvDlg.setVisible(true);
+		
+        ReplenishInvDlg.toFront();
+        ReplenishInvDlg.requestFocus();
+        ReplenishInvDlg.setAlwaysOnTop(false);*/
+		
+		
 	}
 
 }

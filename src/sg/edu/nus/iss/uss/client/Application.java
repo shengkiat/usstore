@@ -217,10 +217,19 @@ public class Application {
 		mntmNewProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NewProductDialog newProductDlg = new NewProductDialog(categoryService, productService);
-				newProductDlg.setLocationRelativeTo(null);
-				newProductDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
-				newProductDlg.setVisible(true);
+				NewProductDialog newProductDlg;
+				try {
+					newProductDlg = new NewProductDialog(categoryService, productService);
+					newProductDlg.setLocationRelativeTo(null);
+					newProductDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+					newProductDlg.setVisible(true);
+					
+
+				} catch (UssException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 
 			}
 		});

@@ -54,17 +54,26 @@ public class ReplenishInventoryDialog extends JDialog {
 		for (int x = 0; x < products.size(); x++) {
 			Product product = products.get(x);
 
-			model.insertRow(x, new Object[] { product.getProductID(), product.getName(), product.getQuantityAvailable(),
-					product.getReorderQuantity(), product.getOrderQuantity(), false });
-
+			model.insertRow(x, new Object[] { product.getProductID(), 
+					product.getName(), 
+					product.getQuantityAvailable(),
+					product.getReorderQuantity(), 
+					product.getOrderQuantity(), 
+					false });
 		}
 
 		table = new JTable(model) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			/*
 			 * @Override public Class getColumnClass(int column) { return
 			 * getValueAt(0, column).getClass(); }
 			 */
+			@SuppressWarnings("unchecked")
 			@Override
 			public Class getColumnClass(int column) {
 				switch (column) {
@@ -142,7 +151,7 @@ public class ReplenishInventoryDialog extends JDialog {
 				buttonPane.add(btnGenerateOrder);
 				getRootPane().setDefaultButton(btnGenerateOrder);
 			}
-			{
+			    {
 				JButton btnClose = new JButton("Close");
 				btnClose.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
