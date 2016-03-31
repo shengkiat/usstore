@@ -52,7 +52,7 @@ public class ProductServiceTest {
 	              new FileOutputStream(TEST_DATA_DIR + File.separator + TEST_FILE_NAME), "utf-8"))) {
 			writer.write("CLO/1,Centenary Jumper,A really nice momento,9,21.45,1234,10,100");
 			writer.newLine();
-			writer.write("CLO/2,Cotton Knit T-Shirt,Comfy ladies cotton knit button front Polo Tee,400,17.91,8970020033,200,300");
+			writer.write("CLO/2,Cotton Knit T-Shirt,Comfy cotton knit button front Polo Tee,400,17.91,8970020033,200,300");
 			writer.newLine();
 			writer.write("MUG/1,Centenary Mug,A really nice mug this time,525,10.25,9876,25,150");
 			writer.newLine();
