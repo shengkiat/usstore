@@ -83,6 +83,8 @@ public class Application {
 	private JLabel lbl1, lbl2, lbl3, lblsubTotal, lblChange;
 	private JLabel lblMemberName, lblMemberLoyaltyPts, lblAmountReceived;
 
+	private JButton btnMakePayment;
+	
 	private DefaultTableModel shoppingcart;
 
 	/**
@@ -443,7 +445,7 @@ public class Application {
 		rightEnterAmountPanel.add(txtAmountReceived, gbc_txtAmountReceived);
 		txtAmountReceived.setColumns(10);
 
-		JButton btnMakePayment = new JButton("Make Payment");
+		 btnMakePayment = new JButton("Make Payment");
 		btnMakePayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -456,7 +458,7 @@ public class Application {
 
 			}
 		});
-
+		
 		GridBagConstraints gbc_btnMakePayment = new GridBagConstraints();
 		gbc_btnMakePayment.insets = new Insets(0, 0, 5, 5);
 		gbc_btnMakePayment.gridx = 1;
@@ -493,6 +495,7 @@ public class Application {
 				txtMemberDollarRedem.setText("");
 			
 				btnAdd.setEnabled(true);
+				btnMakePayment.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -716,9 +719,15 @@ public class Application {
 			printReceipt.print("Loyalty Points Remaining " + this.member.getLoyaltyPoint());
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
+			
+			btnMakePayment.setEnabled(false);
 
 		} catch (UssException e) {
 			lblChange.setText(e.getMessage());
+		}catch (NumberFormatException err){
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Invalid Amount Entered", "Amount",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -757,10 +766,17 @@ public class Application {
 			printReceipt.print("Total $" + this.subTotal);
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
+			
+			btnMakePayment.setEnabled(false);
+			
 
 		} catch (UssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch (NumberFormatException err){
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Invalid Amount Entered", "Amount",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

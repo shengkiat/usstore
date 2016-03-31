@@ -46,7 +46,7 @@ public class CategoryDialog extends JDialog {
 		List<Category> categories = this.categoryService.retrieveCategoryList();
 		for (int i = 0; i < categories.size(); i++) {
 			Category category = categories.get(i);
-			this.currentCategogies.add(i, category.getName());
+			this.currentCategogies.add(i, category.getCode() + ": " + category.getName());
 		}
 
 		// this.currentCategogies
