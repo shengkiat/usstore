@@ -43,7 +43,7 @@ public class Category {
 				sb.append(",");
 				sb.append(this.name);}
 		}
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
 		return sb.toString();
 
 	}
