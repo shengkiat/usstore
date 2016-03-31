@@ -688,15 +688,7 @@ public class Application {
 			lblChange.setText("$" + change);
 
 			// check threshold
-			List<Product> products = this.checkoutService
-					.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
-			for (Product product : products) {
-
-				JOptionPane.showMessageDialog(new JFrame(),
-						"Product:  " + product.getName() + " has reach its reorder quantity.", "Inventory",
-						JOptionPane.INFORMATION_MESSAGE);
-
-			}
+			checkIfRequiredReplenishStocks();
 
 			// print receipt
 			IPrinter printReceipt = new ConsoleIPrinter();
@@ -731,6 +723,18 @@ public class Application {
 
 	}
 
+	private void checkIfRequiredReplenishStocks() {
+		List<Product> products = this.checkoutService
+				.alertIfInventoryLevelBelowThreshold(this.checkoutService.getCheckoutSummary().getCheckoutItems());
+		for (Product product : products) {
+
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Product:  " + product.getName() + " has reach its reorder quantity.", "Inventory",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		}
+	}
+
 	private void notMemberMakePayment() {
 
 		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, 0);
@@ -746,6 +750,9 @@ public class Application {
 			double change = this.checkoutService.nonMemberMakePayment(amountReceived);
 
 			lblChange.setText("$" + change);
+			
+			// check threshold
+			checkIfRequiredReplenishStocks();
 
 			// print receipt
 			IPrinter printReceipt = new ConsoleIPrinter();
