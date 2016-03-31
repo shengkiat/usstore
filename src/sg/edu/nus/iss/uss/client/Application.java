@@ -455,9 +455,6 @@ public class Application {
 					notMemberMakePayment();
 
 				}
-				
-				btnMakePayment.setEnabled(false);
-
 			}
 		});
 		
