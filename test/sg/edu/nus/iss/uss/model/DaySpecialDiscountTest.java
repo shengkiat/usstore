@@ -121,12 +121,6 @@ public class DaySpecialDiscountTest {
 	}
 
 	@Test
-	public void testSetDiscountCode() {
-		discount1.setDiscountCode("XYZ");
-		assertEquals("XYZ", discount1.getDiscountCode());
-	}
-
-	@Test
 	public void testGetDescription() {
 		assertEquals("NATIONAL", discount1.getDescription());
 		assertEquals("CENTENARY", discount2.getDescription());

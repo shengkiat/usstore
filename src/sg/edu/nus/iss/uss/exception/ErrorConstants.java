@@ -64,7 +64,6 @@ public class ErrorConstants {
 	public static final String INVALID_DISCOUNT_DESCRIPTION = "Invalid discount description!";
 	public static final String INVALID_DISCOUNT_PERCENTAGE = "Invalid discount percentage!";
 	public static final String INVALID_DISCOUNT_DAYS = "Minimum 1 discount day allowed!";
-	public static final String INVALID_DISCOUNT_STARTDATE = "past date not allowed!";	
 	public static final String INVALID_DISCOUNT_RECORDS = "Less than 5 discounts not allowed!";
 	public static final String DISCOUNT_EXISTS = "Discount already exists!";
 	public static final String DISCOUNT_NOT_EXIST = "Discount does not exist!";

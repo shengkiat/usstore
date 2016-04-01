@@ -19,7 +19,6 @@ import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
 import sg.edu.nus.iss.uss.service.impl.DiscountService;
-import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.util.TestUtil;
 import sg.edu.nus.iss.uss.util.UssCommonUtil;
@@ -94,24 +93,11 @@ public class DiscountServiceTest {
 	}
 	
 	@Test
-	public void testAddNewDiscountWithInvalidStartDate() throws UssException {
-		exception.expect(UssException.class);
-		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_STARTDATE);
-		dicountService.addNewDiscount(null, "SG50 2016", 50, UssCommonUtil.convertStringToDate("2015-08-09"),7);
-	}
-	
-	@Test
 	public void testEditDiscount() throws UssException {
 		dicountService.updateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2016-08-09"),1);
 		assertEquals(5, dicountService.getAll().size());
 	}
-	
-	@Test
-	public void testEditDiscountWithInvalidStartDate() throws UssException {
-		exception.expect(UssException.class);
-		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_STARTDATE);
-		dicountService.updateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2015-08-09"),1);
-	}
+
 	
 	@Test
 	public void testGetMembersTodaysHighestDiscount() {

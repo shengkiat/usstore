@@ -12,28 +12,38 @@ import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
 import sg.edu.nus.iss.uss.service.IDiscountService;
+import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import java.awt.Insets;
+import java.util.Arrays;
 import java.util.List;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 public class UpdateDiscountDialog extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private	JComboBox cbxDiscount= new JComboBox();
+	private	JComboBox<String> cbxDiscount= new JComboBox<String>();
 	private IDiscountService discountService;
 	private JTextField txtDescription;
 	private JTextField txtDiscountPercent;
 	private JTextField txtStartDate;
 	private JTextField txtDiscountDays;
+	
+	private static final int FIELD_DISCOUNT_CODE = 0;
+	private static final int FIELD_DISCOUNT_DESCRIPTION = 1;
+	private static final int FIELD_DISCOUNT_START_DATE = 2;
+	private static final int FIELD_DISCOUNT_PERIOD = 3;
+	private static final int FIELD_DISCOUNT_PERCENTAGE = 4;
+	private static final int FIELD_DISCOUNT_APPLICABLE = 5;
+	
+	private static final int TOTAL_FIELDS = 6;
 
 
 	/**
@@ -44,12 +54,9 @@ public class UpdateDiscountDialog extends JDialog {
 		this.discountService = discountService;
 		
 		List<Discount> discounts = this.discountService.getAll();
-		for (int i = 0; i < discounts.size(); i++) {
-			Discount discount = discounts.get(i);
-			this.cbxDiscount.addItem(discount);
+		for(Discount d : discounts) {
+			this.cbxDiscount.addItem(Arrays.toString(discountToStrArray(d)));
 		}
-		
-		
 		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -78,37 +85,16 @@ public class UpdateDiscountDialog extends JDialog {
 			gbc_cbxDiscount.gridy = 1;
 			cbxDiscount.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Discount x = (Discount) cbxDiscount.getSelectedItem();
-					
-					txtDescription.setText(x.getDescription());
-					txtDiscountPercent.setText("" + x.getDiscountPercentage());
-					
-					if (x instanceof DaySpecialDiscount){
-						DaySpecialDiscount d = (DaySpecialDiscount) x;
-						
-						txtStartDate.setEnabled(true);
-						txtDiscountDays.setEnabled(true);
-						
-						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-						txtStartDate.setText("" + dateFormat.format(d.getStartDate()));
-						txtDiscountDays.setText("" + d.getDiscountDays());
-						
-					}
-					else if(x instanceof MemberOnlyDiscount){
-						txtStartDate.setText("ALWAYS");
-						txtDiscountDays.setText("ALWAYS");
-						txtStartDate.setEnabled(false);
-						txtDiscountDays.setEnabled(false);
-					}
-					
-					//txtStartDate.setText(x.get);
-					//txtDiscountDays.setText(x.g);
-					
+					String dicountString = (String) cbxDiscount.getSelectedItem();
+					String[] dicountEntry = dicountString.split(",");
+					txtDescription.setText(dicountEntry[0]);
+					txtDescription.setText(dicountEntry[FIELD_DISCOUNT_DESCRIPTION]);
+					txtDiscountPercent.setText("" + dicountEntry[FIELD_DISCOUNT_PERCENTAGE]);
+					txtStartDate.setText("" + dicountEntry[FIELD_DISCOUNT_START_DATE]);
+					txtDiscountDays.setText("" + dicountEntry[FIELD_DISCOUNT_PERIOD]);
 				}
 			});
 			contentPanel.add(cbxDiscount, gbc_cbxDiscount);
-			
 		}
 		{
 			JLabel lblDescription = new JLabel("Description:");
@@ -149,7 +135,7 @@ public class UpdateDiscountDialog extends JDialog {
 			txtDiscountPercent.setColumns(10);
 		}
 		{
-			JLabel lblDate = new JLabel("Start Date:");
+			JLabel lblDate = new JLabel("Start Date(yyyy-mm-dd):");
 			GridBagConstraints gbc_lblDate = new GridBagConstraints();
 			gbc_lblDate.anchor = GridBagConstraints.EAST;
 			gbc_lblDate.insets = new Insets(0, 0, 5, 5);
@@ -222,5 +208,27 @@ public class UpdateDiscountDialog extends JDialog {
 		this.cbxDiscount.setSelectedIndex(0);
 		
 	}
-
+	
+	private String[] discountToStrArray(Discount discount){
+		String[] arr = new String[TOTAL_FIELDS];
+		if(discount instanceof MemberOnlyDiscount) {
+			MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
+			arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
+			arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
+			arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
+			arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
+			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
+			arr[FIELD_DISCOUNT_APPLICABLE] = "Member";
+		}
+		if(discount instanceof DaySpecialDiscount) {
+			DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
+			arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
+			arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
+			arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
+			arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
+			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
+			arr[FIELD_DISCOUNT_APPLICABLE] = "All";
+		}
+		return arr;
+	}
 }

@@ -70,14 +70,6 @@ public class MemberOnlyDiscountTest {
 	}
 
 	@Test
-	public void testSetDiscountCode() {
-		memDiscount1.setDiscountCode("CODE");
-		assertEquals("CODE", memDiscount1.getDiscountCode());
-		memDiscount1.setDiscountCode("MEMBER_FIRST");
-		assertEquals("MEMBER_FIRST", memDiscount1.getDiscountCode());
-	}
-
-	@Test
 	public void testGetDescription() {
 		assertEquals("First purchase by member", memDiscount1.getDescription());
 		assertEquals("Subsequent purchase by member", memDiscount2.getDescription());

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
-import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
@@ -27,13 +26,11 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 	}
 	
 	public void addNewDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
-		validateStartDate(startDate);
 		DaySpecialDiscount temp = new DaySpecialDiscount(discountCode, description, discountPercentage, startDate, discountDays);
 		discountFileAccess.create(temp);
 	}
 	
 	public void updateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
-		validateStartDate(startDate);
 		Discount discount = discountFileAccess.getDiscountByDiscountCode(discountCode);
 		if(discount instanceof MemberOnlyDiscount) {
 			MemberOnlyDiscount moDis = (MemberOnlyDiscount)discount;
@@ -86,10 +83,5 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 			}
 		}
 		return todaysHighestDiscount;
-	}
-	
-	private void validateStartDate(Date startDate) throws UssException {
-		if(UssCommonUtil.isDateLeftGreaterThanRight(new Date(), startDate))
-			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_STARTDATE);
 	}
 }
