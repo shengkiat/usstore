@@ -45,7 +45,6 @@ public class Category {
 		}
 		//System.out.println(sb.toString());
 		return sb.toString();
-
 	}
 	
 	@Override
