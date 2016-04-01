@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 
 public class UpdateDiscountDialog extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private	JComboBox cbxDiscount= new JComboBox();
 	private IDiscountService discountService;
@@ -149,7 +150,7 @@ public class UpdateDiscountDialog extends JDialog {
 			txtDiscountPercent.setColumns(10);
 		}
 		{
-			JLabel lblDate = new JLabel("Start Date:");
+			JLabel lblDate = new JLabel("Start Date(yyyy-mm-dd):");
 			GridBagConstraints gbc_lblDate = new GridBagConstraints();
 			gbc_lblDate.anchor = GridBagConstraints.EAST;
 			gbc_lblDate.insets = new Insets(0, 0, 5, 5);
