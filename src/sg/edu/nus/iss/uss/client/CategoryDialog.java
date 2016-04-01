@@ -8,11 +8,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.InputVerifier;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
@@ -95,7 +99,33 @@ public class CategoryDialog extends JDialog {
 		gbc_txtCategoryCode.gridy = 1;
 		addCategoryPanel.add(txtCategoryCode, gbc_txtCategoryCode);
 		txtCategoryCode.setColumns(10);
+		txtCategoryCode.addKeyListener(new KeyAdapter() {
+	        @Override
+	        public void keyTyped(KeyEvent e) {
+	       
+	        	String str = txtCategoryCode.getText().toUpperCase();
+            	txtCategoryCode.setText(str);
+	        	
+	            if (txtCategoryCode.getText().length() >= 3 )  // limit to 3 characters
+	            {
+	            	
+	            	txtCategoryCode.select(0,3);
+	                e.consume();
+	            }
+	            else {
+	               if (e.getKeyChar() >= '0' && e.getKeyChar() <= '9')
+	               {
+	            	   e.consume();
+	               }
+	            }
+	            
+	            
+	            
+	        }
+	    });
+		
 
+		  
 		JLabel lblCategoryDescription = new JLabel("Category Description:");
 		GridBagConstraints gbc_lblCategoryDescription = new GridBagConstraints();
 		gbc_lblCategoryDescription.anchor = GridBagConstraints.EAST;
@@ -112,7 +142,7 @@ public class CategoryDialog extends JDialog {
 		gbc_txtCategoryName.gridy = 3;
 		addCategoryPanel.add(txtCategoryName, gbc_txtCategoryName);
 		txtCategoryName.setColumns(10);
-
+		
 		final JLabel lblInfo = new JLabel("");
 		lblInfo.setForeground(Color.BLACK);
 		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
@@ -121,6 +151,8 @@ public class CategoryDialog extends JDialog {
 		gbc_lblInfo.gridy = 5;
 		addCategoryPanel.add(lblInfo, gbc_lblInfo);
 
+		
+		
 		JButton btnAddNewCategory = new JButton("Add New Category");
 		btnAddNewCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
