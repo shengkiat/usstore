@@ -114,6 +114,7 @@ public class Application {
 		try {
 			initialize();
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(new JFrame(), ErrorConstants.SYSTEM_ERROR, "", JOptionPane.ERROR_MESSAGE);
 		}
 	}
