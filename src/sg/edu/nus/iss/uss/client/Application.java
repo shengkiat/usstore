@@ -258,47 +258,9 @@ public class Application {
 			}
 		});
 		mnPromotion.add(mntmUpdatePromotion);
-		JMenu mnReporting = new JMenu("Reporting");
-		menuBar.add(mnReporting);
-
-		JMenuItem mntmCategories = new JMenuItem("Categories");
-		mntmCategories.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				ReportCategoryDialog reportCategoryDialog = new ReportCategoryDialog(frame, reportingService);
-
-				reportCategoryDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportCategoryDialog.setLocationRelativeTo(null);
-				reportCategoryDialog.setVisible(true);
-				
-				
-			}
-		});
-		mnReporting.add(mntmCategories);
-
-		JMenuItem mntmProducts = new JMenuItem("Products");
-		mntmProducts.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReportProductDialog reportProductDialog = new ReportProductDialog(frame, productService);
-
-				reportProductDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportProductDialog.setLocationRelativeTo(null);
-				reportProductDialog.setVisible(true);
-			}
-		});
-		mnReporting.add(mntmProducts);
-
-		JMenuItem mntmMembers = new JMenuItem("Members");
-		mntmMembers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
-
-				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportMemberDialog.setLocationRelativeTo(null);
-				reportMemberDialog.setVisible(true);
-			}
-		});
-		mnReporting.add(mntmMembers);
+		
+		initializeReportingComponents(menuBar);
+		
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 
 		leftPanel = new JPanel();
@@ -571,6 +533,52 @@ public class Application {
 		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnNonMemberPay);
 
+		
+
+	}
+
+	private void initializeReportingComponents(JMenuBar menuBar) {
+		JMenu mnReporting = new JMenu("Reporting");
+		menuBar.add(mnReporting);
+
+		JMenuItem mntmCategories = new JMenuItem("Categories");
+		mntmCategories.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ReportCategoryDialog reportCategoryDialog = new ReportCategoryDialog(frame, reportingService);
+
+				reportCategoryDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportCategoryDialog.setLocationRelativeTo(null);
+				reportCategoryDialog.setVisible(true);
+				
+			}
+		});
+		mnReporting.add(mntmCategories);
+
+		JMenuItem mntmProducts = new JMenuItem("Products");
+		mntmProducts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportProductDialog reportProductDialog = new ReportProductDialog(frame, productService);
+
+				reportProductDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportProductDialog.setLocationRelativeTo(null);
+				reportProductDialog.setVisible(true);
+			}
+		});
+		mnReporting.add(mntmProducts);
+
+		JMenuItem mntmMembers = new JMenuItem("Members");
+		mntmMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
+
+				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportMemberDialog.setLocationRelativeTo(null);
+				reportMemberDialog.setVisible(true);
+			}
+		});
+		mnReporting.add(mntmMembers);
+		
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");
 		mntmTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -582,7 +590,7 @@ public class Application {
 			}
 		});
 		mnReporting.add(mntmTransactions);
-
+		
 	}
 
 	private void initializeServicesAndDaos() throws UssException {
