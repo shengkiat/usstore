@@ -107,7 +107,7 @@ public class ProductFileDataAccess extends FileDataAccess implements IProductDat
 				iOrderQty = Integer.parseInt(str[FIELD_ORDER_QUANTITY]);
 				
 				prdt = new Product(str[FIELD_PRODUCT_ID],str[FIELD_NAME],str[FIELD_DESCRIPTION],iQtyAvailable,dblPrice,sBarCodeNo,iQtyReOrder,iOrderQty);
-				prdt.setProductNo(prdt.getProductNo());
+//				prdt.setProductNo(prdt.getProductNo());
 				productList.add(prdt);
 					
 			}
