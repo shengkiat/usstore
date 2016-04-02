@@ -132,10 +132,10 @@ public class CheckOutServiceTest {
     }
 
     @Test
-    public void testConvertDollarToPointNormalCase() {
+    public void testConvertDollarToPointForCreditNormalCase() {
         createCheckOutSummaryData();
         double payAmount = checkOutService.calculatePayAmount(0); // no discount given
-        int pointsConverted = checkOutService.convertDollarToPoint(payAmount);
+        int pointsConverted = checkOutService.convertDollarToPointForCredit(payAmount);
         assertEquals(pointsConverted, 4);
     }
 
@@ -145,10 +145,10 @@ public class CheckOutServiceTest {
         createCheckOutSummaryData();
         int discountAmount = 10;
         double payAmount = checkOutService.calculatePayAmount(discountAmount);
-        int pointsToRedeem = 0;
-        double totalPayable = checkOutService.calculateTotalPayable(payAmount, pointsToRedeem);
+        int dollarToRedeem = 0;
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, dollarToRedeem);
 
-        assertEquals(totalPayable, 36.54, 0);
+        assertEquals(36.54, totalPayable, 0);
     }
 
     @Test
@@ -156,10 +156,10 @@ public class CheckOutServiceTest {
         createCheckOutSummaryData();
         int discountAmount = 10;
         double payAmount = checkOutService.calculatePayAmount(discountAmount);
-        int pointsToRedeem = 100;
-        double totalPayable = checkOutService.calculateTotalPayable(payAmount, pointsToRedeem);
+        int dollarToRedeem = 5;
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, dollarToRedeem);
 
-        assertEquals(totalPayable, 31.54, 0);
+        assertEquals(31.54, totalPayable, 0);
     }
 
     @Test
@@ -167,10 +167,10 @@ public class CheckOutServiceTest {
         createCheckOutSummaryData();
         int discountAmount = 10;
         double totalPayable = checkOutService.calculatePayAmount(discountAmount);
-        int pointsToRedeem = 100;
-        double amountPaid = checkOutService.calculateTotalPayable(totalPayable, pointsToRedeem);
+        int dollarToRedeem = 5;
+        double amountPaid = checkOutService.calculateTotalPayable(totalPayable, dollarToRedeem);
 
-        assertEquals(amountPaid, 31.54, 0);
+        assertEquals(31.54, amountPaid, 0);
     }
 
     @Test
@@ -181,11 +181,12 @@ public class CheckOutServiceTest {
 
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
-        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        int dollarToRedeem = 5;
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, dollarToRedeem);
         assertEquals(31.54, totalPayable, 0);
         double amountPaid = 31.54;
         assertEquals(31.54, amountPaid, 0);
-        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, dollarToRedeem);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -205,10 +206,11 @@ public class CheckOutServiceTest {
 
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
-        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        int dollarToRedeem = 5;
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, dollarToRedeem);
         assertEquals(31.54, totalPayable, 0);
         double amountPaid = 50.0;
-        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, dollarToRedeem);
 
         Member member = memberService.getMemberByMemberID("F42563743156");
 
@@ -228,12 +230,13 @@ public class CheckOutServiceTest {
 
         double payAmount = checkOutService.calculatePayAmount(mockDiscountService.findHighestDiscountByMemberID(memberID));
 
-        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 100);
+        int dollarToRedeem = 5;
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, dollarToRedeem);
         assertEquals(31.54, totalPayable, 0);
         double amountPaid = 10.0;
 
         // exception thrown at here for Amount Received Less Than Amount Payable
-        double changeReceived = checkOutService.memberMakePayment(amountPaid, 100);
+        double changeReceived = checkOutService.memberMakePayment(amountPaid, dollarToRedeem);
         assertNull(changeReceived);
     }
 

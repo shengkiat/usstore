@@ -133,7 +133,7 @@ public class ProductService extends UssCommonService implements IProductService 
 			int qtyAvailable = product.getQuantityAvailable();
             int qty = qtyAvailable - qtyPurchased;		
 			
-            if (qty > 0 ) {
+            if (qty >= 0 ) {
 
 				product.setQuantityAvailable(qty); // Update Qty
 

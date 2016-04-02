@@ -1,30 +1,5 @@
 package sg.edu.nus.iss.uss.client;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Dialog.ModalityType;
-import java.awt.Dimension;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JTextField;
-
 import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportProductDialog;
@@ -40,14 +15,14 @@ import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.*;
 import sg.edu.nus.iss.uss.service.impl.*;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.Dialog.ModalityType;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class Application {
 
@@ -437,6 +412,7 @@ public class Application {
 				
 				txtAmountReceived.setText("");
 				txtMemberDollarRedem.setText("");
+                lblChange.setText("");
 			
 				btnAdd.setEnabled(true);
 				btnMakePayment.setEnabled(true);
@@ -633,7 +609,7 @@ public class Application {
 
 		// TODO add loyality points
 		lblMemberName.setText(this.member.getName());
-		lblMemberLoyaltyPts.setText("" + this.checkoutService.convertPointToDollar(this.member.getLoyaltyPoint()));
+		lblMemberLoyaltyPts.setText("" + this.checkoutService.convertPointToDollarForDebit(this.member.getLoyaltyPoint()));
 
 		double discountPercent = this.discountService.getMembersTodaysHighestDiscount(true,
 				this.memberService.isFirstPurchase(this.member.getMemberID()));
@@ -677,17 +653,18 @@ public class Application {
 
 	private void memberMakePayment() {
 		// Convert Dollar to Points
-		double dollarLoyaltyPts = 0;
+		int dollarToRedeem = 0;
 		try {
-			dollarLoyaltyPts = Double.parseDouble(txtMemberDollarRedem.getText());
+			dollarToRedeem = Integer.parseInt(txtMemberDollarRedem.getText());
 		} catch (NumberFormatException e) {
 			// TODO
 
 		}
 
-		int loyaltyPts = this.checkoutService.convertDollarToPoint(dollarLoyaltyPts);
 
-		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, loyaltyPts);
+//		int loyaltyPts = this.checkoutService.convertDollarToPointForDebit(dollarLoyaltyPts);
+
+		this.subTotal = this.checkoutService.calculateTotalPayable(this.subTotal, (int) dollarToRedeem);
 
 		NumberFormat currencyIntance = NumberFormat.getCurrencyInstance();
 
@@ -697,9 +674,9 @@ public class Application {
 
 			double amountReceived = Double.parseDouble(txtAmountReceived.getText());
 
-			double change = this.checkoutService.memberMakePayment(amountReceived, loyaltyPts);
+			double change = this.checkoutService.memberMakePayment(amountReceived, dollarToRedeem);
 
-			this.shoppingcart.addRow(new Object[] { "Deduct Loyalty Points", "" + loyaltyPts });
+			this.shoppingcart.addRow(new Object[] { "Deduct Loyalty Points in Dollars", "" + dollarToRedeem });
 
 			lblChange.setText("$" + change);
 
@@ -722,8 +699,12 @@ public class Application {
 			}
 
 			printReceipt.print("Total $" + this.subTotal);
-			printReceipt.print("Loyalty Points Deducted " + loyaltyPts);
-			printReceipt.print("Loyalty Points Remaining " + this.member.getLoyaltyPoint());
+			printReceipt.print("Loyalty Points Deducted in Dollars $" + dollarToRedeem);
+
+            int pointsAdded = checkoutService.convertDollarToPointForCredit(this.subTotal);
+
+            printReceipt.print("Loyalty Points Awarded in this Transaction " + pointsAdded);
+			printReceipt.print("Loyalty Points Remaining in Dollars $" + checkoutService.convertPointToDollarForDebit(this.member.getLoyaltyPoint()));
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
 			
@@ -796,12 +777,11 @@ public class Application {
 			
 
 		} catch (UssException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            lblChange.setText(e.getMessage());
 		}catch (NumberFormatException err){
 			JOptionPane.showMessageDialog(new JFrame(),
-					"Invalid Amount Entered", "Amount",
-					JOptionPane.ERROR_MESSAGE);
+                    "Invalid Amount Entered", "Amount",
+                    JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

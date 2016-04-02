@@ -78,22 +78,23 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public double calculateTotalPayable(double payAmount, int redeemPoint) {
-        double dollarsRedeemed = convertPointToDollar(redeemPoint);
+    public double calculateTotalPayable(double payAmount, int dollarsRedeemed) {
         checkoutSummary.setTotalPayable(payAmount - dollarsRedeemed);
 
         return checkoutSummary.getTotalPayable();
     }
 
     @Override
-    public double memberMakePayment(double amountPaid, int redeemPoint) throws UssException{
-        convertPointToDollar(redeemPoint);
-        paymentValidation(checkoutSummary.getPayAmount(), redeemPoint, checkoutSummary.getTotalPayable(),amountPaid);
+    public double memberMakePayment(double amountPaid, int redeemDollar) throws UssException{
+        int pointsConverted = convertDollarToPointForDebit(redeemDollar);
+
+//        convertPointToDollarForDebit(redeemDollar);
+        paymentValidation(checkoutSummary.getPayAmount(), pointsConverted, checkoutSummary.getTotalPayable(),amountPaid);
         double returnChange = amountPaid - checkoutSummary.getTotalPayable();
 
-        memberService.deductMemberLoyltyPoint(redeemPoint, checkoutSummary.getMemberID());
+        memberService.deductMemberLoyltyPoint(pointsConverted, checkoutSummary.getMemberID());
 
-        int pointsAdded = convertDollarToPoint(checkoutSummary.getTotalPayable());
+        int pointsAdded = convertDollarToPointForCredit(checkoutSummary.getTotalPayable());
         memberService.addMemberLoyaltyPoint(pointsAdded, checkoutSummary.getMemberID());
 
         // create transaction for buyer
@@ -141,7 +142,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     private boolean paymentValidation(double payAmount, int redeemPoint, double totalPayable, double amountPaid) throws UssException {
-        double dollarsRedeemed = convertPointToDollar(redeemPoint);
+        double dollarsRedeemed = convertPointToDollarForDebit(redeemPoint);
         double returnChange = (amountPaid - totalPayable);
 
         // validate if total payable is correct
@@ -159,16 +160,29 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     }
 
     @Override
-    public int convertDollarToPoint(double dollar){
+    public int convertDollarToPointForDebit(double dollar){
+        int pointsToDollar = 20;
+        return (int) dollar * pointsToDollar;
+    }
+
+    @Override
+    public int convertPointToDollarForDebit(int point){
+        int pointsToDollar = 20;
+        return point / pointsToDollar;
+    }
+
+    @Override
+    public int convertDollarToPointForCredit(double dollar){
         int dollarToPoint = 10;
         return (int) dollar / dollarToPoint;
     }
 
     @Override
-    public int convertPointToDollar(int point){
-        int pointsToDollar = 20;
-        return point / pointsToDollar;
+    public int convertPointToDollarForCredit(int point){
+        int dollarToPoint = 10;
+        return point * dollarToPoint;
     }
+
 
 
 }
