@@ -1,30 +1,5 @@
 package sg.edu.nus.iss.uss.client;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Dialog.ModalityType;
-import java.awt.Dimension;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JTextField;
-
 import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
 import sg.edu.nus.iss.uss.client.reporting.ReportProductDialog;
@@ -40,14 +15,14 @@ import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.*;
 import sg.edu.nus.iss.uss.service.impl.*;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.Dialog.ModalityType;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class Application {
 
@@ -494,6 +469,7 @@ public class Application {
 				
 				txtAmountReceived.setText("");
 				txtMemberDollarRedem.setText("");
+                lblChange.setText("");
 			
 				btnAdd.setEnabled(true);
 				btnMakePayment.setEnabled(true);
@@ -784,8 +760,7 @@ public class Application {
 			
 
 		} catch (UssException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            lblChange.setText(e.getMessage());
 		}catch (NumberFormatException err){
 			JOptionPane.showMessageDialog(new JFrame(),
 					"Invalid Amount Entered", "Amount",
