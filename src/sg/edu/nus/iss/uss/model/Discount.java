@@ -26,7 +26,9 @@ public abstract class Discount {
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(String description) throws UssException {
+		if(description == null || description.equals(""))
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
 		this.description = description;
 	}
 	public double getDiscountPercentage() {

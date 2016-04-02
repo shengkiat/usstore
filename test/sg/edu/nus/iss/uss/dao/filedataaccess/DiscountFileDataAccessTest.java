@@ -102,6 +102,18 @@ public class DiscountFileDataAccessTest {
 	}
 	
 	@Test
+	public void testCreateNullDiscountsAndGetAll() throws UssException, IOException {
+		creteFileWithDiscountData();
+		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+	
+		exception.expect(UssException.class);
+		exception.expectMessage("Invalid Discount!");
+		testDiscountDataAccess.create(null);	
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+	}
+	
+	@Test
 	public void testUpdateDiscountsAndGetAll() throws UssException, IOException {
 		creteFileWithDiscountData();
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
@@ -115,7 +127,7 @@ public class DiscountFileDataAccessTest {
 		
 	}
 	
-	public void testUpdateNonExistingDiscountsAndGetAll() throws UssException, IOException {
+	public void testUpdateNonExistingDiscounts() throws UssException, IOException {
 		creteFileWithDiscountData();
 		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		assertEquals(5, testDiscountDataAccess.getAll().size());
@@ -124,5 +136,53 @@ public class DiscountFileDataAccessTest {
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.DISCOUNT_NOT_EXIST);
 		testDiscountDataAccess.update(discount);		
+	}
+	
+	public void testUpdateNullDiscounts() throws UssException, IOException {
+		creteFileWithDiscountData();
+		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+		
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.DISCOUNT_NOT_EXIST);
+		testDiscountDataAccess.update(null);		
+	}
+	
+	public void testGetDiscountByDiscountCode() throws UssException, IOException {
+		creteFileWithDiscountData();
+		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+		Discount test = null;
+		test = testDiscountDataAccess.getDiscountByDiscountCode("MEMBER_FIRST");
+		assertNotNull(test);
+		assertTrue(test instanceof MemberOnlyDiscount);
+		MemberOnlyDiscount mDiscount = (MemberOnlyDiscount)test;
+		assertEquals("MEMBER_FIRST", mDiscount.getDiscountCode());
+		assertEquals("First purchase by member", mDiscount.getDescription());
+		assertEquals(20, mDiscount.getDiscountPercentage(), 0);
+		
+		test = testDiscountDataAccess.getDiscountByDiscountCode("PRESIDENT_BDAY");
+		assertNotNull(test);
+		assertTrue(test instanceof DaySpecialDiscount);
+		DaySpecialDiscount dsDiscount = (DaySpecialDiscount)test;
+		assertEquals("PRESIDENT_BDAY", dsDiscount.getDiscountCode());
+		assertEquals("University President's birthday", dsDiscount.getDescription());
+		assertEquals(20, dsDiscount.getDiscountPercentage(), 0);
+		assertEquals("2014-02-01",UssCommonUtil.convertDateToString(dsDiscount.getStartDate()));
+		assertEquals(365,dsDiscount.getDiscountDays());
+	}
+	
+	public void testGetDiscountByDiscountCodeWithInvalidCode() throws UssException, IOException {
+		creteFileWithDiscountData();
+		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+		assertNull(testDiscountDataAccess.getDiscountByDiscountCode("MEMBERFIRST"));
+	}
+	
+	public void testGetDiscountByDiscountCodeWithEmptyCode() throws UssException, IOException {
+		creteFileWithDiscountData();
+		testDiscountDataAccess = new DiscountFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		assertEquals(5, testDiscountDataAccess.getAll().size());
+		assertNull(testDiscountDataAccess.getDiscountByDiscountCode(""));
 	}
 }

@@ -51,10 +51,38 @@ public class MemberOnlyDiscountTest {
 	}
 	
 	@Test
+	public void testMemberOnlyDiscountWithEmptyCode() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_CODE);
+		memDiscount2 = new MemberOnlyDiscount("", "Subsequent purchase by member", 12.5);
+	}
+	
+	@Test
+	public void testMemberOnlyDiscountWithNullDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		memDiscount2 = new MemberOnlyDiscount("TEST", null, 12.5);
+	}
+	
+	@Test
+	public void testMemberOnlyDiscountWithEmptyDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		memDiscount2 = new MemberOnlyDiscount("TTEST", "", 12.5);
+	}
+	
+	@Test
 	public void testMemberOnlyDiscountWithInvalidPercentaage() throws UssException {
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
 		memDiscount2 = new MemberOnlyDiscount("TEST", "Subsequent purchase by member", 112.5);
+	}
+	
+	@Test
+	public void testMemberOnlyDiscountWithNegativePercentaage() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		memDiscount2 = new MemberOnlyDiscount("TEST", "Subsequent purchase by member", -11);
 	}
 
 	@Test
@@ -76,11 +104,25 @@ public class MemberOnlyDiscountTest {
 	}
 
 	@Test
-	public void testSetDescription() {
+	public void testSetDescription() throws UssException {
 		memDiscount2.setDescription("Description");
 		assertEquals("Description", memDiscount2.getDescription());
 		memDiscount2.setDescription("Subsequent purchase by member");
 		assertEquals("Subsequent purchase by member", memDiscount2.getDescription());
+	}
+	
+	@Test
+	public void testSetNullDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		memDiscount2.setDescription(null);
+	}
+	
+	@Test
+	public void testSetEmptyDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		memDiscount2.setDescription("");
 	}
 
 	@Test
@@ -91,9 +133,9 @@ public class MemberOnlyDiscountTest {
 
 	@Test
 	public void testSetDiscountPercentage() throws UssException {
-		memDiscount1.setDiscountPercentage(10.20);
-		assertEquals(10.2, memDiscount1.getDiscountPercentage(),0);
-		assertEquals("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,10.2,M", memDiscount1.toString());
+		memDiscount1.setDiscountPercentage(10);
+		assertEquals(10, memDiscount1.getDiscountPercentage(),0);
+		assertEquals("MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,10,M", memDiscount1.toString());
 	}
 	
 	@Test
@@ -101,6 +143,13 @@ public class MemberOnlyDiscountTest {
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
 		memDiscount1.setDiscountPercentage(110.20);
+	}
+	
+	@Test
+	public void testSetNegativeDiscountPercentage() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		memDiscount1.setDiscountPercentage(-3);
 	}
 
 }

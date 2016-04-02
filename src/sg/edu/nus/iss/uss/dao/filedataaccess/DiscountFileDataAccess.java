@@ -54,7 +54,9 @@ private static final String FILE_NAME = "Discounts.dat";
 
 	@Override
 	public void create(Discount discount) throws UssException {
-		if(isDiscountExist(discount.getDiscountCode()))
+		if(discount == null)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, "Invalid Discount!");
+		if(getDiscountByDiscountCode(discount.getDiscountCode()) != null)
 			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_EXISTS);
 		writeNewLine(discountToStrArray(discount));
 		records.add(discount);
@@ -62,7 +64,7 @@ private static final String FILE_NAME = "Discounts.dat";
 
 	@Override
 	public void update(Discount discount) throws UssException {
-		if(discount == null || !isDiscountExist(discount.getDiscountCode()))
+		if(discount == null || getDiscountByDiscountCode(discount.getDiscountCode()) == null)
 			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
 		for(Discount temp : getAll()) {
 			if(discount.getDiscountCode().equalsIgnoreCase(temp.getDiscountCode()))
@@ -87,17 +89,6 @@ private static final String FILE_NAME = "Discounts.dat";
 		}
 		
 		return discount;
-	}
-	
-	@Override
-	public boolean isDiscountExist(String discountCode){
-		
-		for(Discount temp : getAll()){
-			if(discountCode.equalsIgnoreCase(temp.getDiscountCode())){
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	@Override

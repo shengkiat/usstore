@@ -35,6 +35,8 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 		Discount discount = discountFileAccess.getDiscountByDiscountCode(discountCode);
 		if(discount == null)
 			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
+		if(discountDays == null || discountDays.isEmpty())
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.INVALID_DISCOUNT_DAYS);
 		if(discount instanceof MemberOnlyDiscount) {
 			MemberOnlyDiscount moDis = (MemberOnlyDiscount)discount;
 			moDis.setDescription(description);
@@ -69,7 +71,7 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 	}
 	
 	private double getDiscountValueByCode(String dicountcode) {
-		return discountFileAccess.getDiscountByDiscountCode(dicountcode).getDiscountPercentage();
+		return getDiscountByCode(dicountcode).getDiscountPercentage();
 	}
 		
 	private double getTodaysDiscount() {

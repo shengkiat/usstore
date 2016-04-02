@@ -56,6 +56,27 @@ public class DaySpecialDiscountTest {
 	}
 	
 	@Test
+	public void testWithEmptyDiscountCode() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_CODE);
+		discount2 = new DaySpecialDiscount("", "CENTENARY",11, UssCommonUtil.convertStringToDate("2016-02-01"), 30);
+	}
+	
+	@Test
+	public void testWithInvalidDiscountDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		discount2 = new DaySpecialDiscount("TEST", null, 11, UssCommonUtil.convertStringToDate("2016-02-01"), 30);
+	}
+	
+	@Test
+	public void testWithEmptyDiscountDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		discount2 = new DaySpecialDiscount("TEST", "", 11, UssCommonUtil.convertStringToDate("2016-02-01"), 30);
+	}
+	
+	@Test
 	public void testWithInvalidDiscountValue() throws UssException {
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
@@ -63,10 +84,40 @@ public class DaySpecialDiscountTest {
 	}
 	
 	@Test
+	public void testWithNegativeDiscountValue() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
+		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", -11, UssCommonUtil.convertStringToDate("2016-02-01"), 30);
+	}
+	
+	@Test
 	public void testWithInvalidDiscountDays() throws UssException {
 		exception.expect(UssException.class);
 		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DAYS);
 		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("2016-02-01"), 0);
+	}
+	
+	@Test
+	public void testWithInvalidStartDate() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage("The date format must be yyyy-MM-dd");
+		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("20160201"), 10);
+	}
+	
+	@Test
+	public void testWithInvalidDayStartDate() throws UssException {
+		//exception.expect(UssException.class);
+		//exception.expectMessage("The date format must be yyyy-MM-dd");
+		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("2016-02-41"), 10);
+		//assertEquals("2016-02-41", UssCommonUtil.convertDateToString(discount2.getStartDate()));
+	}
+	
+	@Test
+	public void testWithInvalidMonthStartDate() throws UssException {
+		//exception.expect(UssException.class);
+		//exception.expectMessage("The date format must be yyyy-MM-dd");
+		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("2016-32-01"), 10);
+		//assertEquals("2017-08-41", UssCommonUtil.convertDateToString(discount2.getStartDate()));
 	}
 
 	@Test
@@ -127,9 +178,23 @@ public class DaySpecialDiscountTest {
 	}
 
 	@Test
-	public void testSetDescription() {
+	public void testSetDescription() throws UssException {
 		discount2.setDescription("XYZ");
 		assertEquals("XYZ", discount2.getDescription());
+	}
+	
+	@Test
+	public void testSetNullDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		discount2.setDescription(null);
+	}
+	
+	@Test
+	public void testSetEmptyDescription() throws UssException {
+		exception.expect(UssException.class);
+		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_DESCRIPTION);
+		discount2.setDescription("");
 	}
 
 	@Test
@@ -150,5 +215,4 @@ public class DaySpecialDiscountTest {
 		exception.expectMessage(ErrorConstants.INVALID_DISCOUNT_PERCENTAGE);
 		discount1.setDiscountPercentage(-20.0);
 	}
-
 }
