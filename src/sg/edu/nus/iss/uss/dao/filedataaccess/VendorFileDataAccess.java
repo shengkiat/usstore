@@ -3,7 +3,6 @@ package sg.edu.nus.iss.uss.dao.filedataaccess;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,28 +33,28 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 		return vendors;
 	}
 
-	@Override
-	public void create(Vendor vendor) throws UssException {
-		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
-
-		try {
-			
-			if (!Files.exists(path.getParent())) {
-				Files.createDirectories(path.getParent());
-				Files.createFile(path);
-			}
-			
-			String categoryCode = vendor.getCategory().getCode();
-			
-			addIntoVendors(vendor, categoryCode);
-			
-			
-		} catch (FileAlreadyExistsException e) {
-			throw new RuntimeException("file already exists: " + e.getMessage());
-		} catch (IOException e) {
-			throw new UssException(ErrorConstants.UssCode.DAO, e);
-		}
-	}
+//	@Override
+//	public void create(Vendor vendor) throws UssException {
+//		Path path = Paths.get(getDirectory() + File.separator + String.format(getFileName(), vendor.getCategory()));
+//
+//		try {
+//			
+//			if (!Files.exists(path.getParent())) {
+//				Files.createDirectories(path.getParent());
+//				Files.createFile(path);
+//			}
+//			
+//			String categoryCode = vendor.getCategory().getCode();
+//			
+//			addIntoVendors(vendor, categoryCode);
+//			
+//			
+//		} catch (FileAlreadyExistsException e) {
+//			throw new RuntimeException("file already exists: " + e.getMessage());
+//		} catch (IOException e) {
+//			throw new UssException(ErrorConstants.UssCode.DAO, e);
+//		}
+//	}
 
 	@Override
 	protected void initialLoad() throws UssException {

@@ -156,15 +156,7 @@ public class Product implements Comparator<Product> {
 	
 	
 	public boolean isBelowThreshold(){
-		boolean blnThreshold = ((this.quantityAvailable <= this.reorderQuantity) && (this.quantityAvailable > 0)) ? true : false;
-	    return blnThreshold ;	    
-	}
-	
-	public void setProductNo(int productNo){
-		if (this.productNo ==0) {
-			// throw exception, product no cannot be 0
-		}
-		this.productNo = productNo;
+	    return this.quantityAvailable < this.reorderQuantity;	    
 	}
 	
 	public int getProductNo(){
@@ -183,7 +175,6 @@ public class Product implements Comparator<Product> {
 
 	@Override
 	public int compare(Product p1, Product p2) {
-		// TODO Auto-generated method stub
 	    
 		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo()));
 		/*int i = p1.getCategoryCode().compareTo(p2.getCategoryCode());
