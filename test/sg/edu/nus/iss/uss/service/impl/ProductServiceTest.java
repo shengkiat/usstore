@@ -128,8 +128,8 @@ public class ProductServiceTest {
 		
         productItems.add(p2);
 		
-		int p1Qty = p1.getQuantityAvailable() + p1.getReorderQuantity();
-		int p2Qty = p2.getQuantityAvailable() + p2.getReorderQuantity();
+		int p1Qty = p1.getQuantityAvailable() + p1.getOrderQuantity();
+		int p2Qty = p2.getQuantityAvailable() + p2.getOrderQuantity();
 				
 		productservice.replenishInventory(productItems);
 		
