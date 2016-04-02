@@ -713,6 +713,8 @@ public class Application {
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
 			
+			txtMemberDollarRedem.setEnabled(false);
+			txtAmountReceived.setEnabled(false);
 			btnMakePayment.setEnabled(false);
 
 		} catch (UssException e) {
@@ -775,6 +777,7 @@ public class Application {
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
 			
+			txtAmountReceived.setEnabled(false);
 			btnMakePayment.setEnabled(false);
 			
 
