@@ -497,6 +497,8 @@ public class Application {
 			
 				btnAdd.setEnabled(true);
 				btnMakePayment.setEnabled(true);
+				txtAmountReceived.setEnabled(true);
+				txtMemberDollarRedem.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
