@@ -127,26 +127,7 @@ public class Application {
 	private void initialize() throws UssException {
 
 		// Initialize Services
-		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
-		this.authService = new AuthorisedService(storeKeeperDAO);
-
-		this.transactionDAO = new TransactionFileDataAccess();
-		this.transactionService = new TransactionService(transactionDAO);
-
-		this.discountService = new DiscountService(new DiscountFileDataAccess());
-
-		this.productDAO = new ProductFileDataAccess();
-		this.categoryDAO = new CategoryFileDataAccess();
-		this.productService = new ProductService(productDAO);
-
-		this.categoryService = new CategoryService(categoryDAO);
-
-		this.memberDAO = new MemberFileDataAccess();
-		this.memberService = new MemberService(memberDAO);
-
-		this.reportingService = new ReportingService(transactionService, productService, memberService, categoryService);
-
-		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
+		initializeServicesAndDaos();
 
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0,0) {
@@ -277,47 +258,9 @@ public class Application {
 			}
 		});
 		mnPromotion.add(mntmUpdatePromotion);
-		JMenu mnReporting = new JMenu("Reporting");
-		menuBar.add(mnReporting);
-
-		JMenuItem mntmCategories = new JMenuItem("Categories");
-		mntmCategories.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				ReportCategoryDialog reportCategoryDialog = new ReportCategoryDialog(frame, reportingService);
-
-				reportCategoryDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportCategoryDialog.setLocationRelativeTo(null);
-				reportCategoryDialog.setVisible(true);
-				
-				
-			}
-		});
-		mnReporting.add(mntmCategories);
-
-		JMenuItem mntmProducts = new JMenuItem("Products");
-		mntmProducts.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReportProductDialog reportProductDialog = new ReportProductDialog(frame, productService);
-
-				reportProductDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportProductDialog.setLocationRelativeTo(null);
-				reportProductDialog.setVisible(true);
-			}
-		});
-		mnReporting.add(mntmProducts);
-
-		JMenuItem mntmMembers = new JMenuItem("Members");
-		mntmMembers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
-
-				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-				reportMemberDialog.setLocationRelativeTo(null);
-				reportMemberDialog.setVisible(true);
-			}
-		});
-		mnReporting.add(mntmMembers);
+		
+		initializeReportingComponents(menuBar);
+		
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 
 		leftPanel = new JPanel();
@@ -497,6 +440,8 @@ public class Application {
 			
 				btnAdd.setEnabled(true);
 				btnMakePayment.setEnabled(true);
+				txtAmountReceived.setEnabled(true);
+				txtMemberDollarRedem.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -588,6 +533,52 @@ public class Application {
 		btnNonMemberPay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		rightMemberPanel.add(btnNonMemberPay);
 
+		
+
+	}
+
+	private void initializeReportingComponents(JMenuBar menuBar) {
+		JMenu mnReporting = new JMenu("Reporting");
+		menuBar.add(mnReporting);
+
+		JMenuItem mntmCategories = new JMenuItem("Categories");
+		mntmCategories.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ReportCategoryDialog reportCategoryDialog = new ReportCategoryDialog(frame, reportingService);
+
+				reportCategoryDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportCategoryDialog.setLocationRelativeTo(null);
+				reportCategoryDialog.setVisible(true);
+				
+			}
+		});
+		mnReporting.add(mntmCategories);
+
+		JMenuItem mntmProducts = new JMenuItem("Products");
+		mntmProducts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportProductDialog reportProductDialog = new ReportProductDialog(frame, productService);
+
+				reportProductDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportProductDialog.setLocationRelativeTo(null);
+				reportProductDialog.setVisible(true);
+			}
+		});
+		mnReporting.add(mntmProducts);
+
+		JMenuItem mntmMembers = new JMenuItem("Members");
+		mntmMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReportMemberDialog reportMemberDialog = new ReportMemberDialog(frame, reportingService);
+
+				reportMemberDialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+				reportMemberDialog.setLocationRelativeTo(null);
+				reportMemberDialog.setVisible(true);
+			}
+		});
+		mnReporting.add(mntmMembers);
+		
 		JMenuItem mntmTransactions = new JMenuItem("Transactions");
 		mntmTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -599,7 +590,30 @@ public class Application {
 			}
 		});
 		mnReporting.add(mntmTransactions);
+		
+	}
 
+	private void initializeServicesAndDaos() throws UssException {
+		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
+		this.authService = new AuthorisedService(storeKeeperDAO);
+
+		this.transactionDAO = new TransactionFileDataAccess();
+		this.transactionService = new TransactionService(transactionDAO);
+
+		this.discountService = new DiscountService(new DiscountFileDataAccess());
+
+		this.productDAO = new ProductFileDataAccess();
+		this.categoryDAO = new CategoryFileDataAccess();
+		this.productService = new ProductService(productDAO);
+
+		this.categoryService = new CategoryService(categoryDAO);
+
+		this.memberDAO = new MemberFileDataAccess();
+		this.memberService = new MemberService(memberDAO);
+
+		this.reportingService = new ReportingService(transactionService, productService, memberService, categoryService);
+
+		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
 	}
 
 	private void memberWantsToMakePayment() {
@@ -713,6 +727,8 @@ public class Application {
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
 			
+			txtMemberDollarRedem.setEnabled(false);
+			txtAmountReceived.setEnabled(false);
 			btnMakePayment.setEnabled(false);
 
 		} catch (UssException e) {
@@ -775,6 +791,7 @@ public class Application {
 			printReceipt.print("Amount Received $" + amountReceived);
 			printReceipt.print("Change $" + change);
 			
+			txtAmountReceived.setEnabled(false);
 			btnMakePayment.setEnabled(false);
 			
 
