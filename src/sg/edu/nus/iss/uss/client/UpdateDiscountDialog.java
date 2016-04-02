@@ -223,7 +223,11 @@ public class UpdateDiscountDialog extends JDialog {
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
-
+						if(!discountDays.matches("\\d+")) {
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Discount Days must be a number!" , "New Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 						try {
 							discountService.updateDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
 									startDate, discountDays);
