@@ -77,6 +77,15 @@ public class VendorFileDataAccessTest {
 		assertEquals(0, vendorService.getVendorsByCategoryCode("Shirt").size());
 	}
 	
+	@Test(expected=UssException.class)
+	public void testInitialLoadShouldThrowExceptionWhenLessThanSpecifiedNoOfRecords() throws IOException, UssException {
+		TestUtil.createFileWithLines(
+				TestUtil.getTestPath("VendorsTES.dat"), new String[] {
+						"John's Gift,Best of the best" });
+		
+		new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+	}
+	
 	@Before
 	public void setUp() throws IOException {
 
