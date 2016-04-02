@@ -149,7 +149,7 @@ public class ProductServiceTest {
 	
 	
 	@Test
-	public void testCreateNewProductEntry() throws UssException {
+	public void testCreateNewProductEntryShouldAbleToSave() throws UssException {
 		
 	    Product p = new Product("BEV/1","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
 
