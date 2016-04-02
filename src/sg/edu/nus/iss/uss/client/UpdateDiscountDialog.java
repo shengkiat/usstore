@@ -118,7 +118,7 @@ public class UpdateDiscountDialog extends JDialog {
 			txtDescription.setColumns(10);
 		}
 		{
-			JLabel lblDiscountPercentage = new JLabel("Discount Percentage:");
+			JLabel lblDiscountPercentage = new JLabel("Discount Percentage(%):");
 			GridBagConstraints gbc_lblDiscountPercentage = new GridBagConstraints();
 			gbc_lblDiscountPercentage.anchor = GridBagConstraints.EAST;
 			gbc_lblDiscountPercentage.insets = new Insets(0, 0, 5, 5);
@@ -214,13 +214,22 @@ public class UpdateDiscountDialog extends JDialog {
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
-						/*if(!discountDays.matches("\\d+")) {
+						if(!discountDays.matches("\\d+") && !discountDays.contains("ALWAYS")) {
 							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Discount Days must be a number!" , "New Promotion",
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
-						}*/
+						}
+						Double discountPercentageDouble;
 						try {
-							discountService.updateDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
+							discountPercentageDouble = Double.parseDouble(discountPercentage);
+						}
+						catch(NumberFormatException e2) {
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter a valid Discount Percentage!" , "New Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						try {
+							discountService.updateDiscount(discountCode, discountDescription, discountPercentageDouble, 
 									startDate, discountDays);
 							lblInfo.setText("Promotion " + discountCode +" is updated successfully.");
 							lblInfo.setForeground(Color.black);
