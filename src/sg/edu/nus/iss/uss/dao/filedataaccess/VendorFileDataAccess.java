@@ -58,7 +58,7 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 	}
 
 	@Override
-	protected void initialLoad() {
+	protected void initialLoad() throws UssException {
 		
 		this.vendors = new HashMap<String, List<Vendor>>();
 		
@@ -68,6 +68,10 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 
 				String categoryCode = file.toString().replace(getDirectory() + File.separator + "Vendors", "");
 				categoryCode = categoryCode.replace(".dat", "");
+				
+				if (contents.size() <= 3) {
+					throw new UssException(ErrorConstants.UssCode.VENDOR, String.format(ErrorConstants.LESS_THAN_SPECIFLED_NO_OF_RECORDS, categoryCode));
+				}
 
 				// Category Code must be 3 letters
 				if (categoryCode.length() != 3) {
