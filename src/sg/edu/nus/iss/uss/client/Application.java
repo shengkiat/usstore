@@ -249,12 +249,6 @@ public class Application {
 				updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
 				updatePromotionDlg.setVisible(true);
-				
-				// UpdatePromotionDialog updatePromotionDlg = new
-				// UpdatePromotionDialog();
-
-				// updatePromotionDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
-				// updatePromotionDlg.setVisible(true);
 			}
 		});
 		mnPromotion.add(mntmUpdatePromotion);

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.dao.IDiscountDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
@@ -32,6 +33,8 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 	
 	public void updateDiscount(String discountCode, String description, double discountPercentage, String startDate, String discountDays) throws UssException {
 		Discount discount = discountFileAccess.getDiscountByDiscountCode(discountCode);
+		if(discount == null)
+			throw new UssException(ErrorConstants.UssCode.DISCOUNT, ErrorConstants.DISCOUNT_NOT_EXIST);
 		if(discount instanceof MemberOnlyDiscount) {
 			MemberOnlyDiscount moDis = (MemberOnlyDiscount)discount;
 			moDis.setDescription(description);
@@ -83,5 +86,9 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 			}
 		}
 		return todaysHighestDiscount;
+	}
+	
+	public Discount getDiscountByCode(String dicountcode) {
+		return discountFileAccess.getDiscountByDiscountCode(dicountcode);
 	}
 }

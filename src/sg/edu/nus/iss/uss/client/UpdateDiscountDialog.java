@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import java.awt.Insets;
-import java.util.Arrays;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -39,16 +38,6 @@ public class UpdateDiscountDialog extends JDialog {
 	private JTextField txtDiscountPercent;
 	private JTextField txtStartDate;
 	private JTextField txtDiscountDays;
-	private String discountCode;
-	private static final int FIELD_DISCOUNT_CODE = 0;
-	private static final int FIELD_DISCOUNT_DESCRIPTION = 1;
-	private static final int FIELD_DISCOUNT_START_DATE = 2;
-	private static final int FIELD_DISCOUNT_PERIOD = 3;
-	private static final int FIELD_DISCOUNT_PERCENTAGE = 4;
-	private static final int FIELD_DISCOUNT_APPLICABLE = 5;
-	
-	private static final int TOTAL_FIELDS = 6;
-
 
 	/**
 	 * Create the dialog.
@@ -59,7 +48,7 @@ public class UpdateDiscountDialog extends JDialog {
 		
 		List<Discount> discounts = this.discountService.getAll();
 		for(Discount d : discounts) {
-			this.cbxDiscount.addItem(Arrays.toString(discountToStrArray(d)));
+			this.cbxDiscount.addItem(d.getDiscountCode());
 		}
 		
 		setBounds(100, 100, 450, 300);
@@ -89,21 +78,22 @@ public class UpdateDiscountDialog extends JDialog {
 			gbc_cbxDiscount.gridy = 1;
 			cbxDiscount.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String dicountString = (String) cbxDiscount.getSelectedItem();
-					String[] dicountEntry = dicountString.split(", ");
-					discountCode = dicountEntry[FIELD_DISCOUNT_CODE].replace("[", "");
-					txtDescription.setText(dicountEntry[FIELD_DISCOUNT_DESCRIPTION]);
-					txtDiscountPercent.setText(dicountEntry[FIELD_DISCOUNT_PERCENTAGE]);
-					txtStartDate.setText(dicountEntry[FIELD_DISCOUNT_START_DATE]);
-					if(txtStartDate.getText().contains("ALWAYS"))
+					String discountCode = (String) cbxDiscount.getSelectedItem();
+					Discount discount = discountService.getDiscountByCode(discountCode);
+					txtDescription.setText(discount.getDescription());
+					txtDiscountPercent.setText(Double.toString(discount.getDiscountPercentage()));
+					if(discount instanceof MemberOnlyDiscount) {
+						txtStartDate.setText("ALWAYS");
 						txtStartDate.setEnabled(false);
-					else
-						txtStartDate.setEnabled(true);
-					txtDiscountDays.setText("" + dicountEntry[FIELD_DISCOUNT_PERIOD]);
-					if(txtDiscountDays.getText().contains("ALWAYS"))
+						txtDiscountDays.setText("ALWAYS");
 						txtDiscountDays.setEnabled(false);
-					else
+					}
+					if(discount instanceof DaySpecialDiscount) {
+						txtStartDate.setText(UssCommonUtil.convertDateToString(((DaySpecialDiscount) discount).getStartDate()));
+						txtStartDate.setEnabled(true);
+						txtDiscountDays.setText(Integer.toString(((DaySpecialDiscount) discount).getDiscountDays()));
 						txtDiscountDays.setEnabled(true);
+					}
 				}
 			});
 			contentPanel.add(cbxDiscount, gbc_cbxDiscount);
@@ -199,6 +189,7 @@ public class UpdateDiscountDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						String discountCode = (String) cbxDiscount.getSelectedItem();
 						String discountDescription = txtDescription.getText();
 						String discountPercentage = txtDiscountPercent.getText();
 						String startDate = txtStartDate.getText();
@@ -223,21 +214,16 @@ public class UpdateDiscountDialog extends JDialog {
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
-						if(!discountDays.matches("\\d+")) {
+						/*if(!discountDays.matches("\\d+")) {
 							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Discount Days must be a number!" , "New Promotion",
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
-						}
+						}*/
 						try {
 							discountService.updateDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
 									startDate, discountDays);
-							lblInfo.setText("Promotion is updated successfully.");
+							lblInfo.setText("Promotion " + discountCode +" is updated successfully.");
 							lblInfo.setForeground(Color.black);
-							//List<Discount> discounts = discountService.getAll();
-							//cbxDiscount.removeAllItems();
-							//for(Discount d : discounts) {
-								//cbxDiscount.addItem(Arrays.toString(discountToStrArray(d)));
-							//}
 						}catch(UssException e1) {
 							lblInfo.setText("Fail to update promotion: " + e1.getMessage());
 							lblInfo.setForeground(Color.RED);
@@ -261,28 +247,5 @@ public class UpdateDiscountDialog extends JDialog {
 		}
 		
 		this.cbxDiscount.setSelectedIndex(0);	
-	}
-	
-	private String[] discountToStrArray(Discount discount){
-		String[] arr = new String[TOTAL_FIELDS];
-		if(discount instanceof MemberOnlyDiscount) {
-			MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
-			arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
-			arr[FIELD_DISCOUNT_DESCRIPTION] = "" + moDiscount.getDescription();
-			arr[FIELD_DISCOUNT_START_DATE] = "" + "ALWAYS";
-			arr[FIELD_DISCOUNT_PERIOD] = "" + "ALWAYS";
-			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
-			arr[FIELD_DISCOUNT_APPLICABLE] = "" + "Member";
-		}
-		if(discount instanceof DaySpecialDiscount) {
-			DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
-			arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
-			arr[FIELD_DISCOUNT_DESCRIPTION] = "" + dsDiscount.getDescription();
-			arr[FIELD_DISCOUNT_START_DATE] = "" + UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
-			arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
-			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
-			arr[FIELD_DISCOUNT_APPLICABLE] = "" + "All";
-		}
-		return arr;
 	}
 }

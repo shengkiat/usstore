@@ -17,4 +17,6 @@ public interface IDiscountService {
 			String discountDays) throws UssException;
 
 	public double getMembersTodaysHighestDiscount(Boolean isMember, Boolean isFirstPurchase);
+	
+	public Discount getDiscountByCode(String dicountcode);
 }
