@@ -16,16 +16,20 @@ public interface ICheckOutService {
 
 	public List<Product> alertIfInventoryLevelBelowThreshold(List<Product> productItems);
 
-    public double calculateTotalPayable(double payAmount, int redeemPoint);
+    public double calculateTotalPayable(double payAmount, int dollarsRedeemed);
 
     public double memberMakePayment(double amountPaid, int redeemPoint) throws UssException;
 	
     public double nonMemberMakePayment(double amountPaid) throws UssException;
-	
-    public int convertDollarToPoint(double dollar);
 
     public double calculatePayAmount(double discount);
 
-	public int convertPointToDollar(int point);	
+    public int convertDollarToPointForDebit(double dollar);
+
+	public int convertPointToDollarForDebit(int point);
+
+    public int convertDollarToPointForCredit(double dollar);
+
+    public int convertPointToDollarForCredit(int point);
 
 }
