@@ -2,7 +2,6 @@ package sg.edu.nus.iss.uss.model;
 
 import java.util.Comparator;
 
-import sg.edu.nus.iss.uss.exception.UssException;
 
 //Comparator<Product>,
 

@@ -15,7 +15,6 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.InputVerifier;
 
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
@@ -32,6 +30,7 @@ import sg.edu.nus.iss.uss.service.ICategoryService;
 
 public class CategoryDialog extends JDialog {
 
+	private static final long serialVersionUID = -694655362365999083L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtCategoryCode;
 	private JTextField txtCategoryName;
@@ -44,7 +43,7 @@ public class CategoryDialog extends JDialog {
 	 */
 	public CategoryDialog(final ICategoryService categoryService) {
 
-		this.currentCategogies = new DefaultListModel();
+		this.currentCategogies = new DefaultListModel<String>();
 
 		this.categoryService = categoryService;
 		List<Category> categories = this.categoryService.retrieveCategoryList();
@@ -61,9 +60,7 @@ public class CategoryDialog extends JDialog {
 		JPanel categoryPanel = new JPanel();
 		getContentPane().add(categoryPanel);
 
-		String[] selections = { "CLothing", "Mugs", "Stationary", "dark blue" };
-
-		JList categoryList = new JList(currentCategogies);
+		JList<String> categoryList = new JList<String>(currentCategogies);
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 

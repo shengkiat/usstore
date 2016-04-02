@@ -10,15 +10,11 @@ import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
-import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
-import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class CategoryFileDataAccessTest {

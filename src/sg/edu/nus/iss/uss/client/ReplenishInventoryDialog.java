@@ -73,9 +73,8 @@ public class ReplenishInventoryDialog extends JDialog {
 			 * @Override public Class getColumnClass(int column) { return
 			 * getValueAt(0, column).getClass(); }
 			 */
-			@SuppressWarnings("unchecked")
 			@Override
-			public Class getColumnClass(int column) {
+			public Class<?> getColumnClass(int column) {
 				switch (column) {
 				case 0:
 					return String.class;
@@ -106,7 +105,7 @@ public class ReplenishInventoryDialog extends JDialog {
 
 						List<Product> productsToReplenish = new ArrayList<Product>();
 
-						int nRow = model.getRowCount(), nCol = model.getColumnCount();
+						int nRow = model.getRowCount();
 						//Object[][] tableData = new Object[nRow][nCol];
 						for (int i = 0; i < nRow; i++) {
 
