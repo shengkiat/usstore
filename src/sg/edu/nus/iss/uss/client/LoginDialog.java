@@ -6,13 +6,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
-import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
-import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
 
 public class LoginDialog extends JDialog {
 
+	private static final long serialVersionUID = 8686021432857020138L;
 	private JTextField tfUsername;
 	private JPasswordField pfPassword;
 	private JLabel lbUsername;
@@ -21,13 +19,9 @@ public class LoginDialog extends JDialog {
 	private JButton btnCancel;
 	private boolean succeeded;
 
-	private IAuthorisedService authService;
-
 	public LoginDialog(Frame parent, final IAuthorisedService authService) {
 		super(parent, "Login", true);
 		
-		this.authService = authService;
-		//
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints cs = new GridBagConstraints();
 

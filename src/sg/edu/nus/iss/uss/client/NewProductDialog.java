@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -33,18 +32,13 @@ public class NewProductDialog extends JDialog {
 	private JTextField txtBarcode;
 	private JTextField txtReorderQuantity;
 	private JTextField txtOrderQuantity;
-	private JComboBox cbxCategory = new JComboBox();;
-	private DefaultListModel<String> currentCategogies;
+	private JComboBox<Category> cbxCategory = new JComboBox<Category>();;
 	private ICategoryService categoryService;
-
-	private IProductService productService;
 
 	/**
 	 * Create the dialog.
 	 */
 	public NewProductDialog(ICategoryService categoryService, final IProductService productService) {
-
-		this.currentCategogies = new DefaultListModel();
 
 		this.categoryService = categoryService;
 		List<Category> categories = this.categoryService.retrieveCategoryList();
@@ -52,8 +46,6 @@ public class NewProductDialog extends JDialog {
 			Category category = categories.get(i);
 			this.cbxCategory.addItem(category);
 		}
-
-		this.productService = productService;
 
 		// 350
 		setBounds(100, 100, 350, 550);

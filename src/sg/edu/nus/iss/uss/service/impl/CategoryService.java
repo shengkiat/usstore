@@ -3,10 +3,7 @@ package sg.edu.nus.iss.uss.service.impl;
 import java.util.List;
 
 import sg.edu.nus.iss.uss.model.Category;
-import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.service.ICategoryService;
-import sg.edu.nus.iss.uss.service.IVendorService;
-import sg.edu.nus.iss.uss.util.UssCommonUtil;
 import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;

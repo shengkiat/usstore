@@ -94,7 +94,7 @@ public class DiscountServiceTest {
 	
 	@Test
 	public void testEditDiscount() throws UssException {
-		dicountService.updateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, UssCommonUtil.convertStringToDate("2016-08-09"),1);
+		dicountService.updateDiscount("ORIENTATION_DAY", "National Day Celebration in 2014", 25, "2016-08-09","1");
 		assertEquals(5, dicountService.getAll().size());
 	}
 

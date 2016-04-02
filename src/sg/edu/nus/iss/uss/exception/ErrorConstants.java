@@ -32,7 +32,10 @@ public class ErrorConstants {
     public static final String DEDUCT_AMOUNT_FOR_TOTAL_PAYABLE_ERROR = "Amount Deducted For Redeemed Points Error";
     public static final String AMOUNT_RECEIVED_LESS_THAN_TOTAL_PAYABLE = "Amount Received Less Than Amount Payable";
 	
-
+    /**
+	 ************************** VENDOR ****************************************
+	 */
+    public static final String LESS_THAN_SPECIFLED_NO_OF_RECORDS = "Vendor %s less than 3 records";
 
 	/**
 	 * ************************ PRODUCT *****************************************

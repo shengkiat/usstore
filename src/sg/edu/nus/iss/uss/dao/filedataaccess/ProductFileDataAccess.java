@@ -7,7 +7,6 @@ import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.exception.ErrorConstants.UssCode;
-import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Product;
 
 public class ProductFileDataAccess extends FileDataAccess implements IProductDataAccess {
