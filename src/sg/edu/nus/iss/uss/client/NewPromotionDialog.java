@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.uss.client;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,7 +9,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -125,6 +125,14 @@ public class NewPromotionDialog extends JDialog {
 			textField_4.setColumns(10);
 		}
 		{
+			final JLabel lblInfo = new JLabel("");
+			GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+			gbc_lblInfo.anchor = GridBagConstraints.WEST;
+			gbc_lblInfo.insets = new Insets(0, 0, 5, 0);
+			gbc_lblInfo.gridx = 3;
+			gbc_lblInfo.gridy = 8;
+			getContentPane().add(lblInfo, gbc_lblInfo);
+
 			JPanel panel = new JPanel();
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.fill = GridBagConstraints.BOTH;
@@ -140,17 +148,45 @@ public class NewPromotionDialog extends JDialog {
 					String discountPercentage = textField_4.getText();
 					String startDate = textField_2.getText();
 					String discountDays = textField_3.getText();
-					if(discountCode.equals("") || discountDescription.equals("") 
-							|| discountPercentage.equals("") || startDate.equals("") 
-							|| discountDays.equals("")) {
-						JOptionPane.showMessageDialog(new JFrame(), "xxxxx", "",
-						        JOptionPane.ERROR_MESSAGE);
+					if(discountCode.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Code!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					if(discountDescription.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Description!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					if(startDate.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter a Start Date!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					if(discountDays.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Days!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					if(discountPercentage.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Percentage!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
 					}
 					try {
-						discountService.addNewDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), UssCommonUtil.convertStringToDate(startDate), Integer.parseInt(discountDays));
+						discountService.addNewDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
+								UssCommonUtil.convertStringToDate(startDate), Integer.parseInt(discountDays));
+						lblInfo.setText("Promotion " + discountCode + " is added successfully.");
+						lblInfo.setForeground(Color.black);
+
+						textField.setText("");
+						textField_1.setText("");
+						textField_2.setText("");
+						textField_3.setText("");
+						textField_4.setText("");
 					}catch(UssException e1) {
-						JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "",
-						        JOptionPane.ERROR_MESSAGE);
+						lblInfo.setText("Fail to add promotion: " + discountCode + " - " + e1.getMessage());
+						lblInfo.setForeground(Color.RED);
 					}
 				}
 			});
