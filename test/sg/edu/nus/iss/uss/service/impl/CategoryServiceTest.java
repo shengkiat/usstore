@@ -13,9 +13,7 @@ import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;

@@ -11,12 +11,9 @@ import sg.edu.nus.iss.uss.dao.IProductDataAccess;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.model.Transaction;
 import sg.edu.nus.iss.uss.service.IProductService;
 
 public class ProductService extends UssCommonService implements IProductService {
-
-	private static final Object Null = null;
 
 	private IProductDataAccess prdDataAccess;
 

@@ -53,7 +53,7 @@ public class UpdateDiscountDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public UpdateDiscountDialog(IDiscountService discountService) {
+	public UpdateDiscountDialog(final IDiscountService discountService) {
 		
 		this.discountService = discountService;
 		
@@ -184,7 +184,7 @@ public class UpdateDiscountDialog extends JDialog {
 			txtDiscountDays.setColumns(10);
 		}
 		{
-			JLabel lblInfo = new JLabel("");
+			final JLabel lblInfo = new JLabel("");
 			GridBagConstraints gbc_lblInfo = new GridBagConstraints();
 			gbc_lblInfo.anchor = GridBagConstraints.WEST;
 			gbc_lblInfo.insets = new Insets(0, 0, 0, 5);
