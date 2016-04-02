@@ -1,18 +1,20 @@
 package sg.edu.nus.iss.uss.client;
 
 import java.awt.Color;
-import java.awt.EventQueue;
-
-import javax.swing.JDialog;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.uss.exception.UssException;
@@ -20,15 +22,10 @@ import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.service.ICategoryService;
 import sg.edu.nus.iss.uss.service.IProductService;
 
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.text.NumberFormat;
-import java.awt.event.ActionEvent;
-import java.util.List;
-
 public class NewProductDialog extends JDialog {
+	
+	private static final long serialVersionUID = -62814988236609858L;
+	
 	private JTextField txtProductName;
 	private JTextField txtDescription;
 	private JTextField txtQuantityAvailable;
@@ -292,7 +289,7 @@ public class NewProductDialog extends JDialog {
 					productService.createNewProductEntry(categoryCode, productName, description, quantityAvailable,
 							price, barcode, reorderQuantity, orderQuantity);
 
-					lblInfo.setText(productName + "is added successfully.");
+					lblInfo.setText(productName + " is added successfully.");
 					lblInfo.setForeground(Color.black);
 
 					txtProductName.setText("");
