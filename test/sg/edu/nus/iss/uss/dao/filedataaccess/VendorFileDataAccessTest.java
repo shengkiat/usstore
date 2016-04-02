@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -17,8 +16,6 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Category;
 import sg.edu.nus.iss.uss.model.Vendor;
-import sg.edu.nus.iss.uss.service.IVendorService;
-import sg.edu.nus.iss.uss.service.impl.VendorService;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class VendorFileDataAccessTest {
@@ -45,36 +42,6 @@ public class VendorFileDataAccessTest {
 		vendor.setCategory(category);
 
 		testDataAccess.create(vendor);
-	}
-
-	@Test
-	public void testReadActualData() throws UssException {
-
-		VendorFileDataAccess actualDataAccess = new VendorFileDataAccess();
-
-		IVendorService vendorService = new VendorService(actualDataAccess);
-
-		assertEquals(0, vendorService.getVendorsByCategoryCode("mug").size());
-		assertEquals(4, vendorService.getVendorsByCategoryCode("MUG").size());
-		assertEquals(4, vendorService.getVendorsByCategoryCode("CLO").size());
-
-		assertEquals(0, vendorService.getVendorsByCategoryCode("Shirt").size());
-	}
-
-	@Test
-	public void testReadTestData() throws UssException {
-
-		testDataAccess = new VendorFileDataAccess("", TEST_DATA_DIR);
-
-		VendorService vendorService = new VendorService(testDataAccess);
-
-		//int p = vendorService.getVendorsByCategoryCode("MUG").size();
-
-		assertEquals(0, vendorService.getVendorsByCategoryCode("mug").size());
-		assertEquals(4, vendorService.getVendorsByCategoryCode("MUG").size());
-		assertEquals(4, vendorService.getVendorsByCategoryCode("CLO").size());
-
-		assertEquals(0, vendorService.getVendorsByCategoryCode("Shirt").size());
 	}
 	
 	@Test(expected=UssException.class)
