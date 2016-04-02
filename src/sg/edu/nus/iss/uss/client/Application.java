@@ -21,6 +21,8 @@ import java.awt.*;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -131,6 +133,31 @@ public class Application {
         loginDlg.setVisible(true);
 
         loginDlg.setModalityType(ModalityType.TOOLKIT_MODAL);
+        
+
+        loginDlg.addWindowListener(new WindowListener() {
+            public void windowActivated(WindowEvent e) {
+            }
+
+            public void windowClosed(WindowEvent e) {
+            }
+
+            public void windowClosing(WindowEvent e) {
+            }
+
+            public void windowDeactivated(WindowEvent e) {
+            	System.exit(0);
+            }
+
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            public void windowIconified(WindowEvent e) {
+            }
+
+            public void windowOpened(WindowEvent e) {
+            }
+        });
 
         // if logon successfully
         if (loginDlg.isSucceeded()) {
