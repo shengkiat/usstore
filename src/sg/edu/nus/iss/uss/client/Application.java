@@ -227,7 +227,7 @@ public class Application {
 		});
 		mnCategory.add(mntmNewCategory);
 
-		JMenu mnPromotion = new JMenu("Promotions");
+		JMenu mnPromotion = new JMenu("Promotion");
 		menuBar.add(mnPromotion);
 
 		JMenuItem mntmNewPromotion = new JMenuItem("New Promotion");
@@ -240,7 +240,7 @@ public class Application {
 		});
 		mnPromotion.add(mntmNewPromotion);
 
-		JMenuItem mntmUpdatePromotion = new JMenuItem("Update");
+		JMenuItem mntmUpdatePromotion = new JMenuItem("Update Promotion");
 		mntmUpdatePromotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
