@@ -40,6 +40,7 @@ public class ErrorConstants {
 	public static final String PRODUCT_EXISTS = "Product Exists!";
 	public static final String PRODUCT_NOT_EXISTS = "Product Does Not Exists!";
 	public static final String PRODUCTFILE_EMPTY = "Product List is Empty!";
+	public static final String PRODUCT_BARCODE_EXISTS = "Product's Barcode Exists";
 	
 	
 	/**

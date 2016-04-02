@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.model.Transaction;
@@ -65,6 +66,12 @@ public class ProductService extends UssCommonService implements IProductService 
 			String briefDescription, int QuantityAvailable, double price,
 			String barCodeNumber, int reorderQuantity, int orderQuantity)
 			throws UssException {
+		
+		if (getProductByBarCodeWithoutException(barCodeNumber) != null) {
+			throw new UssException(ErrorConstants.UssCode.PRODUCT, ErrorConstants.PRODUCT_BARCODE_EXISTS);
+		}
+		
+		
 		// TODO Auto-generated method stub
 		List<Integer> prdNos = new ArrayList<>();
 		// Retrieve Product List Base on Category Code
@@ -173,13 +180,7 @@ public class ProductService extends UssCommonService implements IProductService 
 
 	@Override
 	public Product getProductByBarcode(String barcode) throws UssException {
-		Product p = null;
-		for (Product prd : retrieveProductList()) {
-			if (prd.getBarCodeNumber().equals(barcode)) {
-				p = prd;
-			}
-		}
-
+		Product p = getProductByBarCodeWithoutException(barcode);
 		if (p == null) {
 			throw new UssException(null, barcode);
 
@@ -187,6 +188,17 @@ public class ProductService extends UssCommonService implements IProductService 
 
 		return p;
 
+	}
+	
+	private Product getProductByBarCodeWithoutException(String barcode) {
+		Product p = null;
+		for (Product prd : retrieveProductList()) {
+			if (prd.getBarCodeNumber().equals(barcode)) {
+				p = prd;
+			}
+		}
+		
+		return p;
 	}
 
 }
