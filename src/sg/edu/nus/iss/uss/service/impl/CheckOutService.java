@@ -81,7 +81,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     public double calculateTotalPayable(double payAmount, int dollarsRedeemed) {
         checkoutSummary.setTotalPayable(payAmount - dollarsRedeemed);
 
-        return checkoutSummary.getTotalPayable();
+        return roundAmount(checkoutSummary.getTotalPayable());
     }
 
     @Override
