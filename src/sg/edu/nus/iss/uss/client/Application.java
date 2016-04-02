@@ -127,26 +127,7 @@ public class Application {
 	private void initialize() throws UssException {
 
 		// Initialize Services
-		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
-		this.authService = new AuthorisedService(storeKeeperDAO);
-
-		this.transactionDAO = new TransactionFileDataAccess();
-		this.transactionService = new TransactionService(transactionDAO);
-
-		this.discountService = new DiscountService(new DiscountFileDataAccess());
-
-		this.productDAO = new ProductFileDataAccess();
-		this.categoryDAO = new CategoryFileDataAccess();
-		this.productService = new ProductService(productDAO);
-
-		this.categoryService = new CategoryService(categoryDAO);
-
-		this.memberDAO = new MemberFileDataAccess();
-		this.memberService = new MemberService(memberDAO);
-
-		this.reportingService = new ReportingService(transactionService, productService, memberService, categoryService);
-
-		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
+		initializeServicesAndDaos();
 
 		// Initialize Table Model use for shopping cart
 		shoppingcart = new DefaultTableModel(0,0) {
@@ -497,6 +478,8 @@ public class Application {
 			
 				btnAdd.setEnabled(true);
 				btnMakePayment.setEnabled(true);
+				txtAmountReceived.setEnabled(true);
+				txtMemberDollarRedem.setEnabled(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -600,6 +583,29 @@ public class Application {
 		});
 		mnReporting.add(mntmTransactions);
 
+	}
+
+	private void initializeServicesAndDaos() throws UssException {
+		this.storeKeeperDAO = new StoreKeeperFileDataAccess();
+		this.authService = new AuthorisedService(storeKeeperDAO);
+
+		this.transactionDAO = new TransactionFileDataAccess();
+		this.transactionService = new TransactionService(transactionDAO);
+
+		this.discountService = new DiscountService(new DiscountFileDataAccess());
+
+		this.productDAO = new ProductFileDataAccess();
+		this.categoryDAO = new CategoryFileDataAccess();
+		this.productService = new ProductService(productDAO);
+
+		this.categoryService = new CategoryService(categoryDAO);
+
+		this.memberDAO = new MemberFileDataAccess();
+		this.memberService = new MemberService(memberDAO);
+
+		this.reportingService = new ReportingService(transactionService, productService, memberService, categoryService);
+
+		this.checkoutService = new CheckOutService(this.memberService, this.transactionService, this.productService);
 	}
 
 	private void memberWantsToMakePayment() {
