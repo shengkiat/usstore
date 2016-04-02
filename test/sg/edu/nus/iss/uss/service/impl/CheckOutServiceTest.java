@@ -27,9 +27,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by yeojc on 15/3/2016.
- */
 public class CheckOutServiceTest {
 
     private CheckOutService checkOutService;
@@ -177,7 +174,7 @@ public class CheckOutServiceTest {
     }
 
     @Test
-    public void testMakePaymentDeduct100NoChange() throws UssException {
+    public void testMemberMakePaymentDeduct100NoChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
         checkOutService.determineMemberID(memberID);
@@ -201,7 +198,7 @@ public class CheckOutServiceTest {
     }
 
     @Test
-    public void testMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
+    public void testMemberMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
         checkOutService.determineMemberID(memberID);
@@ -224,7 +221,7 @@ public class CheckOutServiceTest {
     }
 
     @Test(expected=UssException.class)
-    public void testMakePaymentDeduct100WithLessMoneyReceived() throws UssException {
+    public void testMemberMakePaymentDeduct100WithLessMoneyReceived() throws UssException {
         createCheckOutSummaryData();
         String memberID = "F42563743156";
         checkOutService.determineMemberID(memberID);
@@ -240,6 +237,45 @@ public class CheckOutServiceTest {
         assertNull(changeReceived);
     }
 
+
+    @Test
+    public void testNonMemberMakePaymentNoChange() throws UssException {
+        createCheckOutSummaryData();
+        String memberID = "PUBLICBUYER";
+        checkOutService.determineMemberID(memberID);
+
+        double payAmount = checkOutService.calculatePayAmount(0);
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 0);
+        assertEquals(40.60, totalPayable, 0);
+
+        double changeReceived = checkOutService.nonMemberMakePayment(40.60);
+        assertEquals(0, changeReceived, 0);
+    }
+
+    @Test
+    public void testNonMemberMakePaymentDeduct100With19Point46DollarsChange() throws UssException {
+        createCheckOutSummaryData();
+
+        double payAmount = checkOutService.calculatePayAmount(0);
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 0);
+        assertEquals(40.60, totalPayable, 0);
+        double amountPaid = 50.0;
+        double changeReceived = checkOutService.nonMemberMakePayment(amountPaid);
+
+        assertEquals(9.40, changeReceived, 0);
+    }
+
+    @Test(expected=UssException.class)
+    public void testNonMemberMakePaymentDeduct100WithLessMoneyReceived() throws UssException {
+        createCheckOutSummaryData();
+
+        double payAmount = checkOutService.calculatePayAmount(0);
+        double totalPayable = checkOutService.calculateTotalPayable(payAmount, 0);
+        assertEquals(40.60, totalPayable, 0);
+        double amountPaid = 10.0;
+        double changeReceived = checkOutService.nonMemberMakePayment(amountPaid);
+        assertNull(changeReceived);
+    }
 
 
     @Test

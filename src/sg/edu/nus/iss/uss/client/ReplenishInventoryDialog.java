@@ -49,7 +49,7 @@ public class ReplenishInventoryDialog extends JDialog {
 		model.addColumn("Current Quantity");
 		model.addColumn("Re Order Quantity");
 		model.addColumn("Quantity to Order");
-		model.addColumn("Boolean");
+		model.addColumn("Below Threshold");
 
 		for (int x = 0; x < products.size(); x++) {
 			Product product = products.get(x);

@@ -24,6 +24,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -149,7 +150,8 @@ public class NewProductDialog extends JDialog {
 		gbc_txtPrice.gridy = 6;
 		getContentPane().add(txtPrice, gbc_txtPrice);
 		txtPrice.setColumns(10);
-
+  
+		
 		JLabel lblBarcodeNumber = new JLabel("Barcode Number:");
 		GridBagConstraints gbc_lblBarcodeNumber = new GridBagConstraints();
 		gbc_lblBarcodeNumber.anchor = GridBagConstraints.EAST;
