@@ -85,7 +85,7 @@ public class LoginDialog extends JDialog {
 			}
 		});
 		
-		this.addWindowListener(new WindowListener() {
+		addWindowListener(new WindowListener() {
             public void windowActivated(WindowEvent e) {
             }
 
