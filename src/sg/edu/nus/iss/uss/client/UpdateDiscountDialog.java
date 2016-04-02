@@ -199,8 +199,29 @@ public class UpdateDiscountDialog extends JDialog {
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
+						if(discountPercentage.equals("")){
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter Discount Percentage!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						try {
+							Double.parseDouble(discountPercentage);
+						}
+						catch(NumberFormatException e2) {
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter a valid Discount Percentage!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 						if(startDate.equals("")){
 							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter a Start Date!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						try {
+							UssCommonUtil.convertStringToDate(startDate);
+						}
+						catch(UssException e3) {
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, e3.getMessage() , "Update Promotion",
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
@@ -209,28 +230,14 @@ public class UpdateDiscountDialog extends JDialog {
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
-						if(discountPercentage.equals("")){
-							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter Discount Percentage!" , "Update Promotion",
-									JOptionPane.INFORMATION_MESSAGE);
-							return;
-						}
 						if(!discountDays.matches("\\d+") && !discountDays.contains("ALWAYS")) {
-							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Discount Days must be a number!" , "New Promotion",
-									JOptionPane.INFORMATION_MESSAGE);
-							return;
-						}
-						Double discountPercentageDouble;
-						try {
-							discountPercentageDouble = Double.parseDouble(discountPercentage);
-						}
-						catch(NumberFormatException e2) {
-							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter a valid Discount Percentage!" , "New Promotion",
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Discount Days must be a number!" , "Update Promotion",
 									JOptionPane.INFORMATION_MESSAGE);
 							return;
 						}
 						try {
-							discountService.updateDiscount(discountCode, discountDescription, discountPercentageDouble, 
-									startDate, discountDays);
+							discountService.updateDiscount(discountCode, discountDescription, 
+									Double.parseDouble(discountPercentage), startDate, discountDays);
 							lblInfo.setText("Promotion " + discountCode +" is updated successfully.");
 							lblInfo.setForeground(Color.black);
 						}catch(UssException e1) {

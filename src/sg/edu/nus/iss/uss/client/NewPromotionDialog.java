@@ -163,13 +163,16 @@ public class NewPromotionDialog extends JDialog {
 								JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
-					if(discountDays.equals("")){
-						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Days!" , "New Promotion",
+					try {
+						UssCommonUtil.convertStringToDate(startDate);
+					}
+					catch(UssException e3) {
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, e3.getMessage() , "New Promotion",
 								JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
-					if(discountPercentage.equals("")){
-						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Percentage!" , "New Promotion",
+					if(discountDays.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Days!" , "New Promotion",
 								JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
@@ -178,9 +181,13 @@ public class NewPromotionDialog extends JDialog {
 								JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
-					Double discountPercentageDouble;
+					if(discountPercentage.equals("")){
+						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter Discount Percentage!" , "New Promotion",
+								JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
 					try {
-						discountPercentageDouble = Double.parseDouble(discountPercentage);
+						Double.parseDouble(discountPercentage);
 					}
 					catch(NumberFormatException e2) {
 						JOptionPane.showMessageDialog(NewPromotionDialog.this, "Please enter a valid Discount Percentage!" , "New Promotion",
@@ -188,7 +195,7 @@ public class NewPromotionDialog extends JDialog {
 						return;
 					}
 					try {
-						discountService.addNewDiscount(discountCode, discountDescription, discountPercentageDouble, 
+						discountService.addNewDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
 								UssCommonUtil.convertStringToDate(startDate), Integer.parseInt(discountDays));
 						lblInfo.setText("Promotion " + discountCode + " is added successfully.");
 						lblInfo.setForeground(Color.black);
