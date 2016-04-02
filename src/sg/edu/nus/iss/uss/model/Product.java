@@ -156,7 +156,7 @@ public class Product implements Comparator<Product> {
 	
 	
 	public boolean isBelowThreshold(){
-	    return this.quantityAvailable <= this.reorderQuantity;	    
+	    return this.quantityAvailable < this.reorderQuantity;	    
 	}
 	
 	public int getProductNo(){
