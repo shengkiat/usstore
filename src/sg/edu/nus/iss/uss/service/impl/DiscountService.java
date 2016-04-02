@@ -30,7 +30,7 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 		discountFileAccess.create(temp);
 	}
 	
-	public void updateDiscount(String discountCode, String description, double discountPercentage, Date startDate, int discountDays) throws UssException {
+	public void updateDiscount(String discountCode, String description, double discountPercentage, String startDate, String discountDays) throws UssException {
 		Discount discount = discountFileAccess.getDiscountByDiscountCode(discountCode);
 		if(discount instanceof MemberOnlyDiscount) {
 			MemberOnlyDiscount moDis = (MemberOnlyDiscount)discount;
@@ -42,8 +42,8 @@ public class DiscountService extends UssCommonService implements IDiscountServic
 			DaySpecialDiscount dsDis = (DaySpecialDiscount)discount;
 			dsDis.setDescription(description);
 			dsDis.setDiscountPercentage(discountPercentage);
-			dsDis.setStartDate(startDate);
-			dsDis.setDiscountDays(discountDays);
+			dsDis.setStartDate(UssCommonUtil.convertStringToDate(startDate));
+			dsDis.setDiscountDays(Integer.parseInt(discountDays));
 			discountFileAccess.update(dsDis);
 		}
 	}

@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -8,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscount;
 import sg.edu.nus.iss.uss.model.Discount;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscount;
@@ -16,6 +18,8 @@ import sg.edu.nus.iss.uss.util.UssCommonUtil;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import java.awt.Insets;
@@ -35,7 +39,7 @@ public class UpdateDiscountDialog extends JDialog {
 	private JTextField txtDiscountPercent;
 	private JTextField txtStartDate;
 	private JTextField txtDiscountDays;
-	
+	private String discountCode;
 	private static final int FIELD_DISCOUNT_CODE = 0;
 	private static final int FIELD_DISCOUNT_DESCRIPTION = 1;
 	private static final int FIELD_DISCOUNT_START_DATE = 2;
@@ -66,7 +70,7 @@ public class UpdateDiscountDialog extends JDialog {
 		gbl_contentPanel.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblDiscountName = new JLabel("Discount Name:");
@@ -86,12 +90,20 @@ public class UpdateDiscountDialog extends JDialog {
 			cbxDiscount.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String dicountString = (String) cbxDiscount.getSelectedItem();
-					String[] dicountEntry = dicountString.split(",");
-					txtDescription.setText(dicountEntry[0]);
+					String[] dicountEntry = dicountString.split(", ");
+					discountCode = dicountEntry[FIELD_DISCOUNT_CODE].replace("[", "");
 					txtDescription.setText(dicountEntry[FIELD_DISCOUNT_DESCRIPTION]);
-					txtDiscountPercent.setText("" + dicountEntry[FIELD_DISCOUNT_PERCENTAGE]);
-					txtStartDate.setText("" + dicountEntry[FIELD_DISCOUNT_START_DATE]);
+					txtDiscountPercent.setText(dicountEntry[FIELD_DISCOUNT_PERCENTAGE]);
+					txtStartDate.setText(dicountEntry[FIELD_DISCOUNT_START_DATE]);
+					if(txtStartDate.getText().contains("ALWAYS"))
+						txtStartDate.setEnabled(false);
+					else
+						txtStartDate.setEnabled(true);
 					txtDiscountDays.setText("" + dicountEntry[FIELD_DISCOUNT_PERIOD]);
+					if(txtDiscountDays.getText().contains("ALWAYS"))
+						txtDiscountDays.setEnabled(false);
+					else
+						txtDiscountDays.setEnabled(true);
 				}
 			});
 			contentPanel.add(cbxDiscount, gbc_cbxDiscount);
@@ -172,6 +184,14 @@ public class UpdateDiscountDialog extends JDialog {
 			txtDiscountDays.setColumns(10);
 		}
 		{
+			JLabel lblInfo = new JLabel("");
+			GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+			gbc_lblInfo.anchor = GridBagConstraints.WEST;
+			gbc_lblInfo.insets = new Insets(0, 0, 0, 5);
+			gbc_lblInfo.gridx = 3;
+			gbc_lblInfo.gridy = 7;
+			contentPanel.add(lblInfo, gbc_lblInfo);
+			
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -179,14 +199,45 @@ public class UpdateDiscountDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						
-						
-						
-						
-						
-						
-						
+						String discountDescription = txtDescription.getText();
+						String discountPercentage = txtDiscountPercent.getText();
+						String startDate = txtStartDate.getText();
+						String discountDays = txtDiscountDays.getText();
+						if(discountDescription.equals("")){
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter Discount Description!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						if(startDate.equals("")){
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter a Start Date!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						if(discountDays.equals("")){
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter Discount Days!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						if(discountPercentage.equals("")){
+							JOptionPane.showMessageDialog(UpdateDiscountDialog.this, "Please enter Discount Percentage!" , "Update Promotion",
+									JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+
+						try {
+							discountService.updateDiscount(discountCode, discountDescription, Double.parseDouble(discountPercentage), 
+									startDate, discountDays);
+							lblInfo.setText("Promotion is updated successfully.");
+							lblInfo.setForeground(Color.black);
+							//List<Discount> discounts = discountService.getAll();
+							//cbxDiscount.removeAllItems();
+							//for(Discount d : discounts) {
+								//cbxDiscount.addItem(Arrays.toString(discountToStrArray(d)));
+							//}
+						}catch(UssException e1) {
+							lblInfo.setText("Fail to update promotion: " + e1.getMessage());
+							lblInfo.setForeground(Color.RED);
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -205,8 +256,7 @@ public class UpdateDiscountDialog extends JDialog {
 			}
 		}
 		
-		this.cbxDiscount.setSelectedIndex(0);
-		
+		this.cbxDiscount.setSelectedIndex(0);	
 	}
 	
 	private String[] discountToStrArray(Discount discount){
@@ -214,20 +264,20 @@ public class UpdateDiscountDialog extends JDialog {
 		if(discount instanceof MemberOnlyDiscount) {
 			MemberOnlyDiscount moDiscount = (MemberOnlyDiscount)discount;
 			arr[FIELD_DISCOUNT_CODE] = moDiscount.getDiscountCode();
-			arr[FIELD_DISCOUNT_DESCRIPTION] = moDiscount.getDescription();
-			arr[FIELD_DISCOUNT_START_DATE] = "ALWAYS";
-			arr[FIELD_DISCOUNT_PERIOD] = "ALWAYS";
+			arr[FIELD_DISCOUNT_DESCRIPTION] = "" + moDiscount.getDescription();
+			arr[FIELD_DISCOUNT_START_DATE] = "" + "ALWAYS";
+			arr[FIELD_DISCOUNT_PERIOD] = "" + "ALWAYS";
 			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + moDiscount.getDiscountPercentage();
-			arr[FIELD_DISCOUNT_APPLICABLE] = "Member";
+			arr[FIELD_DISCOUNT_APPLICABLE] = "" + "Member";
 		}
 		if(discount instanceof DaySpecialDiscount) {
 			DaySpecialDiscount dsDiscount = (DaySpecialDiscount)discount;
 			arr[FIELD_DISCOUNT_CODE] = dsDiscount.getDiscountCode();
-			arr[FIELD_DISCOUNT_DESCRIPTION] = dsDiscount.getDescription();
-			arr[FIELD_DISCOUNT_START_DATE] = UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
+			arr[FIELD_DISCOUNT_DESCRIPTION] = "" + dsDiscount.getDescription();
+			arr[FIELD_DISCOUNT_START_DATE] = "" + UssCommonUtil.convertDateToString(dsDiscount.getStartDate());
 			arr[FIELD_DISCOUNT_PERIOD] = "" + dsDiscount.getDiscountDays();
 			arr[FIELD_DISCOUNT_PERCENTAGE] = "" + dsDiscount.getDiscountPercentage();
-			arr[FIELD_DISCOUNT_APPLICABLE] = "All";
+			arr[FIELD_DISCOUNT_APPLICABLE] = "" + "All";
 		}
 		return arr;
 	}

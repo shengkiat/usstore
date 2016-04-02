@@ -13,8 +13,8 @@ public interface IDiscountService {
 	public void addNewDiscount(String discountCode, String description, double discountPercentage, Date startDate,
 			int discountDays) throws UssException;
 
-	public void updateDiscount(String discountCode, String description, double discountPercentage, Date startDate,
-			int discountDays) throws UssException;
+	public void updateDiscount(String discountCode, String description, double discountPercentage, String startDate,
+			String discountDays) throws UssException;
 
 	public double getMembersTodaysHighestDiscount(Boolean isMember, Boolean isFirstPurchase);
 }
