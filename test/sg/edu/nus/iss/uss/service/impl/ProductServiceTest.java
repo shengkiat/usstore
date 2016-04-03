@@ -195,7 +195,7 @@ public class ProductServiceTest {
     }
 
 	@Test
-    public void testdeductInventoryFromCheckout() throws UssException {
+    public void testDeductInventoryFromCheckout() throws UssException {
         
 		List<Product> productItems = new ArrayList<Product> ();
 		
