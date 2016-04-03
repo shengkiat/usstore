@@ -20,11 +20,13 @@ public class ProductService extends UssCommonService implements IProductService 
 	public ProductService(IProductDataAccess prdDataAccess) {
 		this.prdDataAccess = prdDataAccess;
 	}
-
+	
+	@Override
 	public List<Product> retrieveProductList() {
 		return prdDataAccess.getAll();
 	}
-
+	
+	@Override
 	public List<Product> retrieveProductListByThreshold() {
 
 		List<Product> prdList = new ArrayList<Product>();
@@ -36,7 +38,8 @@ public class ProductService extends UssCommonService implements IProductService 
 
 		return prdList;
 	}
-
+	
+	@Override
 	public void replenishInventory(List<Product> productItems) {
 		
 		List<Product> thresholdList;
@@ -114,11 +117,13 @@ public class ProductService extends UssCommonService implements IProductService 
 	 * 
 	 * // Update to File prdDataAccess.update(p); }
 	 */
-
+	
+	@Override
 	public boolean checkIfProductIsBelowThreshold(Product product) {
 		return product.isBelowThreshold();
 	}
-
+	
+	@Override
 	public void deductInventoryFromCheckout(List<Product> productItems)
 			throws UssException {
 
