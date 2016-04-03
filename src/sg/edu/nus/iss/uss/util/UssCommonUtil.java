@@ -13,6 +13,9 @@ public class UssCommonUtil {
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
+	
+	private UssCommonUtil() {
+	}
 
 	public static SimpleDateFormat getDefaultDateFormatter() {
 		return DEFAULT_DATE_FORMATTER;

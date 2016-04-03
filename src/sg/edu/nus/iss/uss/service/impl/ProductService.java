@@ -2,7 +2,6 @@ package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 //import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
 import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.util.ProductUtil;
 
 public class ProductService extends UssCommonService implements IProductService {
 
@@ -152,21 +152,7 @@ public class ProductService extends UssCommonService implements IProductService 
 	}
 
 	private Map<String, Integer> groupByProductId(List<Product> products) {
-		
-		Map<String, Integer> result = new HashMap<>();
-		
-		for(Product product : products) {
-			Integer count = result.get(product.getProductID());
-			if (count == null) {
-				count = new Integer(0);
-			}
-			
-			count++;
-			
-			result.put(product.getProductID(), count);
-		}
-		
-		return result;
+		return ProductUtil.groupByProductId(products);
 	}
 	
 	@Override
