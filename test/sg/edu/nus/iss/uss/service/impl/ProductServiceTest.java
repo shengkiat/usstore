@@ -108,7 +108,6 @@ public class ProductServiceTest {
 		
 		assertTrue(p1.getProductID().toString().equalsIgnoreCase("CLO/1"));
 		assertTrue(p2.getProductID().toString().equalsIgnoreCase("STA/5"));
-		
 	}
 	
 	@Test
@@ -144,9 +143,7 @@ public class ProductServiceTest {
         qty = p2.getQuantityAvailable();
         
         assertEquals(qty, p2Qty) ;
-		
 	}
-	
 	
 	@Test
 	public void testCreateNewProductEntryShouldAbleToSave() throws UssException {
@@ -159,7 +156,6 @@ public class ProductServiceTest {
 	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
 	    assertEquals(11, productservice.retrieveProductList().size());
-	    
 	}
 	
 	@Test(expected=UssException.class)
@@ -173,11 +169,8 @@ public class ProductServiceTest {
 	    assertEquals(11, productservice.retrieveProductList().size());
 	    
 	    Product newProduct = new Product("BEV/2","BEVERAGE","NEW SODA WATER",200,5.00,"8979920126",50,200);
-	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());
-	    
+	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
 	}
-	
-	
 	
 	@Test
     public void testCheckIfProductIsBelowThreshold () {
@@ -252,6 +245,16 @@ public class ProductServiceTest {
 		productItems.add(p);
 		
 		assertFalse(productservice.isProductStillAvailableInInventory(p, productItems));
+	}
+	
+	@Test
+	public void testGetProductByBarcodeShouldAbleToFind() throws UssException {
+		productservice.getProductByBarcode("1234");
+	}
+
+	@Test(expected=UssException.class)
+	public void testGetProductByBarcodeShouldThrowExceptionForNoRecordFound() throws UssException {
+		productservice.getProductByBarcode("");
 	}
 	
 }
