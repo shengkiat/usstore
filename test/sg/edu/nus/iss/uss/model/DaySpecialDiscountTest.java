@@ -103,22 +103,6 @@ public class DaySpecialDiscountTest {
 		exception.expectMessage("The date format must be yyyy-MM-dd");
 		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("20160201"), 10);
 	}
-	
-	@Test
-	public void testWithInvalidDayStartDate() throws UssException {
-		//exception.expect(UssException.class);
-		//exception.expectMessage("The date format must be yyyy-MM-dd");
-		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("2016-02-41"), 10);
-		//assertEquals("2016-02-41", UssCommonUtil.convertDateToString(discount2.getStartDate()));
-	}
-	
-	@Test
-	public void testWithInvalidMonthStartDate() throws UssException {
-		//exception.expect(UssException.class);
-		//exception.expectMessage("The date format must be yyyy-MM-dd");
-		discount2 = new DaySpecialDiscount("CENTENARY", "CENTENARY", 11, UssCommonUtil.convertStringToDate("2016-32-01"), 10);
-		//assertEquals("2017-08-41", UssCommonUtil.convertDateToString(discount2.getStartDate()));
-	}
 
 	@Test
 	public void testToString() {
