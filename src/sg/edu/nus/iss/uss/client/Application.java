@@ -801,6 +801,12 @@ public class Application {
     private void readBarcode() {
 
         String barcode = txtBarcode.getText();
+        
+        if (barcode.equals("")) {
+			JOptionPane.showMessageDialog(new JFrame(), "Please enter barcode", "",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 
         try {
             Product product = this.productService.getProductByBarcode(barcode);
