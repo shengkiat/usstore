@@ -24,6 +24,8 @@ public interface IProductService {
 	//		String barCodeNumber, int reorderQuantity, int orderQuantity) throws UssException;
 	
 	public boolean checkIfProductIsBelowThreshold(Product product);
+	
+	public boolean isProductStillAvailableInInventory(Product product, List<Product> productItems);
 
 	public void deductInventoryFromCheckout(List<Product> productItems) throws UssException;
 

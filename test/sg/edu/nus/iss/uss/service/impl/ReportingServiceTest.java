@@ -153,8 +153,7 @@ public class ReportingServiceTest {
 
 		@Override
 		public List<Product> retrieveProductListByThreshold() {
-			// TODO Auto-generated method stub
-			return null;
+			throw new RuntimeException("not expected to call");
 		}
 
 		@Override
@@ -173,6 +172,11 @@ public class ReportingServiceTest {
 
 		@Override
 		public void replenishInventory(List<Product> productItems) {
+			throw new RuntimeException("not expected to call");
+		}
+
+		@Override
+		public boolean isProductStillAvailableInInventory(Product product, List<Product> productItems) {
 			throw new RuntimeException("not expected to call");
 		}
 	}

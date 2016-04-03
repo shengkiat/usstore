@@ -219,6 +219,39 @@ public class ProductServiceTest {
         assertEquals(product.getQuantityAvailable(), qtyAvailable);
             
    	}
+	
+	@Test
+	public void testIsProductStillAvailableInInventoryShouldReturnTrueForEmptyItems() {
+		TestProductBuilder testProductBuilder = new TestProductBuilder();
 		
+		Product p = testProductBuilder.build();
+		
+		assertTrue(productservice.isProductStillAvailableInInventory(p, new ArrayList<Product>()));
+	}
+	
+	@Test
+	public void testIsProductStillAvailableInInventoryShouldReturnTrueForExactlyZeroAvailable() {
+		TestProductBuilder testProductBuilder = new TestProductBuilder();
+		
+		Product p = testProductBuilder.withQuantityAvailable(3).build();
+		
+		List<Product> productItems = new ArrayList<>();
+		productItems.add(p);
+		productItems.add(p);
+		
+		assertTrue(productservice.isProductStillAvailableInInventory(p, productItems));
+	}
+	
+	@Test
+	public void testIsProductStillAvailableInInventoryShouldReturnFalseForLessThanZeroAvailable() {
+		TestProductBuilder testProductBuilder = new TestProductBuilder();
+		
+		Product p = testProductBuilder.withQuantityAvailable(1).build();
+		
+		List<Product> productItems = new ArrayList<>();
+		productItems.add(p);
+		
+		assertFalse(productservice.isProductStillAvailableInInventory(p, productItems));
+	}
 	
 }

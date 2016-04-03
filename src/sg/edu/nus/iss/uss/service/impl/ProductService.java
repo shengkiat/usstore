@@ -203,4 +203,11 @@ public class ProductService extends UssCommonService implements IProductService 
 		return p;
 	}
 
+	@Override
+	public boolean isProductStillAvailableInInventory(Product product, List<Product> productItems) {
+		Map<String,Integer> productCountMap = groupByProductId(productItems);
+		Integer currentCount = productCountMap.get(product.getProductID());
+		return currentCount == null || ((product.getQuantityAvailable() - currentCount) > 0);
+	}
+
 }

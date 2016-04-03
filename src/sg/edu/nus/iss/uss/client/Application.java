@@ -805,7 +805,7 @@ public class Application {
         try {
             Product product = this.productService.getProductByBarcode(barcode);
 
-            if (product.getQuantityAvailable() <= 0) {
+            if (!this.productService.isProductStillAvailableInInventory(product, checkoutService.getCheckoutSummary().getCheckoutItems())) {
                 JOptionPane.showMessageDialog(new JFrame(), "No more stock for " + barcode + " (or " +product.getName() + ")", "",
                         JOptionPane.INFORMATION_MESSAGE);
             }
