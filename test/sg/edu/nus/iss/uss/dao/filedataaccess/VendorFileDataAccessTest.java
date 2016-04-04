@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
