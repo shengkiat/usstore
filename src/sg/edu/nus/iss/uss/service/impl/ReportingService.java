@@ -34,19 +34,6 @@ public class ReportingService extends UssCommonService implements IReportingServ
 	}
 	
 	@Override
-	public String printCategoriesReport(){
-		//TODO
-		return "";
-	}
-	
-	@Override
-	public String printProductsReport(){
-		//TODO
-		
-		return "";
-	}
-	
-	@Override
 	public List<ReportTransaction> retrieveReportTransactions(Date startDate, Date endDate) throws UssException{
 		Objects.requireNonNull(startDate, "startDate cannot be null");
 		Objects.requireNonNull(endDate, "endDate cannot be null");
@@ -71,23 +58,15 @@ public class ReportingService extends UssCommonService implements IReportingServ
 		
 		return result;
 	}
-	
-	@Override
-	public String printMembersReport(){
-		
-		return null;
-	}
 
 	@Override
 	public List<Member> retrieveMembers() throws UssException {
-		List<Member> result = memberService.retrieveMemberList();
-		return result;
+		return memberService.retrieveMemberList();
 	}
 
 	@Override
 	public List<Category> retrieveCategories() throws UssException {
-		List<Category> result = categoryService.retrieveCategoryList();
-		return result;
+		return categoryService.retrieveCategoryList();
 	}
 	
 }
