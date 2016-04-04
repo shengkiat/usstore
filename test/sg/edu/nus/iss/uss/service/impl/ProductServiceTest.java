@@ -151,9 +151,9 @@ public class ProductServiceTest {
 	    assertEquals(10, productservice.retrieveProductList().size());
 
         // Create Product and Write to File
-	    Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
+	    Product p = new Product(null,"BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
 	    
-	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
+	    productservice.createNewProductEntry("BEV",p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
 	    List<Product> result = productservice.retrieveProductList();
 	    assertEquals(11, result.size());
@@ -167,12 +167,12 @@ public class ProductServiceTest {
 	    assertEquals(10, productservice.retrieveProductList().size());
 
         // Create Product and Write to File
-	    Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
+	    Product p = new Product(null,"BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
 	    
-	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
+	    productservice.createNewProductEntry("BEV",p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
-	    Product newProduct = new Product("BEV","BEVERAGE","NEW SODA WATER",200,5.00,"123456789",50,200);
-	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
+	    Product newProduct = new Product(null,"BEVERAGE","NEW SODA WATER",200,5.00,"123456789",50,200);
+	    productservice.createNewProductEntry("BEV",newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
 	    
 	    List<Product> result = productservice.retrieveProductList();
 	    assertEquals(12, result.size());
@@ -185,13 +185,13 @@ public class ProductServiceTest {
 		assertEquals(10, productservice.retrieveProductList().size());
 		
         // Create Product and Write to File
-		Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
-	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
+		Product p = new Product(null,"BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
+	    productservice.createNewProductEntry("BEV",p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
 	    assertEquals(11, productservice.retrieveProductList().size());
 	    
-	    Product newProduct = new Product("BEV","BEVERAGE","NEW SODA WATER",200,5.00,"8979920126",50,200);
-	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
+	    Product newProduct = new Product(null,"BEVERAGE","NEW SODA WATER",200,5.00,"8979920126",50,200);
+	    productservice.createNewProductEntry("BEV",newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
 	}
 	
 	@Test
