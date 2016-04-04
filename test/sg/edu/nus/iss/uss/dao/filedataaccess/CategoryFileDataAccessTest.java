@@ -23,46 +23,7 @@ public class CategoryFileDataAccessTest {
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Category.dat";
 	
-	/*@Rule
-	public ExpectedException exception = ExpectedException.none();
-	*/
 	private ICategoryDataAccess testCategoryDataAccess;
-	
-	
-	
-	@Before
-	public void setUp() throws Exception {
-		Path path = getTestPath();
-
-        Files.createDirectories(path.getParent());
-
-        try {
-            Files.createFile(path);
-        } catch (FileAlreadyExistsException e) {
-            throw new RuntimeException("Test data file already exists: " + e.getMessage());
-        }
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		testCategoryDataAccess = null;
-		
-		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
-	}
-	
-	private Path getTestPath() {
-		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
-	}
-	
-	private void createFileWithCategoryData() throws IOException {
-		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME), new String[] {
-			"CLO,Clothing",
-			"MUG,Mugs",
-			"STA,Stationary",
-			"DIA,Diary",
-			"SNA,Snacks"
-			});
-	}
 	
 	@Test(expected=UssException.class)
 	public void testIntialLoadWhenThereisNoData() throws UssException {
@@ -97,31 +58,38 @@ public class CategoryFileDataAccessTest {
 		assertEquals(5, testCategoryDataAccess.getAll().size());
 	}
 	
-	/*
-	@Test
-	public void testUpdateExistingCategoryAndGetAll() throws UssException, IOException {
-		createFileWithCategoryData();
-		testCategoryDataAccess = new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-		assertEquals(5, testCategoryDataAccess.getAll().size());
+
+	@Before
+	public void setUp() throws Exception {
+		Path path = getTestPath();
+
+        Files.createDirectories(path.getParent());
+
+        try {
+            Files.createFile(path);
+        } catch (FileAlreadyExistsException e) {
+            throw new RuntimeException("Test data file already exists: " + e.getMessage());
+        }
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		testCategoryDataAccess = null;
 		
-		Category category = new Category("CLO","Clothings");
-		testCategoryDataAccess.update(category);
-		
-		Category e = testCategoryDataAccess.getCategoryByCategoryCode("CLO");
-		assertEquals("Clothings", e.getName(),"Clothing");
-		assertEquals(5, testCategoryDataAccess.getAll().size());
+		TestUtil.destoryFile(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
 	
-	@Test
-	public void testUpdateNonExistingCategoryAndGetAll() throws UssException, IOException {
-		createFileWithCategoryData();
-		testCategoryDataAccess = new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
-		assertEquals(5, testCategoryDataAccess.getAll().size());
-		
-		Category e = new Category("CLI", "Clothing");
-		exception.expect(UssException.class);
-		exception.expectMessage(ErrorConstants.CATEGORY_NOT_EXISTS);
-		testCategoryDataAccess.update(e);		
+	private Path getTestPath() {
+		return Paths.get(TestUtil.getTestPath(TEST_FILE_NAME));
 	}
-	*/
+	
+	private void createFileWithCategoryData() throws IOException {
+		TestUtil.createFileWithLines(TestUtil.getTestPath(TEST_FILE_NAME), new String[] {
+			"CLO,Clothing",
+			"MUG,Mugs",
+			"STA,Stationary",
+			"DIA,Diary",
+			"SNA,Snacks"
+			});
+	}
 }

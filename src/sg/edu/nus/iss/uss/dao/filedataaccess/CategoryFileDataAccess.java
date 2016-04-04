@@ -45,10 +45,10 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 		
 	}
 
-	public Category getCategoryByCategoryCode(String CategoryCode) {
+	public Category getCategoryByCategoryCode(String categoryCode) {
 		Category e = null;
 		for(Category cat:getAll()){
-		     if (cat.getCode().equals(CategoryCode)) {
+		     if (cat.getCode().equals(categoryCode)) {
 		    	 e = cat;
 		     }
 		}
@@ -69,8 +69,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 			
 		} else {
 		
-			for(String[] str: catList)
-			{
+			for(String[] str: catList) {
 			    Category cat = new Category();
 				cat.setCode(str[FIELD_CATEGORY_CODE]);
 				cat.setName(str[FIELD_NAME]);
@@ -78,9 +77,6 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 			}
 		}
 	}
-	
-
-	
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {
