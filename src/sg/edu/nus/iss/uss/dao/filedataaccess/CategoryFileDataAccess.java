@@ -19,8 +19,6 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	
 	private static final int TOTAL_FIELDS = 2;
 	
-	String[] strCat;
-	
 	public CategoryFileDataAccess() throws UssException {
 		super(FILE_NAME);
 	}
@@ -36,7 +34,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 
 	@Override
 	public void create(Category e) throws UssException {	
-		strCat = new String[TOTAL_FIELDS];
+		String[] strCat = new String[TOTAL_FIELDS];
 		
 		strCat[FIELD_CATEGORY_CODE] = e.getCode();
 		strCat[FIELD_NAME] = e.getName();
