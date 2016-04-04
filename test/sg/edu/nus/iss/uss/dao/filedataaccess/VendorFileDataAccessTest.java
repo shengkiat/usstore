@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -7,18 +9,51 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sg.edu.nus.iss.uss.dao.IVendorDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.Vendor;
 import sg.edu.nus.iss.uss.util.TestUtil;
 
 public class VendorFileDataAccessTest {
 
 	private static final String TEST_DATA_DIR = TestUtil.getTestDirectoryForFile();
 	private static final String TEST_FILE_NAME = "Vendors%s.dat";
+	
+	@Test
+	public void testGetAllShouldAbleToGetCorrectNumbersOfRecords() throws IOException, UssException {
+		IVendorDataAccess vendorDataAccess = new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		Map<String, List<Vendor>> result = vendorDataAccess.getAll();
+		
+		assertEquals(2, result.keySet().size());
+	}
+	
+	@Test
+	public void testGetAllShouldAbleToGetOnlyCategoryCodeWithThreeCharacters() throws IOException, UssException {
+
+		TestUtil.createFileWithLines(
+				TestUtil.getTestPath("VendorsSHIRT.dat"), new String[] {
+						"John's Gift,Best of the best",
+						"Your Store,Nothing to sell", "Jacky Store,Pen",
+						"Optimus Prime Gift,Bad Boy Shop" });
+		
+		TestUtil.createFileWithLines(
+				TestUtil.getTestPath("VendorsSTA.dat"), new String[] {
+						"John's Gift,Best of the best",
+						"Your Store,Nothing to sell", "Jacky Store,Pen",
+						"Optimus Prime Gift,Bad Boy Shop" });
+		
+		IVendorDataAccess vendorDataAccess = new VendorFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		Map<String, List<Vendor>> result = vendorDataAccess.getAll();
+		
+		assertEquals(3, result.keySet().size());
+	}
 
 	@Test(expected=UssException.class)
 	public void testInitialLoadShouldThrowExceptionWhenLessThanSpecifiedNoOfRecords() throws IOException, UssException {
@@ -42,12 +77,6 @@ public class VendorFileDataAccessTest {
 
 			TestUtil.createFileWithLines(
 					TestUtil.getTestPath("VendorsCLO.dat"), new String[] {
-							"John's Gift,Best of the best",
-							"Your Store,Nothing to sell", "Jacky Store,Pen",
-							"Optimus Prime Gift,Bad Boy Shop" });
-
-			TestUtil.createFileWithLines(
-					TestUtil.getTestPath("VendorsShirt.dat"), new String[] {
 							"John's Gift,Best of the best",
 							"Your Store,Nothing to sell", "Jacky Store,Pen",
 							"Optimus Prime Gift,Bad Boy Shop" });
