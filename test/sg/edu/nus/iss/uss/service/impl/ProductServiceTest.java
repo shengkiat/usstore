@@ -68,7 +68,7 @@ public class ProductServiceTest {
 			writer.newLine();
 			writer.write("STA/5,NUS PEN Case,Stylish Pen Case,40,4.75,4549131138825,50,100");
 			writer.newLine();
-			writer.write("DIA/1,A4 Port Folio,Ideal to hold Design work,100,10.90,54321,50,100");
+			writer.write("DIA/1,A4 Port Folio,Ideal to hold Design work,1,10.90,54321,50,100");
 			writer.newLine();
 		} 
 		
@@ -210,7 +210,7 @@ public class ProductServiceTest {
     }
 
 	@Test
-    public void testDeductInventoryFromCheckout() throws UssException {
+    public void testDeductInventoryFromCheckoutShouldAbleToDeduct() throws UssException {
         
 		List<Product> productItems = new ArrayList<Product> ();
 		
@@ -232,7 +232,25 @@ public class ProductServiceTest {
 		product = productservice.getProductByProductID("CLO/1");
      
         assertEquals(product.getQuantityAvailable(), qtyAvailable);
-            
+   	}
+	
+	@Test(expected=UssException.class)
+    public void testDeductInventoryFromCheckoutShouldThrowExceptionForPurcahseMoreThanAvailable() throws UssException {
+        
+		List<Product> productItems = new ArrayList<Product> ();
+		
+		Product product = productservice.getProductByProductID("DIA/1");
+		assertNotNull(product);
+		
+        TestProductBuilder testProductBuilder = new TestProductBuilder();
+        
+		Product p = testProductBuilder.withProductID("DIA/1").withQuantityAvailable(product.getQuantityAvailable()).build();
+		Product p1 = testProductBuilder.withProductID("DIA/1").withQuantityAvailable(product.getQuantityAvailable()).build();
+		
+		productItems.add(p);
+		productItems.add(p1);
+		
+		productservice.deductInventoryFromCheckout(productItems);
    	}
 	
 	@Test

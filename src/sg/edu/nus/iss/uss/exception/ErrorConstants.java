@@ -44,7 +44,7 @@ public class ErrorConstants {
 	public static final String PRODUCT_NOT_EXISTS = "Product Does Not Exists!";
 	public static final String PRODUCTFILE_EMPTY = "Product List is Empty!";
 	public static final String PRODUCT_BARCODE_EXISTS = "Product's Barcode Exists";
-	
+	public static final String PRODUCT_QTY_PURCHASE_MORE_THAN_AVAILABLE = "Purchase more than current quantity available";
 	
 	/**
 	 ************************** CATEGORY ****************************************

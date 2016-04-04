@@ -125,18 +125,16 @@ public class ProductService extends UssCommonService implements IProductService 
 	public void deductInventoryFromCheckout(List<Product> productItems)
 			throws UssException {
 
-		Map<String,Integer> productcountMap ;  //= new Map <String,Integer>();
+		Map<String,Integer> productCountMap = groupByProductId(productItems);
 		
-		productcountMap = groupByProductId (productItems);
-		
-		for(String productId : productcountMap.keySet()) {
+		for(String productId : productCountMap.keySet()) {
 			Product product = getProductByProductID(productId);
 			
-			int qtyPurchased = productcountMap.get(productId);
+			int qtyPurchased = productCountMap.get(productId);
 			int qtyAvailable = product.getQuantityAvailable();
             int qty = qtyAvailable - qtyPurchased;		
 			
-            if (qty >= 0 ) {
+            if (qty >= 0) {
 
 				product.setQuantityAvailable(qty); // Update Qty
 
@@ -144,6 +142,7 @@ public class ProductService extends UssCommonService implements IProductService 
 			} else {
 				// throws UssException as Purchased Quantity more than
 				// Quantity Available
+				throw new UssException(ErrorConstants.UssCode.PRODUCT, ErrorConstants.PRODUCT_QTY_PURCHASE_MORE_THAN_AVAILABLE);
 			}
 		}
 
