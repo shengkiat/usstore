@@ -28,39 +28,23 @@ public class MemberService extends UssCommonService implements IMemberService{
 	
 	@Override
 	public List<Member> retrieveMemberList(){
-		
 		return getMemberDataAccess().getAll();
-		
 	}
 	
 	@Override
 	public Member getMemberByMemberID(String memberID){
-		
 		return getMemberDataAccess().getMemberByMemberID(memberID);
-		
 	}
 	
 	@Override
 	public void registerNewMember(String name, String idCardNumber) throws UssException{
-		
 		Member member = new Member(name, idCardNumber, INIT_LOYALTY_POINT);
 		
 		getMemberDataAccess().create(member);;
 	}
 	
 	@Override
-	public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException{
-		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
-		
-		if(member != null){
-			member.setLoyaltyPoint(point);
-		}
-		getMemberDataAccess().update(member);
-	}
-	
-	@Override
 	public void addMemberLoyaltyPoint(int point, String memberID) throws UssException{
-		
 		Member member = getMemberDataAccess().getMemberByMemberID(memberID);
 		
 		if(member != null){
@@ -74,7 +58,6 @@ public class MemberService extends UssCommonService implements IMemberService{
 		}
 		
 		getMemberDataAccess().update(member);
-		
 	}
 	
 	@Override

@@ -34,14 +34,6 @@ public class MemberServiceTest {
 		
 		assertEquals(false, service.isValidMember("InvalidMemberID"));
 	}
-
-	@Test(expected=UssException.class)
-	public void testUpdateNonExistMemberShouldThrowUssException() throws UssException {
-		
-		service.registerNewMember("Brian Earp", "T64565FG5");
-		
-		service.updateMemberLoyaltyPoint("NonExistMemberID", 100);
-	}
 	
 	@Test(expected=UssException.class)
 	public void testDeductPointsMoreThanMemberPointsShouldThrowUssException() throws UssException {

@@ -202,12 +202,6 @@ public class ReportingServiceTest {
 		}
 
 		@Override
-		public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
 		public void addMemberLoyaltyPoint(int point, String memberID) throws UssException {
 			// TODO Auto-generated method stub
 			

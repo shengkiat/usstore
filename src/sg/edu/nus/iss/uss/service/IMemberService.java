@@ -13,8 +13,6 @@ public interface IMemberService {
 
 	public void registerNewMember(String name, String idCardNumber) throws UssException;
 
-	public void updateMemberLoyaltyPoint(String memberID, int point) throws UssException;
-
 	public void addMemberLoyaltyPoint(int point, String memberID) throws UssException;
 
 	public void deductMemberLoyltyPoint(int point, String memberID) throws UssException;
