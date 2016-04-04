@@ -146,29 +146,51 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void testCreateNewProductEntryShouldAbleToSave() throws UssException {
+	public void testCreateNewProductEntryShouldAbleToSaveWithNewProductId() throws UssException {
 		
-	    Product p = new Product("BEV/1","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
-	    
 	    assertEquals(10, productservice.retrieveProductList().size());
 
         // Create Product and Write to File
+	    Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
+	    
 	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
-	    assertEquals(11, productservice.retrieveProductList().size());
+	    List<Product> result = productservice.retrieveProductList();
+	    assertEquals(11, result.size());
+	    
+	    assertEquals("BEV/1", result.get(result.size()-1).getProductID());
+	}
+	
+	@Test
+	public void testCreateNewProductEntryShouldAbleToSaveWithIncrementedProductId() throws UssException {
+		
+	    assertEquals(10, productservice.retrieveProductList().size());
+
+        // Create Product and Write to File
+	    Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
+	    
+	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
+	    
+	    Product newProduct = new Product("BEV","BEVERAGE","NEW SODA WATER",200,5.00,"123456789",50,200);
+	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
+	    
+	    List<Product> result = productservice.retrieveProductList();
+	    assertEquals(12, result.size());
+	    
+	    assertEquals("BEV/2", result.get(result.size()-1).getProductID());
 	}
 	
 	@Test(expected=UssException.class)
 	public void testCreateNewProductEntryShouldNotAbleToSaveDueToDuplicateBarCode() throws UssException {
+		assertEquals(10, productservice.retrieveProductList().size());
 		
-	    Product p = new Product("BEV/1","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
-
         // Create Product and Write to File
+		Product p = new Product("BEV","BEVERAGE","PREMIUM SODA WATER",200,5.00,"8979920126",50,200);
 	    productservice.createNewProductEntry(p.getProductID(),p.getName(),p.getBriefDescription(),p.getQuantityAvailable(),p.getPrice(),p.getBarCodeNumber(),p.getReorderQuantity(),p.getOrderQuantity());
 	    
 	    assertEquals(11, productservice.retrieveProductList().size());
 	    
-	    Product newProduct = new Product("BEV/2","BEVERAGE","NEW SODA WATER",200,5.00,"8979920126",50,200);
+	    Product newProduct = new Product("BEV","BEVERAGE","NEW SODA WATER",200,5.00,"8979920126",50,200);
 	    productservice.createNewProductEntry(newProduct.getProductID(),newProduct.getName(),newProduct.getBriefDescription(),newProduct.getQuantityAvailable(),newProduct.getPrice(),newProduct.getBarCodeNumber(),newProduct.getReorderQuantity(),newProduct.getOrderQuantity());   
 	}
 	
