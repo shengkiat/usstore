@@ -104,7 +104,7 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 
 	@Override
 	protected int getTotalNumberOfFields() {
-		return 0;
+		return 2;
 	}
 	
 	private void addIntoVendors(Vendor vendor, String categoryCode) {

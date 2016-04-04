@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.dao.filedataaccess;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
@@ -31,7 +32,7 @@ public class CategoryFileDataAccessTest {
 	}
 
 	@Test
-	public void testcreateCategoryAndGetAll() throws UssException, IOException {
+	public void testCreateCategoryAndGetAll() throws UssException, IOException {
 		createFileWithCategoryData();
 		testCategoryDataAccess = new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
 		assertEquals(5, testCategoryDataAccess.getAll().size());
@@ -56,6 +57,27 @@ public class CategoryFileDataAccessTest {
 
  		testCategoryDataAccess.create(category);	
 		assertEquals(5, testCategoryDataAccess.getAll().size());
+	}
+	
+
+	@Test
+	public void testGetCategoryByCategoryCodeShouldAbleToGet() throws Exception {
+		createFileWithCategoryData();
+		testCategoryDataAccess = new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		
+		Category category = testCategoryDataAccess.getCategoryByCategoryCode("CLO");
+		
+		assertEquals("CLO", category.getCode());
+	}
+	
+	@Test
+	public void testGetCategoryByCategoryCodeShouldNotGet() throws Exception {
+		createFileWithCategoryData();
+		testCategoryDataAccess = new CategoryFileDataAccess(TEST_FILE_NAME, TEST_DATA_DIR);
+		
+		Category category = testCategoryDataAccess.getCategoryByCategoryCode("TES");
+		
+		assertNull(category);
 	}
 	
 
