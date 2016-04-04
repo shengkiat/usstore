@@ -2,11 +2,13 @@ package sg.edu.nus.iss.uss.model;
 
 import java.util.Date;
 
+import sg.edu.nus.iss.uss.service.impl.CheckOutService;
+
 public class TestTransactionBuilder {
 	
 	private int transactionID;
 	private String productID = "CLO/1";
-	private String buyerID = PublicBuyer.PUBLIC_NAME;
+	private String buyerID = CheckOutService.PUBLIC_BUYER;
 	private int quantityPurchased = 1;
 	private Date date = new Date();
 	

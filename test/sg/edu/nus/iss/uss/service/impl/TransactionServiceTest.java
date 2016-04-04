@@ -12,7 +12,7 @@ import org.junit.Test;
 import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.model.PublicBuyer;
+//import sg.edu.nus.iss.uss.model.PublicBuyer;
 import sg.edu.nus.iss.uss.model.TestProductBuilder;
 import sg.edu.nus.iss.uss.model.TestTransactionBuilder;
 import sg.edu.nus.iss.uss.model.Transaction;
@@ -125,7 +125,7 @@ public class TransactionServiceTest {
 		products.add(testProductBuilder.withProductID("CLO/2").build());
 		products.add(testProductBuilder.withProductID("CLO/3").build());
 		
-		service.createTransactions(products, PublicBuyer.PUBLIC_NAME, UssCommonUtil.convertStringToDate("2016-02-01"));
+		service.createTransactions(products, CheckOutService.PUBLIC_BUYER, UssCommonUtil.convertStringToDate("2016-02-01"));
 		
 		Date startDate = UssCommonUtil.convertStringToDate("2016-02-01");
 		Date endDate = UssCommonUtil.convertStringToDate("2016-04-01");

@@ -20,7 +20,7 @@ public class CheckOutService extends UssCommonService implements ICheckOutServic
     private ITransactionService transactionService;
     private IProductService productService;
     private CheckoutSummary checkoutSummary;
-    private static final String PUBLIC_BUYER = "PUBLIC";
+    public static final String PUBLIC_BUYER = "PUBLIC";
 
     public CheckOutService(IMemberService memberService, ITransactionService transactionService, IProductService productService) {
         this.memberService = memberService;
