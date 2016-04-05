@@ -49,6 +49,8 @@ public class Application {
     private IMemberService memberService;
     private IDiscountService discountService;
     private ICheckOutService checkoutService;
+    
+    private IPrinter printReceipt;
 
     private Member member;
 
@@ -105,6 +107,8 @@ public class Application {
 
         // Initialize Services
         initializeServicesAndDaos();
+        
+        printReceipt = new ConsoleIPrinter();
 
         // Initialize Table Model use for shopping cart
         shoppingcart = new DefaultTableModel(0,0) {
@@ -695,9 +699,6 @@ public class Application {
             // check threshold
             checkIfRequiredReplenishStocks();
 
-            // print receipt
-            IPrinter printReceipt = new ConsoleIPrinter();
-
             int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
             for (int i = 0; i < nRow; i++) {
 
@@ -764,9 +765,6 @@ public class Application {
 
             // check threshold
             checkIfRequiredReplenishStocks();
-
-            // print receipt
-            IPrinter printReceipt = new ConsoleIPrinter();
 
             int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
             for (int i = 0; i < nRow; i++) {
