@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
-import sg.edu.nus.iss.uss.model.StoreKeeper;
+import sg.edu.nus.iss.uss.model.IUser;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
 
 public class AuthorisedService extends UssCommonService implements IAuthorisedService{
@@ -16,13 +16,10 @@ public class AuthorisedService extends UssCommonService implements IAuthorisedSe
 	@Override
 	public boolean isAuthorised(String userName, String password) {
 		
-		for (StoreKeeper storeKepperInfo : this.storeKepperDAO.getAll()) {
+		for (IUser storeKepperInfo : this.storeKepperDAO.getAll()) {
 
 			// ignore user name case
-			int compare = storeKepperInfo.getName().compareToIgnoreCase(
-					userName);
-
-			if (compare == 0
+			if (storeKepperInfo.getName().equalsIgnoreCase(userName)
 					&& storeKepperInfo.getPassword().equals(password)) {
 				return true;
 			}

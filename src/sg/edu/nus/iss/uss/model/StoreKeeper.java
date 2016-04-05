@@ -5,12 +5,15 @@ public class StoreKeeper implements IUser{
 	private String name;
 	private String password;
 	
+	@Override
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
 	public String getPassword() {
 		return password;
 	}
