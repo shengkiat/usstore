@@ -8,7 +8,7 @@ import sg.edu.nus.iss.uss.dao.*;
 import sg.edu.nus.iss.uss.dao.filedataaccess.*;
 import sg.edu.nus.iss.uss.exception.ErrorConstants;
 import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.model.ConsoleIPrinter;
+import sg.edu.nus.iss.uss.model.ConsolePrinter;
 import sg.edu.nus.iss.uss.model.IPrinter;
 import sg.edu.nus.iss.uss.model.Member;
 import sg.edu.nus.iss.uss.model.Product;
@@ -108,7 +108,7 @@ public class Application {
         // Initialize Services
         initializeServicesAndDaos();
         
-        printReceipt = new ConsoleIPrinter();
+        printReceipt = new ConsolePrinter();
 
         // Initialize Table Model use for shopping cart
         shoppingcart = new DefaultTableModel(0,0) {
