@@ -1,30 +1,76 @@
 package sg.edu.nus.iss.uss.client;
 
-import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
-import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
-import sg.edu.nus.iss.uss.client.reporting.ReportProductDialog;
-import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
-import sg.edu.nus.iss.uss.dao.*;
-import sg.edu.nus.iss.uss.dao.filedataaccess.*;
-import sg.edu.nus.iss.uss.exception.ErrorConstants;
-import sg.edu.nus.iss.uss.exception.UssException;
-import sg.edu.nus.iss.uss.model.ConsolePrinter;
-import sg.edu.nus.iss.uss.model.IPrinter;
-import sg.edu.nus.iss.uss.model.Member;
-import sg.edu.nus.iss.uss.model.Product;
-import sg.edu.nus.iss.uss.service.*;
-import sg.edu.nus.iss.uss.service.impl.*;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
+import sg.edu.nus.iss.uss.client.reporting.ReportCategoryDialog;
+import sg.edu.nus.iss.uss.client.reporting.ReportMemberDialog;
+import sg.edu.nus.iss.uss.client.reporting.ReportProductDialog;
+import sg.edu.nus.iss.uss.client.reporting.ReportTransactionDialog;
+import sg.edu.nus.iss.uss.dao.ICategoryDataAccess;
+import sg.edu.nus.iss.uss.dao.IMemberDataAccess;
+import sg.edu.nus.iss.uss.dao.IProductDataAccess;
+import sg.edu.nus.iss.uss.dao.IStoreKeeperDataAccess;
+import sg.edu.nus.iss.uss.dao.ITransactionDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.CategoryFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.MemberFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.ProductFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
+import sg.edu.nus.iss.uss.dao.filedataaccess.TransactionFileDataAccess;
+import sg.edu.nus.iss.uss.exception.ErrorConstants;
+import sg.edu.nus.iss.uss.exception.UssException;
+import sg.edu.nus.iss.uss.model.ConsolePrinter;
+import sg.edu.nus.iss.uss.model.IReceiptPrinter;
+import sg.edu.nus.iss.uss.model.Member;
+import sg.edu.nus.iss.uss.model.Product;
+import sg.edu.nus.iss.uss.model.PurchasedInformation;
+import sg.edu.nus.iss.uss.model.ReceiptPrinter;
+import sg.edu.nus.iss.uss.service.IAuthorisedService;
+import sg.edu.nus.iss.uss.service.ICategoryService;
+import sg.edu.nus.iss.uss.service.ICheckOutService;
+import sg.edu.nus.iss.uss.service.IDiscountService;
+import sg.edu.nus.iss.uss.service.IMemberService;
+import sg.edu.nus.iss.uss.service.IProductService;
+import sg.edu.nus.iss.uss.service.IReportingService;
+import sg.edu.nus.iss.uss.service.ITransactionService;
+import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
+import sg.edu.nus.iss.uss.service.impl.CategoryService;
+import sg.edu.nus.iss.uss.service.impl.CheckOutService;
+import sg.edu.nus.iss.uss.service.impl.DiscountService;
+import sg.edu.nus.iss.uss.service.impl.MemberService;
+import sg.edu.nus.iss.uss.service.impl.ProductService;
+import sg.edu.nus.iss.uss.service.impl.ReportingService;
+import sg.edu.nus.iss.uss.service.impl.TransactionService;
 
 public class Application {
 
@@ -50,7 +96,7 @@ public class Application {
     private IDiscountService discountService;
     private ICheckOutService checkoutService;
     
-    private IPrinter printReceipt;
+    private IReceiptPrinter receiptPrinter;
 
     private Member member;
 
@@ -108,7 +154,7 @@ public class Application {
         // Initialize Services
         initializeServicesAndDaos();
         
-        printReceipt = new ConsolePrinter();
+        receiptPrinter = new ReceiptPrinter(new ConsolePrinter());
 
         // Initialize Table Model use for shopping cart
         shoppingcart = new DefaultTableModel(0,0) {
@@ -698,6 +744,8 @@ public class Application {
 
             // check threshold
             checkIfRequiredReplenishStocks();
+            
+            List<String> items = new ArrayList<>();
 
             int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
             for (int i = 0; i < nRow; i++) {
@@ -708,18 +756,14 @@ public class Application {
                     row += shoppingcart.getValueAt(i, j) + " ";
                 }
 
-                printReceipt.print(row);
+                items.add(row);
             }
 
-            printReceipt.print("Total $" + this.subTotal);
-            printReceipt.print("Loyalty Points Deducted in Dollars $" + dollarToRedeem);
-
             int pointsAdded = checkoutService.convertDollarToPointForCredit(this.subTotal);
-
-            printReceipt.print("Loyalty Points Awarded in this Transaction " + pointsAdded);
-            printReceipt.print("Loyalty Points Remaining in Dollars $" + checkoutService.convertPointToDollarForDebit(this.member.getLoyaltyPoint()));
-            printReceipt.print("Amount Received $" + amountReceived);
-            printReceipt.print("Change $" + change);
+            int loyaltyPointRemained = checkoutService.convertPointToDollarForDebit(this.member.getLoyaltyPoint());
+            
+            PurchasedInformation purchasedInformation = new PurchasedInformation(items, this.subTotal, amountReceived, change, dollarToRedeem, pointsAdded, loyaltyPointRemained);
+            receiptPrinter.printMemberReceipt(purchasedInformation);
 
             txtMemberDollarRedem.setEnabled(false);
             txtAmountReceived.setEnabled(false);
@@ -765,6 +809,8 @@ public class Application {
 
             // check threshold
             checkIfRequiredReplenishStocks();
+            
+            List<String> items = new ArrayList<>();
 
             int nRow = shoppingcart.getRowCount(), nCol = shoppingcart.getColumnCount();
             for (int i = 0; i < nRow; i++) {
@@ -775,12 +821,12 @@ public class Application {
                     row += shoppingcart.getValueAt(i, j) + " ";
                 }
 
-                printReceipt.print(row);
+                items.add(row);
             }
-
-            printReceipt.print("Total $" + this.subTotal);
-            printReceipt.print("Amount Received $" + amountReceived);
-            printReceipt.print("Change $" + change);
+            
+            PurchasedInformation purchasedInformation = new PurchasedInformation(items, this.subTotal, amountReceived, change);
+            
+            receiptPrinter.printNonMemberReceipt(purchasedInformation);
 
             txtAmountReceived.setEnabled(false);
             btnMakePayment.setEnabled(false);
