@@ -100,7 +100,6 @@ public class Product implements Comparator<Product> {
 	}
 	/*@Override
 	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
-		//TODO toString
 		String sQtyAvail = "" + this.quantityAvailable;
 		String sPrice = "" + this.price;
 		String sBarCodeNo = "" + this.barCodeNumber;

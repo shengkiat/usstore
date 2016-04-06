@@ -52,7 +52,6 @@ public class VendorServiceTest {
 
 		public MockVendorFileDataAccess() throws UssException {
 			super();
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

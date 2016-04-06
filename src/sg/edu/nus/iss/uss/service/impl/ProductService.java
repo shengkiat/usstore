@@ -52,7 +52,6 @@ public class ProductService extends UssCommonService implements IProductService 
 				try {
 					prdDataAccess.update(p);
 				} catch (UssException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -71,7 +70,6 @@ public class ProductService extends UssCommonService implements IProductService 
 		}
 		
 		
-		// TODO Auto-generated method stub
 		List<Integer> prdNos = new ArrayList<>();
 		// Retrieve Product List Base on Category Code
 		for (Product prd : retrieveProductList()) {

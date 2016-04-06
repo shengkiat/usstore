@@ -96,7 +96,6 @@ public class TransactionServiceTest {
 						transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-04-01")).build());
 						transactions.add(new TestTransactionBuilder().withDate(UssCommonUtil.convertStringToDate("2016-05-01")).build());
 					} catch (UssException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					

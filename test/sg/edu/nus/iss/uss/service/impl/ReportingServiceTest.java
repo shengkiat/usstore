@@ -166,7 +166,6 @@ public class ReportingServiceTest {
 
 		@Override
 		public Product getProductByBarcode(String barcode) throws UssException {
-			// TODO Auto-generated method stub
 			throw new RuntimeException("not expected to call");
 		}
 
@@ -185,43 +184,36 @@ public class ReportingServiceTest {
 
 		@Override
 		public List<Member> retrieveMemberList() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Member getMemberByMemberID(String memberID) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public void registerNewMember(String name, String idCardNumber) throws UssException {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void addMemberLoyaltyPoint(int point, String memberID) throws UssException {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void deductMemberLoyltyPoint(int point, String memberID) throws UssException {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public boolean isValidMember(String memberID) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isFirstPurchase(String memberID) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

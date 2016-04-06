@@ -338,7 +338,6 @@ public class Application {
         final JButton btnAdd = new JButton("Add");
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // TODO
                 readBarcode();
 
             }
@@ -356,7 +355,6 @@ public class Application {
         lblsubTotal = new JLabel("0");
         subtotalPanel.add(lblsubTotal);
 
-        // TODO
         rightEnterAmountPanel = new JPanel();
         // frame.getContentPane().add(rightEnterAmountPanel,
         // BorderLayout.NORTH);
@@ -569,8 +567,6 @@ public class Application {
         btnNonMemberPay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                // TODO
-
                 nonMemberWantsToMakePayment();
 
             }
@@ -676,7 +672,6 @@ public class Application {
         // frame.getContentPane().validate(); // For Java 1.6 or below.
         frame.repaint();
 
-        // TODO add loyality points
         lblMemberName.setText(this.member.getName());
         lblMemberLoyaltyPts.setText("" + this.checkoutService.convertPointToDollarForDebit(this.member.getLoyaltyPoint()));
 

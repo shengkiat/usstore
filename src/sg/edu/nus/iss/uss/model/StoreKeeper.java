@@ -21,14 +21,6 @@ public class StoreKeeper implements IUser{
 		this.password = password;
 	}
 	
-	@Override
-	public String toString() {//Stacy,Dean56s
-		//TODO toString
-		
-		return "";
-	}
-	
-	
 	public StoreKeeper(String name, String password) {
 		super();
 		this.name = name;
