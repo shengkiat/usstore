@@ -2,9 +2,6 @@ package sg.edu.nus.iss.uss.model;
 
 import java.util.Comparator;
 
-
-//Comparator<Product>,
-
 public class Product implements Comparator<Product> {	
 	
 	private String productID;
@@ -15,9 +12,7 @@ public class Product implements Comparator<Product> {
 	private String barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
-	//Added
 	private int productNo;
-	//private int purchaseQty;
 	
 	private volatile int hashcode;
 	
@@ -26,6 +21,7 @@ public class Product implements Comparator<Product> {
 	public String getProductID() {
 		return productID;
 	}
+	
 	public void setProductID(String catCode,int prdtNo) {
 		this.productID = catCode + "/" + String.valueOf(prdtNo) ;
 	}
@@ -49,18 +45,7 @@ public class Product implements Comparator<Product> {
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 	}
-	/*
-	public int getpurchaseQty() {
-		return (purchaseQty);
-	}
-	public void setPurchaseQty(int qtyPurchased) throws UssException {
-		this.purchaseQty = qtyPurchased;
-		DeductQtyAvailable();
-	}
-	
-	public void DeductQtyAvailable() {	
-		   this.quantityAvailable = this.quantityAvailable - this.purchaseQty;
-	}*/
+
 	public double getPrice() {
 		return price;
 	}
@@ -98,18 +83,6 @@ public class Product implements Comparator<Product> {
 		this.reorderQuantity = reorderQuantity;
 		this.orderQuantity = orderQuantity;
 	}
-	/*@Override
-	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
-		//TODO toString
-		String sQtyAvail = "" + this.quantityAvailable;
-		String sPrice = "" + this.price;
-		String sBarCodeNo = "" + this.barCodeNumber;
-		String sReOrderqty = "" + this.reorderQuantity;
-		String sOrderqty = "" + this.orderQuantity;
-		
-		return 	(productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty);  
-	     
-	}*/
 	
 	@Override
 	public String toString() {
@@ -119,12 +92,10 @@ public class Product implements Comparator<Product> {
 		sb.append(this.briefDescription);
 		sb.append("" + this.quantityAvailable);
 		sb.append("" + this.price);
-		sb.append("" + this.barCodeNumber);
+		sb.append(this.barCodeNumber);
 		sb.append("" + this.reorderQuantity);
 		sb.append("" + this.orderQuantity);
-		
-		/*System.out.println("");
-		System.out.println(sb.toString());*/
+	
 		return sb.toString();
 
 	}
@@ -176,11 +147,7 @@ public class Product implements Comparator<Product> {
 	@Override
 	public int compare(Product p1, Product p2) {
 	    
-		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo()));
-		/*int i = p1.getCategoryCode().compareTo(p2.getCategoryCode());
-		if (i==0) i = p1.getProductNo() - p2.getProductNo();
-		return i;*/
-	     
+		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo())); 
 	     
 	}
 
@@ -201,8 +168,5 @@ public class Product implements Comparator<Product> {
 		&& p.productNo == this.productNo;
 		
 	}
-	
-	
-	
 	
 }

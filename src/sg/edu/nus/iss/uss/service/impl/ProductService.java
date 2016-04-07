@@ -89,34 +89,12 @@ public class ProductService extends UssCommonService implements IProductService 
 					+ String.valueOf(Collections.max(prdNos, null) + 1);
 		}
 
-		// prodt = new
-		// Product(categoryCode,productName,briefDescription,QuantityAvailable,price,barCodeNumber,reorderQuantity,orderQuantity);
-
 		// Create Product and Write to File
 		prdDataAccess.create(new Product(categoryCode, productName,
 				briefDescription, QuantityAvailable, price, barCodeNumber,
 				reorderQuantity, orderQuantity));
 
 	}
-
-	/*
-	 * @Override public void updateProductEntry(String productID, String
-	 * productName, String briefDescription, int QuantityAvailable, double
-	 * price, String barCodeNumber, int reorderQuantity, int orderQuantity)
-	 * throws UssException {
-	 * 
-	 * Product p = prdService.getProductByProductID(productID);
-	 * 
-	 * if (p.equals(null)) { // throws Product cannot be found } else {
-	 * p.setName(productName); p.setBriefDescription(briefDescription);
-	 * p.setQuantityAvailable(QuantityAvailable); p.setPrice(price);
-	 * p.setBarCodeNumber(barCodeNumber); p.setReorderQuantity(reorderQuantity);
-	 * p.setOrderQuantity(orderQuantity);
-	 * 
-	 * }
-	 * 
-	 * // Update to File prdDataAccess.update(p); }
-	 */
 	
 	@Override
 	public boolean checkIfProductIsBelowThreshold(Product product) {
@@ -140,12 +118,13 @@ public class ProductService extends UssCommonService implements IProductService 
 			
             if (qty >= 0 ) {
 
-				product.setQuantityAvailable(qty); // Update Qty
+				product.setQuantityAvailable(qty); // Update Quantity after purchased
 
 				prdDataAccess.update(product); // Write to File
 			} else {
-				// throws UssException as Purchased Quantity more than
-				// Quantity Available
+				
+				throw new UssException(ErrorConstants.UssCode.PRODUCT, ErrorConstants.PRODUCT_QUANTITY_INSUFFICIENT);
+				// throws UssException when Purchased Quantity more than Quantity Available
 			}
 		}
 
