@@ -16,7 +16,7 @@ public class Product implements Comparator<Product> {
 	////////////////////////////////////////////////////
 	private int productNo;
 	private String CategoryCode;
-	private Boolean isBelowThreshold;
+	//private Boolean isBelowThreshold;
 	////////////////////////////////////////////////////
 	
 	private volatile int hashcode;
@@ -49,7 +49,7 @@ public class Product implements Comparator<Product> {
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 		///////////////////////////////////////////////////////////////////////////////////////
-		this.isBelowThreshold = (this.quantityAvailable < this.reorderQuantity) ? true:false ;
+		//this.isBelowThreshold = (this.quantityAvailable < this.reorderQuantity) ? true:false ;
 		///////////////////////////////////////////////////////////////////////////////////////
 	}
 
@@ -107,8 +107,8 @@ public class Product implements Comparator<Product> {
 	}
 	
 	public boolean isBelowThreshold(){
-	    //return this.quantityAvailable < this.reorderQuantity;	    
-	    return this.isBelowThreshold;
+	    return this.quantityAvailable < this.reorderQuantity;	    
+	    //return this.isBelowThreshold;
 	}
 	
 	@Override
