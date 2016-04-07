@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 //import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,6 @@ public class ProductService extends UssCommonService implements IProductService 
 		}
 	}
 	
-	
 	@Override
 	public void createNewProductEntry(String categoryCode, String productName,
 			String briefDescription, int QuantityAvailable, double price,
@@ -73,8 +73,7 @@ public class ProductService extends UssCommonService implements IProductService 
 		List<Integer> prdNos = new ArrayList<>();
 		// Retrieve Product List Base on Category Code
 		for (Product prd : retrieveProductList()) {
-			if (prd.getProductID().substring(0, 4).toUpperCase()
-					.contains(categoryCode.toUpperCase())) {
+			if (prd.getCategoryCode().equals(categoryCode.toUpperCase())){
 				prdNos.add(prd.getProductNo());
 			}
 		}
@@ -84,8 +83,7 @@ public class ProductService extends UssCommonService implements IProductService 
 		if (prdNos.isEmpty()) {
 			productId = categoryCode + "/1";
 		} else {
-			productId = categoryCode + "/"
-					+ (prdNos.size() + 1);
+			productId = categoryCode + "/" + (Collections.max(prdNos) + 1);
 		}
 
 		// Create Product and Write to File

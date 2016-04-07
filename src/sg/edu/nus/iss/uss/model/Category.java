@@ -6,7 +6,7 @@ public class Category {
 	
 	private volatile int hashcode;
 	
-	public Category() {}
+	public Category () {}
 	
 	public Category (String code, String name) {
 		this.code = code;

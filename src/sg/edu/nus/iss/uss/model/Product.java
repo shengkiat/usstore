@@ -12,11 +12,15 @@ public class Product implements Comparator<Product> {
 	private String barCodeNumber;
 	private int reorderQuantity;
 	private int orderQuantity;
+	
+	////////////////////////////////////////////////////
 	private int productNo;
+	private String CategoryCode;
+	private Boolean isBelowThreshold;
+	////////////////////////////////////////////////////
 	
 	private volatile int hashcode;
-	
-	public Product() {}
+
 	
 	public String getProductID() {
 		return productID;
@@ -44,6 +48,9 @@ public class Product implements Comparator<Product> {
 	}
 	public void setQuantityAvailable(int quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
+		///////////////////////////////////////////////////////////////////////////////////////
+		this.isBelowThreshold = (this.quantityAvailable < this.reorderQuantity) ? true:false ;
+		///////////////////////////////////////////////////////////////////////////////////////
 	}
 
 	public double getPrice() {
@@ -82,19 +89,50 @@ public class Product implements Comparator<Product> {
 		this.barCodeNumber = barCodeNumber;
 		this.reorderQuantity = reorderQuantity;
 		this.orderQuantity = orderQuantity;
+        
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Integer sPos = this.productID.indexOf('/');
+        Integer ePos = this.productID.length();
+        this.productNo = Integer.parseInt(this.productID.substring(sPos+1, ePos));
+		this.CategoryCode = this.productID.substring(0, this.productID.indexOf("/")).toUpperCase();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+	
+	public int getProductNo(){
+		return this.productNo;
+	}
+	
+	public String getCategoryCode(){
+		return this.CategoryCode;
+	}
+	
+	public boolean isBelowThreshold(){
+	    //return this.quantityAvailable < this.reorderQuantity;	    
+	    return this.isBelowThreshold;
+	}
+	
+	@Override
+	public int compare(Product p1, Product p2) {	    
+		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo()));      
 	}
 
-	/*@Override
-	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
-		String sQtyAvail = "" + this.quantityAvailable;
-		String sPrice = "" + this.price;
-		String sBarCodeNo = "" + this.barCodeNumber;
-		String sReOrderqty = "" + this.reorderQuantity;
-		String sOrderqty = "" + this.orderQuantity;
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Product)) return false;
+		Product p = (Product) o;
 		
-		return 	(productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty);  
-	     
-	}*/
+	    return p.productID == this.productID
+	    && p.name == this.name
+	    && p.briefDescription == this.briefDescription
+	    && p.quantityAvailable == this.quantityAvailable
+	    && p.price == this.price
+	    && p.barCodeNumber == this.barCodeNumber
+	    && p.reorderQuantity == this.reorderQuantity
+	    && p.orderQuantity == this.orderQuantity
+		&& p.productNo == this.productNo;
+		
+	}
 	
 	@Override
 	public String toString() {
@@ -109,7 +147,6 @@ public class Product implements Comparator<Product> {
 		sb.append("" + this.orderQuantity);
 	
 		return sb.toString();
-
 	}
 	
 	
@@ -136,49 +173,4 @@ public class Product implements Comparator<Product> {
 		}
 		return result;
 	}
-	
-	
-	public boolean isBelowThreshold(){
-	    return this.quantityAvailable < this.reorderQuantity;	    
-	}
-	
-	public int getProductNo(){
-		if (this.productNo == 0)     { 
-	        Integer sPos = this.productID.indexOf('/');
-	        Integer ePos = this.productID.length();
-	        this.productNo = Integer.parseInt(this.productID.substring(sPos+1, ePos));
-		}
-        return this.productNo;
-	}
-	
-	public String getCategoryCode(){
-	    return this.getProductID().substring(0, this.getProductID().indexOf("/"));
-	}
-	
-
-	@Override
-	public int compare(Product p1, Product p2) {
-	    
-		return Integer.valueOf(p1.getProductNo()).compareTo(Integer.valueOf(p1.getProductNo())); 
-	     
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) return true;
-		if (!(o instanceof Product)) return false;
-		Product p = (Product) o;
-		
-	    return p.productID == this.productID
-	    && p.name == this.name
-	    && p.briefDescription == this.briefDescription
-	    && p.quantityAvailable == this.quantityAvailable
-	    && p.price == this.price
-	    && p.barCodeNumber == this.barCodeNumber
-	    && p.reorderQuantity == this.reorderQuantity
-	    && p.orderQuantity == this.orderQuantity
-		&& p.productNo == this.productNo;
-		
-	}
-	
 }
