@@ -19,8 +19,6 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 	
 	private static final int TOTAL_FIELDS = 2;
 	
-	String[] strCat;
-	
 	public CategoryFileDataAccess() throws UssException {
 		super(FILE_NAME);
 	}
@@ -36,7 +34,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 
 	@Override
 	public void create(Category e) throws UssException {	
-		strCat = new String[TOTAL_FIELDS];
+		String[] strCat = new String[TOTAL_FIELDS];
 		
 		strCat[FIELD_CATEGORY_CODE] = e.getCode();
 		strCat[FIELD_NAME] = e.getName();
@@ -46,11 +44,12 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 		categoryList.add(e);
 		
 	}
-
-	public Category getCategoryByCategoryCode(String CategoryCode) {
+	
+	@Override
+	public Category getCategoryByCategoryCode(String categoryCode) {
 		Category e = null;
 		for(Category cat:getAll()){
-		     if (cat.getCode().equals(CategoryCode)) {
+		     if (cat.getCode().equals(categoryCode)) {
 		    	 e = cat;
 		     }
 		}
@@ -71,8 +70,7 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 			
 		} else {
 		
-			for(String[] str: catList)
-			{
+			for(String[] str: catList) {
 			    Category cat = new Category();
 				cat.setCode(str[FIELD_CATEGORY_CODE]);
 				cat.setName(str[FIELD_NAME]);
@@ -80,9 +78,6 @@ public class CategoryFileDataAccess extends FileDataAccess implements ICategoryD
 			}
 		}
 	}
-	
-
-	
 	
 	@Override
 	protected String getPrimaryKey(String[] arr) {

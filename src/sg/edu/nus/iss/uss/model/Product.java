@@ -83,6 +83,18 @@ public class Product implements Comparator<Product> {
 		this.reorderQuantity = reorderQuantity;
 		this.orderQuantity = orderQuantity;
 	}
+
+	/*@Override
+	public String toString() {//STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
+		String sQtyAvail = "" + this.quantityAvailable;
+		String sPrice = "" + this.price;
+		String sBarCodeNo = "" + this.barCodeNumber;
+		String sReOrderqty = "" + this.reorderQuantity;
+		String sOrderqty = "" + this.orderQuantity;
+		
+		return 	(productID + "," + name + "," + briefDescription  + "," + sQtyAvail + "," + sPrice + "," + sBarCodeNo + "," + sReOrderqty + "," + sOrderqty);  
+	     
+	}*/
 	
 	@Override
 	public String toString() {

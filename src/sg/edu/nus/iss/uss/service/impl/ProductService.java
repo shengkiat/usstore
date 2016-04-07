@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 //import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,6 @@ public class ProductService extends UssCommonService implements IProductService 
 				try {
 					prdDataAccess.update(p);
 				} catch (UssException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -72,25 +70,26 @@ public class ProductService extends UssCommonService implements IProductService 
 		}
 		
 		
-		// TODO Auto-generated method stub
 		List<Integer> prdNos = new ArrayList<>();
 		// Retrieve Product List Base on Category Code
-		for (Product Prd : retrieveProductList()) {
-			if (Prd.getProductID().toUpperCase()
+		for (Product prd : retrieveProductList()) {
+			if (prd.getProductID().substring(0, 4).toUpperCase()
 					.contains(categoryCode.toUpperCase())) {
-				prdNos.add(Prd.getProductNo());
+				prdNos.add(prd.getProductNo());
 			}
 		}
+		
+		String productId = null;
 
 		if (prdNos.isEmpty()) {
-			categoryCode = categoryCode + "/1";
+			productId = categoryCode + "/1";
 		} else {
-			categoryCode = categoryCode + "/"
-					+ String.valueOf(Collections.max(prdNos, null) + 1);
+			productId = categoryCode + "/"
+					+ (prdNos.size() + 1);
 		}
 
 		// Create Product and Write to File
-		prdDataAccess.create(new Product(categoryCode, productName,
+		prdDataAccess.create(new Product(productId, productName,
 				briefDescription, QuantityAvailable, price, barCodeNumber,
 				reorderQuantity, orderQuantity));
 
@@ -105,26 +104,27 @@ public class ProductService extends UssCommonService implements IProductService 
 	public void deductInventoryFromCheckout(List<Product> productItems)
 			throws UssException {
 
-		Map<String,Integer> productcountMap ;  //= new Map <String,Integer>();
+		Map<String,Integer> productCountMap = groupByProductId(productItems);
 		
-		productcountMap = groupByProductId (productItems);
-		
-		for(String productId : productcountMap.keySet()) {
+		for(String productId : productCountMap.keySet()) {
 			Product product = getProductByProductID(productId);
 			
-			int qtyPurchased = productcountMap.get(productId);
+			int qtyPurchased = productCountMap.get(productId);
 			int qtyAvailable = product.getQuantityAvailable();
             int qty = qtyAvailable - qtyPurchased;		
 			
-            if (qty >= 0 ) {
+            if (qty >= 0) {
 
 				product.setQuantityAvailable(qty); // Update Quantity after purchased
 
 				prdDataAccess.update(product); // Write to File
 			} else {
-				
+
 				throw new UssException(ErrorConstants.UssCode.PRODUCT, ErrorConstants.PRODUCT_QUANTITY_INSUFFICIENT);
 				// throws UssException when Purchased Quantity more than Quantity Available
+				// throws UssException as Purchased Quantity more than
+				// Quantity Available
+				//throw new UssException(ErrorConstants.UssCode.PRODUCT, ErrorConstants.PRODUCT_QTY_PURCHASE_MORE_THAN_AVAILABLE);
 			}
 		}
 

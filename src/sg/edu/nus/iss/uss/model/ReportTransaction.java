@@ -73,7 +73,6 @@ public class ReportTransaction implements Comparable<ReportTransaction> {
 
 	@Override
 	public int compareTo(ReportTransaction arg0) {
-		// TODO Auto-generated method stub
 		return this.productID.compareTo(arg0.getProductID());
 	}
 	

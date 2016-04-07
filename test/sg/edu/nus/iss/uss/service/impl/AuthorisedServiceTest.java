@@ -6,24 +6,17 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.iss.uss.dao.filedataaccess.StoreKeeperFileDataAccess;
 import sg.edu.nus.iss.uss.exception.UssException;
 import sg.edu.nus.iss.uss.model.StoreKeeper;
 import sg.edu.nus.iss.uss.service.IAuthorisedService;
-import sg.edu.nus.iss.uss.service.impl.AuthorisedService;
 
 public class AuthorisedServiceTest {
 
-	@Before
-	public void setUp() throws Exception {
-
-	}
-
 	@Test
-	public void testValidStoreKeepers() throws UssException {
+	public void testIsAuthorisedWithValidStoreKeepers() throws UssException {
 
 		IAuthorisedService authService = new AuthorisedService(
 				new MockStoreKeeperFileDataAccess() {

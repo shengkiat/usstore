@@ -1,6 +1,8 @@
 package sg.edu.nus.iss.uss.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -31,14 +33,6 @@ public class MemberServiceTest {
 	public void testIsValidMember(){
 		
 		assertEquals(false, service.isValidMember("InvalidMemberID"));
-	}
-
-	@Test(expected=UssException.class)
-	public void testUpdateNonExistMemberShouldThrowUssException() throws UssException {
-		
-		service.registerNewMember("Brian Earp", "T64565FG5");
-		
-		service.updateMemberLoyaltyPoint("NonExistMemberID", 100);
 	}
 	
 	@Test(expected=UssException.class)
@@ -90,6 +84,21 @@ public class MemberServiceTest {
 		
 		assertEquals(4, membersAfter.size());
 		
+	}
+
+	@Test
+	public void testIsFirstPurchaseShouldReturnTrue() throws Exception {
+		assertTrue(service.isFirstPurchase("R64565FG4"));
+	}
+	
+	@Test
+	public void testIsFirstPurchaseShouldReturnFalseExistingMember() throws Exception {
+		assertFalse(service.isFirstPurchase("X437F356"));
+	}
+	
+	@Test
+	public void testIsFirstPurchaseShouldReturnFalseNonExistedMember() throws Exception {
+		assertFalse(service.isFirstPurchase("accc"));
 	}
 
 }

@@ -1,12 +1,11 @@
 package sg.edu.nus.iss.uss.model;
 
 
-public class Member implements IBuyer, Comparable<Member>{
+public class Member implements Comparable<Member>{
 	private String name;
 	private String memberID;
 	private int loyaltyPoint;
 	
-	@Override
 	public String getName() {
 		return name;
 	}

@@ -92,7 +92,6 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 		}
 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -104,7 +103,7 @@ public class VendorFileDataAccess extends FileDataAccess implements IVendorDataA
 
 	@Override
 	protected int getTotalNumberOfFields() {
-		return 0;
+		return 2;
 	}
 	
 	private void addIntoVendors(Vendor vendor, String categoryCode) {

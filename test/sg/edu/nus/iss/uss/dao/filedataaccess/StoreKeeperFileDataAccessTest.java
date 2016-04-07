@@ -61,7 +61,6 @@ public class StoreKeeperFileDataAccessTest {
 		try {
 			Files.deleteIfExists(this.getTestPath());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

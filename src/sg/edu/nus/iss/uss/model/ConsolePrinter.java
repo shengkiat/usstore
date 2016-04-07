@@ -1,10 +1,10 @@
 package sg.edu.nus.iss.uss.model;
 
-public class ActualPrinter implements IPrinter {
+public class ConsolePrinter implements IPrinter {
 
 	@Override
 	public void print(String line) {
-		
+		System.out.println(line);
 	}
 
 }

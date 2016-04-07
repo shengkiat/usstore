@@ -55,7 +55,6 @@ public class MemberLoginDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// TODO
 						_memberID = txtMemberID.getText();
 						
 						if (checkoutService.determineMemberID(_memberID)){
