@@ -17,18 +17,12 @@ public class Category {
 		return code;
 	}
 	public void setCode(String code) {
-		if (code.length() != 3) {
-			// throws length is not equal to 3
-		} else
-		{
 		   this.code = code;
-		   }
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
-	
 		this.name = name;
 	}
 	
