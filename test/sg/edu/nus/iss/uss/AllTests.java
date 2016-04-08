@@ -18,6 +18,7 @@ import sg.edu.nus.iss.uss.dao.filedataaccess.DiscountFileDataAccessTest;
 import sg.edu.nus.iss.uss.model.CheckOutSummaryTest;
 import sg.edu.nus.iss.uss.model.DaySpecialDiscountTest;
 import sg.edu.nus.iss.uss.model.MemberOnlyDiscountTest;
+import sg.edu.nus.iss.uss.model.ReceiptPrinterTest;
 import sg.edu.nus.iss.uss.service.impl.AuthorisedServiceTest;
 import sg.edu.nus.iss.uss.service.impl.CategoryServiceTest;
 import sg.edu.nus.iss.uss.service.impl.CheckOutServiceTest;
@@ -52,6 +53,7 @@ import sg.edu.nus.iss.uss.util.UssCommonUtilTest;
 	ProductServiceTest.class,
 	MemberServiceTest.class,
 	CategoryServiceTest.class,
+	ReceiptPrinterTest.class,
 	ReportTransactionTableModelTest.class,
 	ReportMemberTableModelTest.class,
 	ReportProductTableModelTest.class,
