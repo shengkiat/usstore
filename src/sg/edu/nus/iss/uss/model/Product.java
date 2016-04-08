@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.uss.model;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Product implements Comparator<Product> {	
 	
@@ -80,7 +81,8 @@ public class Product implements Comparator<Product> {
 	
 	public Product(String productID, String name, String briefDescription, int quantityAvailable, double price,
 			String barCodeNumber, int reorderQuantity, int orderQuantity) {
-		super();
+		Objects.requireNonNull(productID, "productId cannot be null");
+		
 		this.productID = productID;
 		this.name = name;
 		this.briefDescription = briefDescription;
