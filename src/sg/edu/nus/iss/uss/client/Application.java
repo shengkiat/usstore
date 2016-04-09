@@ -209,11 +209,6 @@ public class Application {
             }
         });
 
-        // if logon successfully
-        if (loginDlg.isSucceeded()) {
-            // btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
-        }
-
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
@@ -314,7 +309,6 @@ public class Application {
         JTable tbScanProducts = new JTable();
         tbScanProducts.setModel(shoppingcart);
 
-        // tbScanProducts.setValueIsAdjusting(true);
         tbScanProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(tbScanProducts);
@@ -356,8 +350,6 @@ public class Application {
         subtotalPanel.add(lblsubTotal);
 
         rightEnterAmountPanel = new JPanel();
-        // frame.getContentPane().add(rightEnterAmountPanel,
-        // BorderLayout.NORTH);
         GridBagLayout gbl_rightEnterAmountPanel = new GridBagLayout();
         gbl_rightEnterAmountPanel.columnWidths = new int[] { 50, 134, 86, 0 };
         gbl_rightEnterAmountPanel.rowHeights = new int[] { 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
